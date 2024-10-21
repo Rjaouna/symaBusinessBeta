@@ -1,0 +1,48 @@
+<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+    <div class="d-flex align-items-center mb-3">
+        <img src="/assets/img/profil.png" alt="Photo de profil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+        <h5 class="ms-3 text-secondary mx-2">Bonjour, <strong class="user-name"></strong> !</h5>
+    </div>
+    <p class="mb-3 text-secondary">
+        Votre quota actuel est de <strong class="user-quota"></strong>.
+        <a href="https://127.0.0.1:8000/quota" class="text-primary">Pourquoi le système de quotation ?</a>
+        <br>
+        Vous avez un bonus de <strong class="user-bonus"></strong> <a href="https://127.0.0.1:8000/bonus/" class="text-primary">Gérer mon bonus !</a>
+    </p>
+</div>
+
+<script>
+async function fetchUserInformation() {
+    try {
+        const response = await axios.get("/api/user");
+        // Store user data in localStorage
+        localStorage.setItem('userData', JSON.stringify(response.data));
+        displayUserInformation(); // Call to display the user information
+    } catch (error) {
+        console.error('Error fetching user information:', error);
+        // Optionally display an error message to the user
+        document.querySelector('.user-name').textContent = 'Utilisateur'; // Default name
+        document.querySelector('.user-quota').textContent = 'inconnu'; // Default quota
+        document.querySelector('.user-bonus').textContent = '0€'; // Default bonus
+    }
+}
+
+function displayUserInformation() {
+    const userData = JSON.parse(localStorage.getItem('userData')); // Récupérez les données
+    console.log(userData);
+
+    if (userData) {
+        document.querySelector('.user-name').textContent = userData.nomResponsable || 'Utilisateur';
+        
+        // Access the correct property for quotas
+        const quotaName = userData.quotas ? userData.quotas.nom : 'inconnu';
+        document.querySelector('.user-quota').textContent = quotaName;
+        
+        document.querySelector('.user-bonus').textContent = `${userData.totalBonus}€`;
+    }
+}
+
+
+// Fetch user information when the script loads
+fetchUserInformation();
+</script>

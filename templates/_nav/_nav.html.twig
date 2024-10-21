@@ -17,6 +17,13 @@
         <li class="nav-item">
           <a class="nav-link" href="{{path('app_banner_index')}}"><i class="bi bi-people"></i> Gestion des banniers</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{path('app_user_index')}}"><i class="bi bi-people"></i> Gestion des utilisateur</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{path('app_quota_index')}}"><i class="bi bi-people"></i> Gestion des quota</a>
+        </li>
+        
         {% else %}
         <!-- Partie utilisateur -->
         <li class="nav-item">
@@ -26,8 +33,9 @@
           <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Gérer mon bonus !</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Rapport des ventes</a>
+          <a class="nav-link" href="{{ path('app_profile') }}">Mon Profil</a>
         </li>
+        
         {% endif %}
         {% endif %}
 

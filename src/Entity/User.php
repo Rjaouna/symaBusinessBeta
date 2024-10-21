@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -21,6 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups('user_info')]
     private ?string $email = null;
 
     /**
@@ -36,18 +38,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
+    #[Groups('user_info')]
     private bool $isVerified = false;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $nomResponsable = null;
 
     #[ORM\Column(length: 10)]
+    #[Groups('user_info')]
     private ?string $telephoneFixe = null;
 
     #[ORM\Column(length: 10)]
+    #[Groups('user_info')]
     private ?string $telephoneMobile = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user_info')]
     private ?string $nomSociete = null;
 
     #[ORM\Column(length: 50, nullable: true)]
@@ -72,18 +79,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $kbis = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user_info')]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user_info')]
     private ?string $pays = null;
 
     #[ORM\Column(length: 5, nullable: true)]
+    #[Groups('user_info')]
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user_info')]
     private ?string $ville = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user_info')]
     private ?string $codeClient = null;
 
     #[ORM\Column(length: 50, nullable: true)]
@@ -93,19 +105,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $bic = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
+    #[Groups('user_info')]
     private ?Quota $quotas = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Usage $usages = null;
-
+    
     /**
      * @var Collection<int, Commande>
      */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user')]
+    #[Groups('user_info')]
     private Collection $commandes;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Bonus $bonus = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bonus::class, cascade: ['persist', 'remove'])]
+    #[Groups('user_info')]
+    private Collection $bonuses;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('user_info')]
+    private ?string $totalBonus = null;
+
+    #[ORM\Column]
+    #[Groups('user_info')]
+    private ?int $sim5Usage = null;
+
+    #[ORM\Column]
+    #[Groups('user_info')]
+    private ?int $sim10Usage = null;
+
+    #[ORM\Column]
+    #[Groups('user_info')]
+    private ?int $sim15Usage = null;
+
+    #[ORM\Column]
+    #[Groups('user_info')]
+    private ?int $sim20Usage = null; 
 
     public function __construct()
     {
@@ -427,18 +460,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUsages(): ?Usage
-    {
-        return $this->usages;
-    }
-
-    public function setUsages(?Usage $usages): static
-    {
-        $this->usages = $usages;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Commande>
      */
@@ -469,14 +490,69 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBonus(): ?Bonus
+
+
+    public function __toString()
     {
-        return $this->bonus;
+        return $this->email;
     }
 
-    public function setBonus(?Bonus $bonus): static
+    public function getTotalBonus(): ?string
     {
-        $this->bonus = $bonus;
+        return $this->totalBonus;
+    }
+
+    public function setTotalBonus(?string $totalBonus): static
+    {
+        $this->totalBonus = $totalBonus;
+
+        return $this;
+    }
+
+    public function getSim5Usage(): ?int
+    {
+        return $this->sim5Usage;
+    }
+
+    public function setSim5Usage(int $sim5Usage): static
+    {
+        $this->sim5Usage = $sim5Usage;
+
+        return $this;
+    }
+
+    public function getSim10Usage(): ?int
+    {
+        return $this->sim10Usage;
+    }
+
+    public function setSim10Usage(int $sim10Usage): static
+    {
+        $this->sim10Usage = $sim10Usage;
+
+        return $this;
+    }
+
+    public function getSim15Usage(): ?int
+    {
+        return $this->sim15Usage;
+    }
+
+    public function setSim15Usage(int $sim15Usage): static
+    {
+        $this->sim15Usage = $sim15Usage;
+
+        return $this;
+    }
+
+    public function getSim20Usage(): ?int
+    {
+        return $this->sim20Usage;
+    }
+
+    public function setSim20Usage(int $sim20Usage): static
+    {
+        $this->sim20Usage = $sim20Usage;
 
         return $this;
     }

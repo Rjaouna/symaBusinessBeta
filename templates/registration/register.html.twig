@@ -1,23 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+    <div class="container card bg-light mb-4">
+        <h1 class="mb-4">Créer un Compte</h1>
+        <div class="card-header">Informations Personnelles</div>
+        <div class="card-body">
+            {{ form_start(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.nomResponsable, {
+                        label: 'Nom du Responsable'
+                    }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.email, {
+                        label: 'Adresse E-mail'
+                    }) }}
+                </div>
+            </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.telephoneMobile, {
+                        label: 'Téléphone Mobile'
+                    }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.telephoneFixe, {
+                        label: 'Téléphone Fixe'
+                    }) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Mot de Passe'
+                    }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.agreeTerms, {
+                        label: 'J\'accepte les termes'
+                    }) }}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{{ path('app_login') }}" class="btn btn-secondary">Annuler</a>
+                <button type="submit" class="btn btn-primary">S'inscrire</button>
+            </div>
+
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}

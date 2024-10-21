@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quota{% endblock %}
+
+{% block body %}
+    <h1>Quota</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ quotum.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ quotum.nom }}</td>
+            </tr>
+            <tr>
+                <th>Sim5Quota</th>
+                <td>{{ quotum.sim5Quota }}</td>
+            </tr>
+            <tr>
+                <th>Sim10Quota</th>
+                <td>{{ quotum.sim10Quota }}</td>
+            </tr>
+            <tr>
+                <th>Sim15Quota</th>
+                <td>{{ quotum.sim15Quota }}</td>
+            </tr>
+            <tr>
+                <th>Sim20Quota</th>
+                <td>{{ quotum.sim20Quota }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ quotum.createdAt ? quotum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ quotum.updatedAt ? quotum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_quota_index') }}">back to list</a>
+
+    <a href="{{ path('app_quota_edit', {'id': quotum.id}) }}">edit</a>
+
+    {{ include('quota/_delete_form.html.twig') }}
+{% endblock %}

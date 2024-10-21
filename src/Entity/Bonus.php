@@ -23,6 +23,12 @@ class Bonus
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'bonuses')]
+    private ?User $user = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $used = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,5 +74,29 @@ class Bonus
     public function onPrePersist()
     {
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function isUsed(): ?bool
+    {
+        return $this->used;
+    }
+
+    public function setUsed(?bool $used): static
+    {
+        $this->used = $used;
+
+        return $this;
     }
 }

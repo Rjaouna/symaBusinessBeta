@@ -6,6 +6,7 @@ use App\Repository\QuotaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: QuotaRepository::class)]
@@ -17,18 +18,23 @@ class Quota
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $sim5Quota = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $sim10Quota = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $sim15Quota = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $sim20Quota = null;
 
     #[ORM\Column]
@@ -140,6 +146,8 @@ class Quota
     public function onPrePersist()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+
     }
     #[ORM\PreUpdate]
     public function onPreUpdate()

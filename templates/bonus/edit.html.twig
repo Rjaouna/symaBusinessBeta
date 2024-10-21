@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Bonus{% endblock %}
+
+{% block body %}
+    <h1>Edit Bonus</h1>
+
+    {{ include('bonus/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_bonus_index') }}">back to list</a>
+
+    {{ include('bonus/_delete_form.html.twig') }}
+{% endblock %}

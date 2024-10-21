@@ -57,21 +57,7 @@ const fakeUserInfo = {
     }
 };
 
-// Mise à jour des informations utilisateur et quotas avec les fausses données
-document.querySelector('.quota-info').innerHTML = `
-    <div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
-        <div class="d-flex align-items-center mb-3">
-            <img src="/assets/img/profil.png" alt="Photo de profil" class="rounded-circle " style="width: 50px; height: 50px; object-fit: cover;">
-            <h5 class="ms-3 text-secondary mx-2">Bonjour, <strong>${fakeUserInfo.nomResponsable}</strong> !</h5>
-        </div>
-        <p class="mb-3 text-secondary">
-            Votre quota actuel est de <strong>${fakeUserInfo.quota.nom}</strong>. 
-            <a href="https://127.0.0.1:8000/quota" class="text-primary">Pourquoi le système de quotation ?</a>
-            <br>
-            Vous avez un bonus de ${fakeUserInfo.bonus > 10 ? `<strong>${fakeUserInfo.bonus}€</strong> <a href="https://127.0.0.1:8000/bonus/" class="text-primary">Gérer mon bonus !</a>` : `${fakeUserInfo.bonus}€`}
-        </p>
-    </div>
-`;
+
 
 // Données pour le graphique de consommation
 function renderFakeQuotaChart() {

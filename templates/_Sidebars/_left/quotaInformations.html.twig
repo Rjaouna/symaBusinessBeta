@@ -1,0 +1,104 @@
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+    <div id="quota-chart" style="height: 280px;"></div>
+
+    <script>
+    async function fetchUserInformation() {
+        try {
+            const response = await axios.get("/api/user");
+            if (response.status === 200) {
+                // Stocker les données utilisateur dans le localStorage
+                localStorage.setItem('userData', JSON.stringify(response.data));
+                return response.data; // Retourner les données récupérées
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des données utilisateur:', error);
+        }
+        return null; // Retourner null s'il y a une erreur
+    }
+
+    function renderQuotaChart(userData) {
+        if (!userData) {
+            console.error('Aucune donnée utilisateur trouvée pour le graphique');
+            return;
+        }
+
+        // Extraire les quotas et les usages
+        const quotaData = [
+            userData.quotas.sim5Quota,
+            userData.quotas.sim10Quota,
+            userData.quotas.sim15Quota,
+            userData.quotas.sim20Quota,
+        ];
+
+        const consumptionData = [
+            userData.sim5Usage,
+            userData.sim10Usage,
+            userData.sim15Usage,
+            userData.sim20Usage,
+        ];
+
+        // Calcul des pourcentages d'utilisation
+        const percentageUsageData = consumptionData.map((usage, index) => {
+            const quota = quotaData[index];
+            return quota > 0 ? ((usage / quota) * 100).toFixed(2) : 0;
+        });
+
+        const ctx = document.querySelector('#quota-chart');
+
+        if (!ctx) {
+            console.error('Élément du graphique non trouvé');
+            return;
+        }
+
+        const chartBarStacked = new ApexCharts(ctx, {
+            chart: { 
+                type: 'bar', 
+                height: 280, 
+                stacked: true,
+                toolbar: { show: false }
+            },
+            plotOptions: { 
+                bar: { horizontal: false } 
+            },
+            series: [
+                { name: 'Utilisation (%)', data: percentageUsageData }
+            ],
+            xaxis: { 
+                categories: ['Carte Sim 05', 'Carte Sim 10', 'Carte Sim 15', 'Carte Sim 20'] 
+            },
+            colors: ['#000000'], // Couleur pour l'utilisation
+            fill: { opacity: 1 },
+            dataLabels: { 
+                enabled: true,
+                formatter: function (val) {
+                    return `${val}%`; // Affiche uniquement le pourcentage
+                },
+                style: {
+                    colors: ['#fff']
+                }
+            },
+            legend: {
+                position: 'bottom'
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `${val}% utilisé`; // Tooltip affiche uniquement le pourcentage
+                    }
+                }
+            }
+        });
+
+        chartBarStacked.render().catch((error) => {
+            console.error('Erreur lors du rendu du graphique :', error);
+        });
+    }
+
+    // Appeler cette fonction lorsque la page est chargée
+    document.addEventListener('DOMContentLoaded', async function() {
+        const userData = await fetchUserInformation(); // Récupérer les données utilisateur
+        renderQuotaChart(userData); // Afficher le graphique avec les données récupérées
+    });
+    </script>
+</div>

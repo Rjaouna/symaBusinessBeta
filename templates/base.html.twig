@@ -20,9 +20,17 @@
         <!-- Scripts nécessaires pour le fonctionnement de Bootstrap -->
         <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-manual=""></script>
         <!-- Script personnalisé -->
-        <script src="{{ asset('assets/js/cutom.js') }}" data-manual=""></script>
+        <script src="{{ asset('assets/js/custom.js') }}" data-manual=""></script>
         <!-- Prism.js (peut-être pour la coloration syntaxique) -->
         <script src="{{ asset('assets/js/prism.js') }}" data-manual=""></script>
+        {# Inclure le js pour les graphes #}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Import d'Axios depuis un CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        {# Inclure d'autres feuilles de style ou fichiers JavaScript ici #}
+        <script  type="module" src="{{ asset('assets/js/api/userInformations.js') }}" defer></script>
+        
+
         {% endblock %}
     </head>
     
@@ -37,7 +45,10 @@
                 {% if app.user %}
                     <div class="col-md-2 left-align">
                         {% block left_sidebar %}
-                            {{ include(('_Sidebars/_left/_user_informations.html.twig')) }}
+                            {{ include(('_Sidebars/_left/userInformations.html.twig')) }}
+                            {{ include(('_Sidebars/_left/quotaInformations.html.twig')) }}
+                            {{ include(('_Sidebars/_left/formCommandes.html.twig')) }}
+                            {# {{ include(('_Sidebars/_left/_user_informations.html.twig')) }} #}
                         {% endblock %}
                     </div>
                 {% endif %}

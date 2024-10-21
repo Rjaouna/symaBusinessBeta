@@ -1,0 +1,113 @@
+<form action="/commande" method="POST">
+    <div class="form-group">
+        <div class="d-flex align-items-center mt-4 mb-2">
+            <i class="fas fa-tachometer-alt text-secondary fa-1x"></i>
+            <h6 class="fw-bold mb-0 ml-2">Passer une commande :</h6>
+        </div>
+        <select id="simType" class="form-control-sm w-100 my-1" name="simType">
+            <option value="0" selected>Sélectionnez le type de carte SIM</option>
+            <option value="cartesim05">Carte Sim 05</option>
+            <option value="cartesim10">Carte Sim 10</option>
+            <option value="cartesim15">Carte Sim 15</option>
+            <option value="cartesim20">Carte Sim 20</option>
+        </select>
+    </div>
+
+    <div class="bg-primary align-items-center my-1 text-white px-2" id="quotaepuise" style="display:none;">
+        Le quota pour ce type de carte est épuisé
+    </div>
+
+    <div class="form-group">
+        <select id="quantity" class="form-control-sm w-100 my-1" name="quantity" disabled>
+            <option selected>Sélectionnez une quantité</option>
+        </select>
+    </div>
+
+    <button type="submit" id="orderButton" class="btn btn-primary w-100 btn-sm mt-1" disabled>Commander</button>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const simType = document.getElementById('simType');
+    const quantity = document.getElementById('quantity');
+    const orderButton = document.getElementById('orderButton');
+    const quotaepuise = document.getElementById('quotaepuise');
+
+    // Fonction pour récupérer les données de quotas et usages via une requête à l'API
+    async function fetchQuotasAndUsages() {
+        try {
+            const response = await fetch('/api/user'); // Modifier avec l'URL correcte de ton API
+            const data = await response.json();
+            return {
+                sim5Quota: parseInt(data.quotas.sim5Quota),
+                sim5Usage: parseInt(data.sim5Usage),
+                sim10Quota: parseInt(data.quotas.sim10Quota),
+                sim10Usage: parseInt(data.sim10Usage),
+                sim15Quota: parseInt(data.quotas.sim15Quota),
+                sim15Usage: parseInt(data.sim15Usage),
+                sim20Quota: parseInt(data.quotas.sim20Quota),
+                sim20Usage: parseInt(data.sim20Usage)
+            };
+        } catch (error) {
+            console.error('Erreur lors de la récupération des données:', error);
+        }
+    }
+
+    // Fonction pour mettre à jour les quantités disponibles
+    function updateQuantityOptions(simTypeSelected, quotas) {
+        quantity.innerHTML = '<option selected>Sélectionnez une quantité</option>'; // Réinitialiser
+        quantity.disabled = true;
+        orderButton.disabled = true;
+        quotaepuise.style.display = 'none';
+
+        let available = 0;
+
+        // Calculer la quantité disponible en fonction du type de carte SIM sélectionné
+        switch (simTypeSelected) {
+            case 'cartesim05':
+                available = quotas.sim5Quota - quotas.sim5Usage;
+                break;
+            case 'cartesim10':
+                available = quotas.sim10Quota - quotas.sim10Usage;
+                break;
+            case 'cartesim15':
+                available = quotas.sim15Quota - quotas.sim15Usage;
+                break;
+            case 'cartesim20':
+                available = quotas.sim20Quota - quotas.sim20Usage;
+                break;
+            default:
+                available = 0;
+        }
+
+        if (available > 0) {
+            // Ajouter les options de quantité jusqu'à la limite disponible
+            for (let i = 1; i <= available; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                quantity.appendChild(option);
+            }
+            quantity.disabled = false; // Activer le champ de quantité
+        } else {
+            // Afficher un message si le quota est épuisé
+            quotaepuise.style.display = 'block';
+        }
+    }
+
+    // Activer le bouton "Commander" lorsque la quantité est sélectionnée
+    quantity.addEventListener('change', function() {
+        if (quantity.value !== "Sélectionnez une quantité") {
+            orderButton.disabled = false;
+        } else {
+            orderButton.disabled = true;
+        }
+    });
+
+    // Changement du type de carte SIM
+    simType.addEventListener('change', async function() {
+        const quotas = await fetchQuotasAndUsages(); // Appeler l'API pour récupérer les quotas et usages
+        updateQuantityOptions(simType.value, quotas);
+    });
+});
+</script>
