@@ -4,47 +4,76 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Icône de la page -->
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+        <!-- Lien vers la bibliothèque Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+
         {% block stylesheets %}
+        <!-- Lien vers la feuille de style Bootstrap -->
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-
-
         {% endblock %}
-
+        
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        <!-- Scripts nécessaires pour le fonctionnement de Bootstrap -->
+        <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-manual=""></script>
+        <!-- Script personnalisé -->
+        <script src="{{ asset('assets/js/cutom.js') }}" data-manual=""></script>
+        <!-- Prism.js (peut-être pour la coloration syntaxique) -->
+        <script src="{{ asset('assets/js/prism.js') }}" data-manual=""></script>
         {% endblock %}
     </head>
-   <body>
-    {{ include('_nav/_nav.html.twig') }}
-    <div class="container-fluid mt-3">
-        <div class="row">
-            <div class="col-md-2 left-align">
-                {% block left_sidebar %}
-                    {{ include(('_Sidebars/_left/_user_informations')) }}
-                {% endblock %}
-            </div>
-
-            <div class="col-md-7 left-align">
-                {{ include(('_Sidebars/_banner/_header.html.twig')) }}
-
-                {% for label, messages in app.flashes %}
-                    <div class="alert alert-{{ label }}">
-                        {% for message in messages %}
-                            {{ message | raw }}
-                        {% endfor %}
+    
+    <body>
+        <!-- Inclusion du fichier de navigation -->
+        {{ include('_nav/_nav.html.twig') }}
+        
+        <div class="container-fluid mt-3">
+            <div class="row">
+                
+                <!-- Sidebar gauche, affichée seulement si l'utilisateur est connecté -->
+                {% if app.user %}
+                    <div class="col-md-2 left-align">
+                        {% block left_sidebar %}
+                            {{ include(('_Sidebars/_left/_user_informations.html.twig')) }}
+                        {% endblock %}
                     </div>
-                {% endfor %}
-
-                {% block body %}{% endblock %}
-            </div>
-
-            <div class="col-md-3 left-align">
-                {% block right_sidebar %}
-                    {{ include(('_Sidebars/right/stat_stock.html.twig')) }}
-                {% endblock %}
+                {% endif %}
+                
+                <!-- Contenu principal -->
+                {% if app.user %}
+                    <div class="col-md-7 left-align">
+                {% else %}
+                    <div class="col-md-12 left-align">
+                {% endif %}
+                    
+                    <!-- Inclusion du header ou bannière -->
+                    {{ include(('_Sidebars/_banner/_header.html.twig')) }}
+                    
+                    <!-- Affichage des messages flash -->
+                    {% for label, messages in app.flashes %}
+                        <div class="alert alert-{{ label }}">
+                            {% for message in messages %}
+                                {{ message | raw }}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    
+                    <!-- Section pour le contenu du corps -->
+                    {% block body %}{% endblock %}
+                </div>
+                
+                <!-- Sidebar droite, affichée seulement si l'utilisateur est connecté -->
+                {% if app.user %}
+                    <div class="col-md-3 left-align">
+                        {% block right_sidebar %}
+                            {{ include(('_Sidebars/right/stat_stock.html.twig')) }}
+                        {% endblock %}
+                    </div>
+                {% endif %}
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

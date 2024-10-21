@@ -1,40 +1,50 @@
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="{{ path('app_syma_business') }}">
+      <img src="{{ asset('assets/img/logo_syma.svg') }}" alt="Logo Syma">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor03">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav ms-auto"> <!-- Ajout de la classe ms-auto -->
+        {% if app.user %}
+        <!-- Partie admin -->
+        {% if is_granted('ROLE_ADMIN') %}
         <li class="nav-item">
-          <a class="nav-link active" href="#">Home
-            <span class="visually-hidden">(current)</span>
-          </a>
+          <a class="nav-link" href="#"><i class="bi bi-people"></i> Liste des clients</a>
+        </li>
+        {% else %}
+        <!-- Partie utilisateur -->
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Cartes attribuées</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Gérer mon bonus !</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
+          <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Rapport des ventes</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </li>
+        {% endif %}
+        {% endif %}
+
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-sm-2" type="search" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      <div class="dropdown ms-5"> <!-- Wrapper pour le menu déroulant -->
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-person fs-5"></i> Mon compte
+        </a>
+        <div class="dropdown-menu dropdown-menu-end"> <!-- Classe pour aligner à droite -->
+          {% if app.user %}
+            <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+            <a class="dropdown-item" href="{{ path('app_syma_business_config_index') }}">Modifier mon compte</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Administration</a>
+          {% else %}
+            <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+            <a class="dropdown-item" href="{{ path('app_register') }}">Créer un compte !</a>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
 </nav>

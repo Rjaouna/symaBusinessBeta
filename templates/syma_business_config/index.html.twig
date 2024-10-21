@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Configuration de l'entitée{% endblock %}
+
+
+{% block body %}
+    <h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-sliders "></i> {% for syma_business_config in syma_business_configs %}{{ syma_business_config.raisonSociale }} {% endfor %}</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom Du Responsable</th>
+                <th>Email</th>
+                <th>Numéro De Téléphone</th>
+                <th>Numero De Fixe</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for syma_business_config in syma_business_configs %}
+            <tr>
+                <td>{{ syma_business_config.nomDuResponsable }}</td>
+                <td>{{ syma_business_config.email }}</td>
+                <td>{{ syma_business_config.numeroDeTelephone }}</td>
+                <td>{{ syma_business_config.numeroDeFixe }}</td>
+                <td>
+                    <a class="btn btn-secondary btn-sm" href="{{ path('app_syma_business_config_show', {'id': syma_business_config.id}) }}">Détails</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_syma_business_config_edit', {'id': syma_business_config.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">Veuillez configurer une entitée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
