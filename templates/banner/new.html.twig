@@ -3,9 +3,8 @@
 {% block title %}New Banner{% endblock %}
 
 {% block body %}
-    <h1>Create new Banner</h1>
+    <h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-megaphone"></i> Créer une pub</h3>
 
     {{ include('banner/_form.html.twig') }}
 
-    <a href="{{ path('app_banner_index') }}">back to list</a>
 {% endblock %}

@@ -1,1 +1,135 @@
-dzeeeeeeeeeeeee
+<div class="quota-info"></div>
+<!-- Conteneur pour le graphe -->
+<div class="mt-4 mb-2 px-1  rounded shadow-sm bg-white">
+    <h6 class="mb-0">Niveau des consomations</h6>
+    <div class="card-body card-body px-3 pt-lg-6 pb-lg-5">
+        <div class="row h-100">
+            <div class="col-lg-12 my-auto text-center d-lg-block d-flex justify-content-center">
+                <div id="chart-bar-stacked" class="chart-bar-stacked"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulaire pour commander des cartes SIM -->
+<form action="/commande" method="POST">
+    <div class="form-group">
+        <div class="d-flex align-items-center mt-4 mb-2">
+            <i class="fas fa-tachometer-alt text-secondary fa-1x"></i>
+            <h6 class="fw-bold mb-0 ml-2">Passer une commande :</h6>
+        </div>
+        <select id="simType" class="form-control-sm w-100" name="simType">
+            <option value="0" selected>Sélectionnez le type de carte SIM</option>
+            <option value="cartesim05">Carte Sim 05</option>
+            <option value="cartesim10">Carte Sim 10</option>
+            <option value="cartesim15">Carte Sim 15</option>
+            <option value="cartesim20">Carte Sim 20</option>
+        </select>
+    </div>
+
+    <div class="badge badge-primary align-items-center my-1" id="quotaepuise" style="display:none;">Le quota pour ce type de carte est épuisé</div>
+
+    <div class="form-group">
+        <select id="quantity" class="form-control-sm w-100" name="quantity" disabled>
+            <option selected>Sélectionnez une quantité</option>
+        </select>
+    </div>
+
+    <button type="submit" id="orderButton" class="btn btn-primary w-100 btn-sm" disabled>Commander</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+// Données factices pour tester le rendu
+const fakeUserInfo = {
+    nomResponsable: "John Doe",
+    bonus: 15,
+    quota: {
+        nom: "Platine",
+        QuotaSim05: 100,
+        ConsomationSim05: 50,
+        QuotaSim10: 80,
+        ConsomationSim10: 30,
+        QuotaSim15: 60,
+        ConsomationSim15: 25,
+        QuotaSim20: 40,
+        ConsomationSim20: 20
+    }
+};
+
+// Mise à jour des informations utilisateur et quotas avec les fausses données
+document.querySelector('.quota-info').innerHTML = `
+    <div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+        <div class="d-flex align-items-center mb-3">
+            <img src="/assets/img/profil.png" alt="Photo de profil" class="rounded-circle " style="width: 50px; height: 50px; object-fit: cover;">
+            <h5 class="ms-3 text-secondary mx-2">Bonjour, <strong>${fakeUserInfo.nomResponsable}</strong> !</h5>
+        </div>
+        <p class="mb-3 text-secondary">
+            Votre quota actuel est de <strong>${fakeUserInfo.quota.nom}</strong>. 
+            <a href="https://127.0.0.1:8000/quota" class="text-primary">Pourquoi le système de quotation ?</a>
+            <br>
+            Vous avez un bonus de ${fakeUserInfo.bonus > 10 ? `<strong>${fakeUserInfo.bonus}€</strong> <a href="https://127.0.0.1:8000/bonus/" class="text-primary">Gérer mon bonus !</a>` : `${fakeUserInfo.bonus}€`}
+        </p>
+    </div>
+`;
+
+// Données pour le graphique de consommation
+function renderFakeQuotaChart() {
+    const ctx = document.getElementById('chart-bar-stacked');
+    const totalData = [
+        fakeUserInfo.quota.QuotaSim05, 
+        fakeUserInfo.quota.QuotaSim10, 
+        fakeUserInfo.quota.QuotaSim15, 
+        fakeUserInfo.quota.QuotaSim20 
+    ];
+    
+    const consumptionData = [
+        fakeUserInfo.quota.ConsomationSim05, 
+        fakeUserInfo.quota.ConsomationSim10, 
+        fakeUserInfo.quota.ConsomationSim15, 
+        fakeUserInfo.quota.ConsomationSim20 
+    ];
+
+    const remainingQuotaData = totalData.map((value, index) => value - consumptionData[index]);
+
+    const chartBarStacked = new ApexCharts(ctx, {
+        chart: { 
+            type: 'bar', 
+            height: 280, 
+            stacked: true,
+            toolbar: { show: false }
+        },
+        plotOptions: { 
+            bar: { horizontal: false } 
+        },
+        series: [
+            { name: 'Consommation', data: consumptionData },
+            { name: 'Reste du quota', data: remainingQuotaData }
+        ],
+        xaxis: { 
+            categories: ['Carte Sim 05', 'Carte Sim 10', 'Carte Sim 15', 'Carte Sim 20'] 
+        },
+        colors: ['#ff3366', '#eeeeee'],
+        fill: { opacity: 1 },
+        dataLabels: { 
+            enabled: true,
+            formatter: function (val, opts) {
+                if (opts.seriesIndex === 0) {
+                    const consumptionValue = opts.w.config.series[0].data[opts.dataPointIndex];
+                    const quotaValue = opts.w.config.series[0].data[opts.dataPointIndex] + opts.w.config.series[1].data[opts.dataPointIndex];
+                    const percentage = ((consumptionValue / quotaValue) * 100).toFixed(0);
+                    return `${percentage}%`;
+                }
+                return '';
+            },
+            style: {
+                colors: ['#fff']
+            }
+        }
+    });
+
+    chartBarStacked.render();
+}
+
+renderFakeQuotaChart();
+</script>

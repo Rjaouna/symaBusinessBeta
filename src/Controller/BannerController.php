@@ -12,7 +12,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+
+#[IsGranted('ROLE_USER')]
 #[Route('/banner')]
 final class BannerController extends AbstractController
 {
@@ -30,6 +33,7 @@ final class BannerController extends AbstractController
     }
 
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/banner/new', name: 'app_banner_new')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -76,14 +80,9 @@ final class BannerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_banner_show', methods: ['GET'])]
-    public function show(Banner $banner): Response
-    {
-        return $this->render('banner/show.html.twig', [
-            'banner' => $banner,
-        ]);
-    }
 
+
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_banner_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Banner $banner, EntityManagerInterface $entityManager): Response
     {
@@ -102,6 +101,7 @@ final class BannerController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_banner_delete', methods: ['POST'])]
     public function delete(Request $request, Banner $banner, EntityManagerInterface $entityManager): Response
     {
