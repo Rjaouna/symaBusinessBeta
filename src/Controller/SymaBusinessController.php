@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Service\Configuration\BusinessConfigChecker;
+use App\Repository\BannerRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\Configuration\BusinessConfigChecker;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SymaBusinessController extends AbstractController
 {
@@ -18,7 +19,7 @@ class SymaBusinessController extends AbstractController
     }
     #[IsGranted('ROLE_USER')]
     #[Route('', name: 'app_syma_business')]
-    public function index(): Response
+    public function index(BannerRepository $bannerRepository): Response
     {
         if (!$this->businessConfigChecker->isConfigComplete()) {
             return $this->redirectToRoute('app_syma_business_config_new'); // Redirige vers la configuration
@@ -26,6 +27,8 @@ class SymaBusinessController extends AbstractController
 
         return $this->render('syma_business/index.html.twig', [
             'controller_name' => 'SymaBusinessController',
+
+
         ]);
     }
 }

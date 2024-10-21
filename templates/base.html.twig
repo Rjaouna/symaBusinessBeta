@@ -45,10 +45,6 @@
                 <!-- Contenu principal -->
                 {% if app.user %}
                     <div class="col-md-7 left-align">
-                {% else %}
-                    <div class="col-md-12 left-align">
-                {% endif %}
-                    
                     <!-- Inclusion du header ou bannière -->
                     {{ include(('_Sidebars/_banner/_header.html.twig')) }}
                     
@@ -60,6 +56,11 @@
                             {% endfor %}
                         </div>
                     {% endfor %}
+                {% else %}
+                    <div class="col-md-12 left-align">
+                {% endif %}
+                    
+                    
                     
                     <!-- Section pour le contenu du corps -->
                     {% block body %}{% endblock %}

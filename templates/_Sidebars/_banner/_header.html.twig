@@ -1,19 +1,11 @@
 <div class="container my-4">
     <div class="row">
+        {% for banner in banners %}
         <div class="col-md-4">
             <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
-                <img src="{{asset('assets/img/SYMA-Display-MPF-DEF.webp')}}" class="img-fluid" alt="Responsive image">
+                <img class="w-100" src="{{ asset('uploads/banners/' ~ banner.image) }}" alt="{{ banner.nom }}">
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
-                <img src="{{asset('assets/img/LmugWN4wnsZbz8orD6vxOSjeR1cUYhTI.jpg')}}" class="img-fluid" alt="Responsive image">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
-                <img src="{{asset('assets/img/syma-vs-prixtel-promo-40-Go.webp')}}" class="img-fluid" alt="Responsive image">
-            </div>
-        </div>
+		{% endfor %}
     </div>
 </div>
