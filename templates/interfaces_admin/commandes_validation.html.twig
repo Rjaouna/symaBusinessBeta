@@ -1,0 +1,20 @@
+{# templates/biper_serial_number.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h3 class="mb-5 border-bottom border-secondary pb-2">
+    <i class="text-secondary fa-solid fa-sim-card"></i> Biper Numéro de Série</h3>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary btn-sm w-100">Scanner !</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+{% endblock %}

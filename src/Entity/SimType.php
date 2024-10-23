@@ -37,9 +37,16 @@ class SimType
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /**
+     * @var Collection<int, LignesCommande>
+     */
+    #[ORM\OneToMany(targetEntity: LignesCommande::class, mappedBy: 'typeSim')]
+    private Collection $lignesCommandes;
+
     public function __construct()
     {
         $this->carteSims = new ArrayCollection();
+        $this->lignesCommandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,5 +153,35 @@ class SimType
     public function onPreUpdate()
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return Collection<int, LignesCommande>
+     */
+    public function getLignesCommandes(): Collection
+    {
+        return $this->lignesCommandes;
+    }
+
+    public function addLignesCommande(LignesCommande $lignesCommande): static
+    {
+        if (!$this->lignesCommandes->contains($lignesCommande)) {
+            $this->lignesCommandes->add($lignesCommande);
+            $lignesCommande->setTypeSim($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLignesCommande(LignesCommande $lignesCommande): static
+    {
+        if ($this->lignesCommandes->removeElement($lignesCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($lignesCommande->getTypeSim() === $this) {
+                $lignesCommande->setTypeSim(null);
+            }
+        }
+
+        return $this;
     }
 }

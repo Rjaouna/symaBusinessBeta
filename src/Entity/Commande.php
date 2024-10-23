@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -46,7 +48,7 @@ class Commande
 
     #[ORM\Column(length: 50)]
     #[Groups('user_info')]
-    private ?string $SimType = null;
+    private ?string $simType = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?User $user = null;
@@ -57,6 +59,17 @@ class Commande
 
     #[ORM\Column(nullable: true)]
     private ?bool $modified = null;
+
+    /**
+     * @var Collection<int, LignesCommande>
+     */
+    #[ORM\OneToMany(targetEntity: LignesCommande::class, mappedBy: 'commande')]
+    private Collection $lignesCommandes;
+
+    public function __construct()
+    {
+        $this->lignesCommandes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,12 +163,12 @@ class Commande
 
     public function getSimType(): ?string
     {
-        return $this->SimType;
+        return $this->simType;
     }
 
-    public function setSimType(string $SimType): static
+    public function setSimType(string $simType): static
     {
-        $this->SimType = $SimType;
+        $this->simType = $simType;
 
         return $this;
     }
@@ -204,6 +217,36 @@ class Commande
     public function setModified(?bool $modified): static
     {
         $this->modified = $modified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LignesCommande>
+     */
+    public function getLignesCommandes(): Collection
+    {
+        return $this->lignesCommandes;
+    }
+
+    public function addLignesCommande(LignesCommande $lignesCommande): static
+    {
+        if (!$this->lignesCommandes->contains($lignesCommande)) {
+            $this->lignesCommandes->add($lignesCommande);
+            $lignesCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLignesCommande(LignesCommande $lignesCommande): static
+    {
+        if ($this->lignesCommandes->removeElement($lignesCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($lignesCommande->getCommande() === $this) {
+                $lignesCommande->setCommande(null);
+            }
+        }
 
         return $this;
     }
