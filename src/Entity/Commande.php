@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 #[ORM\HasLifecycleCallbacks]
@@ -16,31 +18,45 @@ class Commande
     private ?int $id = null;
 
     #[ORM\Column(length: 10)]
+    #[Groups('user_info')]
     private ?string $numero = null;
 
     #[ORM\Column]
     private ?int $qte = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('user_info')]
     private ?int $qtevalidee = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $total = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $status = null;
 
     #[ORM\Column]
+    #[Groups('user_info')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Groups('user_info')]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
     private ?string $SimType = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?User $user = null;
+
+    #[ORM\Column(length: 50)]
+    #[Groups('user_info')]
+    private ?string $code_client = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $modified = null;
 
     public function getId(): ?int
     {
@@ -130,16 +146,7 @@ class Commande
 
         return $this;
     }
-    #[ORM\PrePersist]
-    public function onPrePersist()
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
-    #[ORM\PreUpdate]
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTimeImmutable();
-    }
+   
 
     public function getSimType(): ?string
     {
@@ -161,6 +168,42 @@ class Commande
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+    #[ORM\PreUpdate]
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getCodeClient(): ?string
+    {
+        return $this->code_client;
+    }
+
+    public function setCodeClient(string $code_client): static
+    {
+        $this->code_client = $code_client;
+
+        return $this;
+    }
+
+    public function isModified(): ?bool
+    {
+        return $this->modified;
+    }
+
+    public function setModified(?bool $modified): static
+    {
+        $this->modified = $modified;
 
         return $this;
     }

@@ -15,7 +15,9 @@ class ProfileType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('email')
+			->add('email', EmailType::class, [
+				'attr' => ['readonly' => true], // Rendre le champ en lecture seule
+			])
 			->add('nomResponsable')
 			->add('telephoneFixe')
 			->add('telephoneMobile')
@@ -24,8 +26,7 @@ class ProfileType extends AbstractType
 			->add('numeroRegistreCommerce')
 			->add('numeroSiret')
 			->add('numeroRCS')
-			->add('codeAPE')
-			->add('facade')
+		->add('codeAPE')
 			->add('kbis')
 			->add('adresse')
 			->add('pays')

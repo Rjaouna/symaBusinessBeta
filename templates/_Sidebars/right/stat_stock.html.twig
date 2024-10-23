@@ -1,8 +1,58 @@
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
-mamn maman mamanmamn maman mamanmamn maman maman
+<!-- Graphique des statuts des commandes (Chart.js) -->
+<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+<h4>Statut des commandes :</h4>
+    <canvas id="statutCommandesChart" class="mt-4"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+function updateStatutCommandesChart(userData) {
+    if (!userData) {
+        console.error('Aucune donnée utilisateur trouvée pour le graphique des statuts');
+        return;
+    }
+
+    const nombreEnAttente = userData.commandes.filter(commande => commande.status === 'en_attente').length;
+    const nombreEnCours = userData.commandes.filter(commande => commande.status === 'en_cours').length;
+    const nombreValidee = userData.commandes.filter(commande => commande.status === 'validee').length;
+
+    const ctx = document.getElementById('statutCommandesChart').getContext('2d');
+
+    const statutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['En Attente', 'En Cours', 'Validée'],
+            datasets: [{
+                label: 'Statut des Commandes',
+                data: [nombreEnAttente, nombreEnCours, nombreValidee],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+}
+
+// Appeler le graphique des statuts au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    const userData = JSON.parse(localStorage.getItem('userData')); // Récupérer les données utilisateur depuis localStorage
+    updateStatutCommandesChart(userData);
+});
+</script>

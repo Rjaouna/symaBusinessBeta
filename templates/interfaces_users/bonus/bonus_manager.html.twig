@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block title %}Gestion de bonus{% endblock %}
 
 {% block body %}
 <h3 class="mb-5  border-bottom border-secondary pb-2"><i class="text-secondary bi bi bi-gift"></i> Gestion de bonus : 
@@ -195,7 +196,7 @@
             const remainingBonus = currentBonus.toFixed(2);
 
             // Créer une URL avec les données pour la redirection
-            const url = `/bonus/sim/usage/update?remainingBonus=${remainingBonus}&orderItems=${encodeURIComponent(JSON.stringify(orderItems))}`;
+            const url = `/bonus/management/updater?remainingBonus=${remainingBonus}&orderItems=${encodeURIComponent(JSON.stringify(orderItems))}`;
 
             // Rediriger vers le contrôleur
             window.location.href = url;

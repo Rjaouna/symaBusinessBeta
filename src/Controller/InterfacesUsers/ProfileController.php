@@ -1,7 +1,7 @@
 <?php
 // src/Controller/ProfileController.php
 
-namespace App\Controller;
+namespace App\Controller\InterfacesUsers;
 
 use App\Form\ProfileType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,13 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+
+#[IsGranted('ROLE_USER')]
+#[Route('/client')]
 class ProfileController extends AbstractController
 {
 	#[Route('/profile', name: 'app_profile')]
 	public function index(): Response
 	{
-		return $this->render('profile/index.html.twig', [
+		return $this->render('interfaces_users/profile/index.html.twig', [
 			'user' => $this->getUser(), // Récupérer l'utilisateur connecté
 		]);
 	}
@@ -38,7 +42,7 @@ class ProfileController extends AbstractController
 			return $this->redirectToRoute('app_profile');
 		}
 
-		return $this->render('profile/edit.html.twig', [
+		return $this->render('interfaces_users/profile/edit.html.twig', [
 			'form' => $form->createView(),
 		]);
 	}

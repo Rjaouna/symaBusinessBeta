@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\configuration;
+namespace App\Controller\Configuration;
 
 use App\Entity\SymaBusinessConfig;
 use App\Form\SymaBusinessConfigType;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/syma/business/config')]
 final class SymaBusinessConfigController extends AbstractController
 {
-    #[Route(name: 'app_syma_business_config_index', methods: ['GET'])]
+    #[Route('/', name: 'app_syma_business_config_index', methods: ['GET'])]
     public function index(SymaBusinessConfigRepository $symaBusinessConfigRepository): Response
     {
         return $this->render('syma_business_config/index.html.twig', [

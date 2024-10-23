@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block body %}
+<h3 class="mb-5  border-bottom border-secondary pb-2"><i class="text-secondary bi bi bi-cart"></i> Liste Commandes</h3>
+
+    <table id="myDataTable" class="table">
+        <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Qté</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date création</th>
+                <th>Dérnière MAJ</th>
+                <th>Type carte Sim</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.numero }}</td>
+                <td>{{ commande.qte }}</td>
+                <td>{{ commande.total }}</td>
+                <td>{{ commande.status }}</td>
+                <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commande.SimType }}</td>
+                <td>
+                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">Détails</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

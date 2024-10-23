@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CarteSimRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: CarteSimRepository::class)]
@@ -15,6 +17,7 @@ class CarteSim
     private ?int $id = null;
 
     #[ORM\Column(length: 14)]
+    #[Groups('user_info')]
     private ?string $serialNumber = null;
 
     #[ORM\Column]
