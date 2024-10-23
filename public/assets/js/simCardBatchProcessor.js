@@ -135,6 +135,12 @@ function compareSerialNumbers() {
     }</strong> !</div>
       <div>Numéro de série de départ : <strong>${beforeDiff}${firstVariable}${afterDiff}</strong></div>
       <div>Numéro de série de fin : <strong>${beforeDiff}${lastVariable}${afterDiff}</strong></div>
+          <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+      <label class="form-check-label" for="flexCheckDefault">
+        <span class="badge badge-warning">Cochez cette case pour activer le bouton "Lancer l'import"</span>
+      </label>
+    </div>
     `;
   }
 

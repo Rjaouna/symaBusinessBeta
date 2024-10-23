@@ -120,18 +120,18 @@ class CommandeBipController extends AbstractController
 	{
 		$ligneCommande = new LignesCommande();
 		$ligneCommande->setCartesSims($carteSim);
+		$ligneCommande->setSerialNumber($carteSim->getSerialNumber());
 		$ligneCommande->setCommande($commande);
+		$ligneCommande->setNumeroCommande($commande->getNumero());
 		$ligneCommande->setPrixUnitaire($carteSim->getType()->getPrix());
 		$ligneCommande->setTypeSim($carteSim->getType());
+		$carteSim->setReserved(true);
+		$carteSim->setPurchasedBy($commande->getUser());
 
 		$entityManager->persist($ligneCommande);
-	}
-
-	private function updateCarteSim(EntityManagerInterface $entityManager, CarteSim $carteSim, $user): void
-	{
-		$carteSim->setReserved(true);
-		$carteSim->setPurchasedBy($user);
 		$entityManager->persist($carteSim);
 		$entityManager->flush();
 	}
+
+	
 }

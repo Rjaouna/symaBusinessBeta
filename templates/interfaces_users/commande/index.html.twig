@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Commande index{% endblock %}
+{% block title %}Liste des commandes{% endblock %}
 
 {% block body %}
-<h3 class="mb-5  border-bottom border-secondary pb-2"><i class="text-secondary bi bi bi-cart"></i> Liste Commandes</h3>
+<h3 class="mb-5  border-bottom border-secondary"><i class="text-secondary bi bi bi-cart"></i> Liste Commandes</h3>
 
     <table id="myDataTable" class="table">
         <thead>
@@ -29,7 +29,7 @@
                 <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commande.SimType }}</td>
                 <td>
-                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">Détails</a>
+                    <a href="{{ path('lignes_commande_show', {'numeroCommande': commande.numero}) }}">Détails</a>
                 </td>
             </tr>
         {% else %}

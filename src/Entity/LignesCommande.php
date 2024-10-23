@@ -30,6 +30,12 @@ class LignesCommande
     #[ORM\ManyToOne(inversedBy: 'lignesCommandes')]
     private ?SimType $typeSim = null;
 
+    #[ORM\Column(length: 14)]
+    private ?string $serialNumber = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $numeroCommande = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,5 +104,29 @@ class LignesCommande
     public function onPrePersist()
     {
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getSerialNumber(): ?string
+    {
+        return $this->serialNumber;
+    }
+
+    public function setSerialNumber(string $serialNumber): static
+    {
+        $this->serialNumber = $serialNumber;
+
+        return $this;
+    }
+
+    public function getNumeroCommande(): ?string
+    {
+        return $this->numeroCommande;
+    }
+
+    public function setNumeroCommande(string $numeroCommande): static
+    {
+        $this->numeroCommande = $numeroCommande;
+
+        return $this;
     }
 }

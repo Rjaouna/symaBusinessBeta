@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\SimUsageUpdater;
 
 #[Route('/user/commande')]
 final class UserCommandeController extends AbstractController
@@ -24,9 +25,13 @@ final class UserCommandeController extends AbstractController
 	}
 
 	#[Route('/new', name: 'user_app_commande_new', methods: ['GET', 'POST'])]
-	public function new(Request $request, EntityManagerInterface $entityManager, CommandeRepository $commandeRepository, SimTypeRepository $simTypeRepository): Response
+	public function new(Request $request, EntityManagerInterface $entityManager, CommandeRepository $commandeRepository, SimTypeRepository $simTypeRepository, SimUsageUpdater $simUsageUpdater): Response
 	{
 		$user = $this->getUser();
+		if (!$user) {
+			// Si l'utilisateur n'est pas authentifié, renvoie une erreur ou redirige
+			throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette fonctionnalité.');
+		}
 		$simTypeCode = $request->request->get('simType');  // Récupère le code sélectionné dans le formulaire
 		$quantity = $request->request->get('quantity');    // Récupère la quantité sélectionnée dans le formulaire
 		$codeClient = $user->getCodeClient();
@@ -62,6 +67,13 @@ final class UserCommandeController extends AbstractController
 
 		$entityManager->persist($commande);
 		$entityManager->flush();
+		// Utilise le service pour mettre à jour l'usage
+		try {
+			$simUsageUpdater->updateSimUsage($user, $typeSim->getcode(), $quantity);
+			$this->addFlash('success', 'L\'usage du type de SIM a été mis à jour avec succès.');
+		} catch (\InvalidArgumentException $e) {
+			$this->addFlash('error', $e->getMessage());
+		}
 
 		$this->addFlash('success', 'Commande créée avec succès ! ');  // Message flash de succès
 

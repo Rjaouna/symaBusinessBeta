@@ -1,6 +1,6 @@
 <!-- Graphique des statuts des commandes (Chart.js) -->
 <div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
-<h4>Statut des commandes :</h4>
+    <h4>Statut des commandes :</h4>
     <canvas id="statutCommandesChart" class="mt-4"></canvas>
 </div>
 
@@ -20,7 +20,7 @@ function updateStatutCommandesChart(userData) {
     const ctx = document.getElementById('statutCommandesChart').getContext('2d');
 
     const statutChart = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'bar',  // Utilisation d'un graphique à barres
         data: {
             labels: ['En Attente', 'En Cours', 'Validée'],
             datasets: [{
@@ -41,9 +41,14 @@ function updateStatutCommandesChart(userData) {
         },
         options: {
             responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
             plugins: {
                 legend: {
-                    position: 'bottom',
+                    position: 'top',
                 }
             }
         }
