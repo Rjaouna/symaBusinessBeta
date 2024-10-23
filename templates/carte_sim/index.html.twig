@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CarteSim index{% endblock %}
+
+{% block body %}
+    <h1>CarteSim index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>SerialNumber</th>
+                <th>Prix</th>
+                <th>Reserved</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for carte_sim in carte_sims %}
+            <tr>
+                <td>{{ carte_sim.id }}</td>
+                <td>{{ carte_sim.serialNumber }}</td>
+                <td>{{ carte_sim.type.prix }}</td> 
+                <td>{{ carte_sim.reserved ? 'Yes' : 'No' }}</td>
+                <td>{{ carte_sim.createdAt ? carte_sim.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_carte_sim_show', {'id': carte_sim.id}) }}">show</a>
+                    <a href="{{ path('app_carte_sim_edit', {'id': carte_sim.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_carte_sim_new') }}">Create new</a>
+{% endblock %}

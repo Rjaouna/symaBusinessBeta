@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CarteSim{% endblock %}
+
+{% block body %}
+    <h1>Create new CarteSim</h1>
+
+    {{ include('carte_sim/_form.html.twig') }}
+
+    <a href="{{ path('app_carte_sim_index') }}">back to list</a>
+{% endblock %}

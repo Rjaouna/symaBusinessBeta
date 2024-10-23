@@ -23,11 +23,36 @@
         <li class="nav-item">
           <a class="nav-link" href="{{path('app_quota_index')}}"><i class="bi bi-people"></i> Gestion des quota</a>
         </li>
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="cartesSimDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-people"></i> Cartes Sim
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="cartesSimDropdown">
+            <li>
+                <a class="dropdown-item" href="{{ path('app_sim_type_index') }}">
+                    <i class="bi bi-people"></i> Types carte Sim
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ path('app_carte_sim_index') }}">
+                    <i class="bi bi-people"></i> Gestion carte Sim
+                </a>
+            </li>
+             <li>
+                <a class="dropdown-item" href="{{ path('app_carte_sim_batch') }}">
+                    <i class="bi bi-people"></i> Importer un lot de carte
+                </a>
+            </li>
+            
+            
+        </ul>
+        </li>
+
         
         {% else %}
         <!-- Partie utilisateur -->
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Cartes attribuées</a>
+          <a class="nav-link" href="{{path('app_gestion_bonus')}}"><i class="bi bi-gift"></i> Gérer mon bonus !</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"><i class="bi bi-sliders"></i> Gérer mon bonus !</a>

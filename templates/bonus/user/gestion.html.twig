@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h3 class="mb-5  border-bottom border-secondary pb-2"><i class="text-secondary bi bi bi-gift"></i> Gestion de bonus : 
+    <span class="badge text-primary fw-900" id="bonusAmount">{{ user.totalBonus }} points</span> 
+</h3>
+<div>
+    <p>
+        Choisissez les cartes SIM auxquelles vous souhaitez attribuer des <strong>points bonus</strong>. 
+        Le prix de la carte sera réduit en fonction du nombre de <strong>points utilisés</strong>, 
+        jusqu'à épuisement de votre solde. Une fois vos points appliqués, 
+        votre <strong>solde de points</strong> sera mis à jour automatiquement.
+    </p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7 d-flex flex-column align-items-center shadow-sm mr-5 py-2">
+            <table class="table table-striped table-hover">
+                <thead class="thead-Secondary">
+                    <tr>
+                        <th style="width: 50%;">Type de Carte SIM</th>
+                        <th style="width: 30%;">Prix</th>
+                        <th style="width: 30%;">Quota</th>
+                        <th style="width: 20%;">Usage</th>
+                        <th style="width: 20%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for carte in typesCartesSim %}
+                        <tr>
+                            <td>{{ carte.nom }}</td>
+                            <td>{{ carte.prix }} €</td>
+                            <td>
+                                {% set quota = '' %}
+                                {% if carte.nom == "Carte Sim 05" %}
+                                    {% set quota = quotaSim5Quota %}
+                                {% elseif carte.nom == "Carte Sim 10" %}
+                                    {% set quota = quotaSim10Quota %}
+                                {% elseif carte.nom == "Carte Sim 15" %}
+                                    {% set quota = quotaSim15Quota %}
+                                {% elseif carte.nom == "Carte Sim 20" %}
+                                    {% set quota = quotaSim20Quota %}
+                                {% else %}
+                                    {% set quota = 'Aucun quota disponible' %}
+                                {% endif %}
+                                <p>{{ quota }}</p>
+                            </td>
+                            <td>{{ usages[carte.nom] }}</td> <!-- Usage de l'utilisateur pour ce type de carte -->
+                            <td>
+                                <button class="btn btn-sm btn-secondary ajouter-panier w-100" 
+                                        data-type="{{ carte.nom }}"
+                                        data-prix="{{ carte.prix }}">
+                                    Appliquer
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 d-flex flex-column align-items-center shadow-sm my-2 mx-1">
+            <div id="bonusProcessor">
+                <table class="table table-bordered table-striped my-2" id="tableCartesAchetees">
+                    <thead class="thead-Secondary">
+                        <tr>
+                            <th>Type de Carte</th>
+                            <th>Prix Unitaire</th>
+                            <th>Quantité</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# Les cartes achetées seront ajoutées ici #}
+                    </tbody>
+                </table>
+                <div id="successMessage" class=""></div>
+                <button id="validateOrder" class="btn btn-secondary mt-2 w-100 position-relative">Valider l'opération</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tableCartesAchetees = document.getElementById('tableCartesAchetees').querySelector('tbody');
+        const bonusAmount = document.getElementById('bonusAmount');
+        let currentBonus = parseFloat(bonusAmount.textContent);
+
+        // Gestion des boutons "Ajouter"
+        document.querySelectorAll('.ajouter-panier').forEach(button => {
+            button.addEventListener('click', () => {
+                const typeCarte = button.getAttribute('data-type');
+                const prix = parseFloat(button.getAttribute('data-prix'));
+
+                // Vérifier si le bonus est suffisant
+                if (currentBonus < prix) {
+                    alert(`Impossible d'ajouter ${typeCarte}. Bonus insuffisant !`);
+                    return;
+                }
+
+                let row = tableCartesAchetees.querySelector(`tr[data-type="${typeCarte}"]`);
+
+                if (row) {
+                    // Mise à jour de la quantité
+                    let quantityCell = row.querySelector('.quantity');
+                    let quantity = parseInt(quantityCell.textContent) + 1;
+                    quantityCell.textContent = quantity;
+                } else {
+                    // Ajout d'une nouvelle ligne
+                    row = createRow(typeCarte, prix);
+                    tableCartesAchetees.appendChild(row);
+                }
+
+                // Mettre à jour le bonus
+                currentBonus -= prix;
+                bonusAmount.textContent = currentBonus.toFixed(2) + 'points';
+
+                // Ajouter les événements pour les boutons de quantité
+                updateQuantityButtons(row, prix);
+            });
+        });
+
+        function createRow(typeCarte, prix) {
+            const row = document.createElement('tr');
+            row.setAttribute('data-type', typeCarte);
+            row.innerHTML = `
+                <td>${typeCarte}</td>
+                <td>${prix} €</td>
+                <td>
+                    <div class="text-center">
+                    <span class="quantity fw-bold text-primary">1</span>
+                    </div>
+                </td>
+            `;
+            return row;
+        }
+
+        function updateQuantityButtons(row, prix) {
+            const quantityElement = row.querySelector('.quantity');
+            let decreaseButton = row.querySelector('.decrease-quantity');
+            let increaseButton = row.querySelector('.increase-quantity');
+
+            // Supprimer les anciens événements
+            decreaseButton.replaceWith(decreaseButton.cloneNode(true));
+            increaseButton.replaceWith(increaseButton.cloneNode(true));
+
+            // Re-sélectionner les boutons
+            decreaseButton = row.querySelector('.decrease-quantity');
+            increaseButton = row.querySelector('.increase-quantity');
+
+            decreaseButton.addEventListener('click', () => {
+                let quantity = parseInt(quantityElement.textContent);
+                if (quantity > 1) {
+                    quantity--;
+                    quantityElement.textContent = quantity;
+                    currentBonus += prix;
+                    bonusAmount.textContent = currentBonus.toFixed(2);
+                } else {
+                    alert("La quantité ne peut pas être inférieure à 1 !");
+                }
+            });
+
+            increaseButton.addEventListener('click', () => {
+                let quantity = parseInt(quantityElement.textContent);
+                if (currentBonus < prix) {
+                    alert("Impossible d'augmenter la quantité. Bonus insuffisant !");
+                    return;
+                }
+                quantity++;
+                quantityElement.textContent = quantity;
+                currentBonus -= prix;
+                bonusAmount.textContent = currentBonus.toFixed(2);
+            });
+        }
+
+        // Validation de la commande
+        document.getElementById('validateOrder').addEventListener('click', () => {
+            const orderItems = [];
+
+            if (tableCartesAchetees.querySelectorAll('tr').length === 0) {
+                alert('Veuillez ajouter au moins une carte !');
+                return;
+            }
+
+            tableCartesAchetees.querySelectorAll('tr').forEach(row => {
+                const typeCarte = row.getAttribute('data-type');
+                const quantity = parseInt(row.querySelector('.quantity').textContent);
+                orderItems.push({ typeCarte, quantity });
+            });
+
+            // Ajouter le bonus restant
+            const remainingBonus = currentBonus.toFixed(2);
+
+            // Créer une URL avec les données pour la redirection
+            const url = `/bonus/sim/usage/update?remainingBonus=${remainingBonus}&orderItems=${encodeURIComponent(JSON.stringify(orderItems))}`;
+
+            // Rediriger vers le contrôleur
+            window.location.href = url;
+        });
+    });
+</script>
+{% endblock %}

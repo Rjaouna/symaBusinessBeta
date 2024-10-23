@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SimType{% endblock %}
+
+{% block body %}
+    <h1>Create new SimType</h1>
+
+    {{ include('sim_type/_form.html.twig') }}
+
+    <a href="{{ path('app_sim_type_index') }}">back to list</a>
+{% endblock %}

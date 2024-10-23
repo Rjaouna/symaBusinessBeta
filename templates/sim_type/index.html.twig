@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SimType index{% endblock %}
+
+{% block body %}
+    <h1>SimType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Code</th>
+                <th>Prix</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sim_type in sim_types %}
+            <tr>
+                <td>{{ sim_type.id }}</td>
+                <td>{{ sim_type.nom }}</td>
+                <td>{{ sim_type.code }}</td>
+                <td>{{ sim_type.prix }}</td>
+                <td>{{ sim_type.createdAt ? sim_type.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ sim_type.updatedAt ? sim_type.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_sim_type_show', {'id': sim_type.id}) }}">show</a>
+                    <a href="{{ path('app_sim_type_edit', {'id': sim_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sim_type_new') }}">Create new</a>
+{% endblock %}

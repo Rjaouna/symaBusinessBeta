@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SimType{% endblock %}
+
+{% block body %}
+    <h1>SimType</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ sim_type.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ sim_type.nom }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ sim_type.code }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ sim_type.prix }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ sim_type.createdAt ? sim_type.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ sim_type.updatedAt ? sim_type.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sim_type_index') }}">back to list</a>
+
+    <a href="{{ path('app_sim_type_edit', {'id': sim_type.id}) }}">edit</a>
+
+    {{ include('sim_type/_delete_form.html.twig') }}
+{% endblock %}
