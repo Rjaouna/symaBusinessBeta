@@ -138,11 +138,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     #[Groups('user_info')]
-    private ?int $sim20Usage = null; 
+    private ?int $sim20Usage = null;
+
+    /**
+     * @var Collection<int, CarteSim>
+     */
+    #[ORM\OneToMany(targetEntity: CarteSim::class, mappedBy: 'user')]
+    private Collection $carteSims; 
 
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
+        $this->carteSims = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -553,6 +560,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSim20Usage(int $sim20Usage): static
     {
         $this->sim20Usage = $sim20Usage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CarteSim>
+     */
+    public function getCarteSims(): Collection
+    {
+        return $this->carteSims;
+    }
+
+    public function addCarteSim(CarteSim $carteSim): static
+    {
+        if (!$this->carteSims->contains($carteSim)) {
+            $this->carteSims->add($carteSim);
+            $carteSim->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarteSim(CarteSim $carteSim): static
+    {
+        if ($this->carteSims->removeElement($carteSim)) {
+            // set the owning side to null (unless already changed)
+            if ($carteSim->getUser() === $this) {
+                $carteSim->setUser(null);
+            }
+        }
 
         return $this;
     }

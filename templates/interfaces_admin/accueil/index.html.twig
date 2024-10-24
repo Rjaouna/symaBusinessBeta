@@ -1,0 +1,74 @@
+<div class="bg-white py-4 px-2 rounded shadow-sm my-2 px-3 mx-2">
+            <h4 class="mb-1  border-bottom border-secondary"><i class="text-secondary bi bi-house-door"></i> Espace administrateur </h4>
+            <div class=" d-flex justify-content-center ">
+        <div class="row my-4 w-100">
+            <!-- Colonne 1 -->
+            <div class="col-md-2 my-2">
+                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-upc-scan fs-2 text-secondary"></i>
+                    <span class="mt-2">Validation Cdes</span>
+                    <span id ="nombreEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        00+
+                    </span>
+                </button>
+            </div>
+
+            <!-- Colonne 2 -->
+            <div class="col-md-2 my-2">
+                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-speedometer fs-2 text-secondary"></i>
+                    <span class="mt-2">Gestion des quotas</span>
+                   
+                </button>
+            </div>
+
+            <!-- Colonne 3 -->
+            <div class="col-md-2 my-2">
+                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-gift fs-2 text-secondary"></i>
+                    <span class="mt-2">Gestion des bonus</span>
+                    
+                </button>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('app_user_Bonus_Controller')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-people fs-2 text-secondary"></i>
+                    <span class="mt-2">Liste clients</span>
+                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        00+
+                    </span>
+                </a>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-sim fs-2 text-secondary"></i>
+                    <span class="mt-2">Carte Sim achetées</span>
+                    <span id="totalQuantiteValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        99+
+                    </span>
+                </a>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-receipt fs-2 text-secondary"></i>
+                    <span class="mt-2">liste Cdes clients</span>
+                    
+                </a>
+            </div>
+
+			<div class="col-md-2 my-2">
+                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-gear fs-2 text-secondary"></i>
+                    <span class="mt-2">Administration</span>
+                    
+                </a>
+            </div>
+        </div>
+        </div>
+<hr>
+       
+    </div>
+

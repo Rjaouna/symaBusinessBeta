@@ -1,0 +1,119 @@
+<div class="bg-white py-4 px-2 rounded shadow-sm my-2 px-3 mx-2">
+            <h4 class="mb-1  border-bottom border-secondary"><i class="text-secondary bi bi-house-door"></i> Espace client </h4>
+            <div class=" d-flex justify-content-center ">
+        <div class="row my-4 w-100">
+            <!-- Colonne 1 -->
+            <div class="col-md-2 my-2 text-secondary">
+                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-arrow-repeat fs-2 text-secondary"></i>
+                    <span class="mt-2">Cdes en attente</span>
+                    <span id ="nombreEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        00+
+                    </span>
+                </button>
+            </div>
+
+            <!-- Colonne 2 -->
+            <div class="col-md-2 my-2">
+                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-x-circle fs-2 text-secondary"></i>
+                    <span class="mt-2">Cdes en cours</span>
+                    <span id ="nombreEnCours" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        00+
+                    </span>
+                </button>
+            </div>
+
+            <!-- Colonne 3 -->
+            <div class="col-md-2 my-2">
+                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-exclamation-circle fs-2 text-secondary"></i>
+                    <span class="mt-2">Cdes validées</span>
+                    <span id ="nombreValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                       00+
+                    </span>
+                </button>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('app_user_Bonus_Controller')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi bi-gift fs-2 text-secondary"></i>
+                    <span class="mt-2">Gérer mon bonus !</span>
+                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        00+
+                    </span>
+                </a>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-sim fs-2 text-secondary"></i>
+                    <span class="mt-2">Carte Sim achetées</span>
+                    <span id="totalQuantiteValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        99+
+                    </span>
+                </a>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-cloud-download fs-2 text-secondary"></i>
+                    <span class="mt-2">Facturation</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        disponible
+                    </span>
+                </a>
+            </div>
+        </div>
+        </div>
+<hr>
+       
+    </div>
+
+<script>
+async function displayUserAndCommandes() {
+    // Récupérer les données de l'utilisateur depuis localStorage
+    const userData = localStorage.getItem('userData');
+
+    // Vérifier si les données existent
+    if (userData) {
+        const user = JSON.parse(userData); // Convertir la chaîne JSON en objet
+
+        // Compter le nombre de commandes par statut
+        let nombreEnAttente = 0;
+        let nombreEnCours = 0;
+        let nombreValidee = 0;
+        let totalQuantiteValidee = 0;
+
+        // Vérifier si des commandes existent et compter les statuts
+        if (user.commandes && user.commandes.length > 0) {
+            user.commandes.forEach(commande => {
+                if (commande.status === 'en_attente') {
+                    nombreEnAttente++;
+                } else if (commande.status === 'en_cours') {
+                    nombreEnCours++;
+                } else if (commande.status === 'validee') {
+                    nombreValidee++;
+                    totalQuantiteValidee += commande.qtevalidee;
+                }
+            });
+        }
+
+        // Mettre à jour le DOM avec les résultats
+        document.getElementById('nombreEnAttente').textContent = nombreEnAttente;
+        document.getElementById('nombreEnCours').textContent = nombreEnCours;
+        document.getElementById('nombreValidee').textContent = nombreValidee;
+        document.getElementById('totalBonus').textContent = user.totalBonus;
+        document.getElementById('totalQuantiteValidee').textContent = totalQuantiteValidee;
+
+    } else {
+        console.log('Aucune donnée utilisateur trouvée dans localStorage.');
+    }
+}
+
+// Appeler la fonction une première fois pour afficher les informations
+displayUserAndCommandes();
+
+// Mettre à jour les informations toutes les 80 secondes
+setInterval(displayUserAndCommandes, 3000);
+</script>

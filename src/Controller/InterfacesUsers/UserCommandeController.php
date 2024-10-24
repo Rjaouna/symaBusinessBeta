@@ -37,15 +37,15 @@ final class UserCommandeController extends AbstractController
 		$codeClient = $user->getCodeClient();
 
 		if (!$codeClient) {
-			$this->addFlash('error', 'Votre compte n\'est pas encore activé.');  // Message flash d'erreur
-			return $this->redirectToRoute('some_route');  // Rediriger vers une route appropriée
+			$this->addFlash('danger', 'Votre compte n\'est pas encore activé.');  // Message flash d'erreur
+			return $this->redirectToRoute('app_syma_business');  // Rediriger vers une route appropriée
 		}
 
 		// Récupérer l'objet SimType correspondant à partir du code
 		$typeSim = $simTypeRepository->findOneBy(['code' => $simTypeCode]);
 
 		if (!$typeSim) {
-			$this->addFlash('error', 'Aucun type de SIM trouvé.');  // Message flash d'erreur
+			$this->addFlash('danger', 'Aucun type de SIM trouvé.');  // Message flash d'erreur
 			return $this->redirectToRoute('app_syma_business');  // Rediriger vers une route appropriée
 		}
 
@@ -70,12 +70,12 @@ final class UserCommandeController extends AbstractController
 		// Utilise le service pour mettre à jour l'usage
 		try {
 			$simUsageUpdater->updateSimUsage($user, $typeSim->getcode(), $quantity);
-			$this->addFlash('success', 'L\'usage du type de SIM a été mis à jour avec succès.');
+			$this->addFlash('light', 'L\'usage du type de SIM a été mis à jour avec succès.');
 		} catch (\InvalidArgumentException $e) {
-			$this->addFlash('error', $e->getMessage());
+			$this->addFlash('danger', $e->getMessage());
 		}
 
-		$this->addFlash('success', 'Commande créée avec succès ! ');  // Message flash de succès
+		$this->addFlash('light', 'Commande créée avec succès ! ');  // Message flash de succès
 
 		return $this->redirectToRoute('app_syma_business');
 	}

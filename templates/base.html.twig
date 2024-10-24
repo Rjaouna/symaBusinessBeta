@@ -70,7 +70,7 @@
                     
                     <!-- Affichage des messages flash -->
                     {% for label, messages in app.flashes %}
-                        <div class="alert alert-{{ label }}">
+                        <div class="alert alert-{{ label }}   px-2 rounded shadow-sm mx-2">
                             {% for message in messages %}
                                 {{ message | raw }}
                             {% endfor %}

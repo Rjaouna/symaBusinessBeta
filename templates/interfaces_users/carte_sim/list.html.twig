@@ -1,0 +1,48 @@
+{# templates/cartesim/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Cartes SIM{% endblock %}
+
+
+
+{% block body %}
+<h3 class="mb-5  border-bottom border-secondary"><i class="text-secondary bi bi-sim"></i> Mes Cartes SIM</h3>
+
+    {% if cartesSim is empty %}
+        <p>Aucune carte SIM achetée.</p>
+    {% else %}
+        <table id="cartesSimTable" class="display">
+            <thead>
+                <tr>
+                    <th>Serial Number</th>
+                    <th>Type</th>
+                    <th>Statut</th>
+                    <th>Date d'attribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for carte in cartesSim %}
+                    <tr>
+                        <td>{{ carte.serialNumber }}</td>
+                        <td>{{ carte.type.nom }}</td>
+                        <td>{{ carte.isReserved ? 'Réservée' : 'Disponible' }}</td>
+                        <td>Le {{ carte.createdAt ? carte.createdAt|date('Y-m-d') : '' }} à {{ carte.createdAt ? carte.createdAt|date('H:i:s') : '' }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+
+    <script>
+        $(document).ready(function() {
+            $('#cartesSimTable').DataTable({
+                // Options de DataTables (si nécessaire)
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json' // Option pour le français
+                }
+            });
+        });
+    </script>
+{% endblock %}

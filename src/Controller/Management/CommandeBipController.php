@@ -57,8 +57,6 @@ class CommandeBipController extends AbstractController
 			// Créer une nouvelle ligne de commande
 			$this->createLigneCommande($entityManager, $carteSim, $commande);
 
-			// Mettre à jour la carte SIM
-			$this->updateCarteSim($entityManager, $carteSim, $user);
 
 			$this->addFlash('success', 'Ligne de commande créée avec succès et carte SIM réservée.');
 		}
@@ -127,6 +125,7 @@ class CommandeBipController extends AbstractController
 		$ligneCommande->setTypeSim($carteSim->getType());
 		$carteSim->setReserved(true);
 		$carteSim->setPurchasedBy($commande->getUser());
+		$carteSim->setUser($commande->getUser());
 
 		$entityManager->persist($ligneCommande);
 		$entityManager->persist($carteSim);

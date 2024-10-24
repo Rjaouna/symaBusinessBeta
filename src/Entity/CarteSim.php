@@ -36,6 +36,9 @@ class CarteSim
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'carteSims')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,5 +125,17 @@ class CarteSim
     public function onPreUpdate()
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
