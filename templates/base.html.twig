@@ -33,7 +33,7 @@
         <!-- Import d'Axios depuis un CDN -->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         {# API User information pour le left wideget #}
-        <script  type="module" src="{{ asset('assets/js/api/userInformations.js') }}" ></script>
+        <script  type="module" src="{{ asset('assets/js/api/commandeInformations.js') }}" ></script>
         {# Initialisation de dataTable #}
         <script  type="module" src="{{ asset('assets/js/dataTableInit.js') }}" defer></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -55,8 +55,10 @@
                     <div class="col-md-2 left-align">
                         {% block left_sidebar %}
                             {{ include(('_Sidebars/_left/userInformations.html.twig')) }}
+                            {% if app.user.quotas %}
                             {{ include(('_Sidebars/_left/quotaInformations.html.twig')) }}
                             {{ include(('_Sidebars/_left/formCommandes.html.twig')) }}
+                            {% endif %}
                             {# {{ include(('_Sidebars/_left/_user_informations.html.twig')) }} #}
                         {% endblock %}
                     </div>
@@ -90,7 +92,7 @@
                 {% if app.user %}
                     <div class="col-md-3 left-align">
                         {% block right_sidebar %}
-                            {{ include(('_Sidebars/right/stat_stock.html.twig')) }}
+                            {{ include(('_Sidebars/right/statistics.html.twig')) }}
                         {% endblock %}
                     </div>
                 {% endif %}

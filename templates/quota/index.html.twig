@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quota index{% endblock %}
+{% block title %}Liste des Quotas{% endblock %}
 
 {% block body %}
-    <h1>Quota index</h1>
+<h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-speedometer"></i> Gestion des Quotas</h3>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>Sim5Quota</th>
-                <th>Sim10Quota</th>
-                <th>Sim15Quota</th>
-                <th>Sim20Quota</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>Sim 5 </th>
+                <th>Sim 10</th>
+                <th>Sim 15</th>
+                <th>Sim 20</th>
+                <th>Date création </th>
+                <th>Date MAJ</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -31,8 +31,8 @@
                 <td>{{ quotum.createdAt ? quotum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ quotum.updatedAt ? quotum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_quota_show', {'id': quotum.id}) }}">show</a>
-                    <a href="{{ path('app_quota_edit', {'id': quotum.id}) }}">edit</a>
+                    <a href="{{ path('app_quota_show', {'id': quotum.id}) }}">Détails</a>
+                    <a href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_quota_new') }}">Create new</a>
+    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_new') }}">Ajouter un nouveau quota</a>
 {% endblock %}

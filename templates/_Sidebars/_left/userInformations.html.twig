@@ -7,7 +7,7 @@
         Votre quota actuel est de <strong class="user-quota"></strong>.
         <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://127.0.0.1:8000/quota" class="text-primary">Pourquoi le système de quotation ?</a>
         </p><p>
-        Vous avez un bonus de <strong class="user-bonus"></strong> <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="{{path('app_user_Bonus_Controller')}}" class="text-primary">Gérer mon bonus !</a>
+        Vous avez un bonus de <strong class="user-bonus"></strong> <br><a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="{{path('app_user_Bonus_Controller')}}" class="text-primary">Gérer mon bonus !</a>
     </p>
 </div>
 
@@ -34,7 +34,7 @@ function displayUserInformation() {
         const quotaName = userData.quotas ? userData.quotas.nom : 'inconnu';
         document.querySelector('.user-quota').textContent = quotaName;
 
-        document.querySelector('.user-bonus').textContent = `${userData.totalBonus}€`;
+        document.querySelector('.user-bonus').textContent = `${userData.totalBonus} points`;
     }
 }
 

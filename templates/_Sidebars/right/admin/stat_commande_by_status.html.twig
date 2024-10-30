@@ -1,0 +1,67 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+<canvas id="commandesChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+const updateStatutCommandesChart = async () => {
+  try {
+    const response = await axios.get("/api/commande");
+    const commandes = response.data;
+
+    // Créer un objet pour compter les commandes par statut
+    const statusCounts = {
+      validee: 0,
+      en_attente: 0,
+      en_cours: 0,
+    };
+
+    // Compter les commandes par statut
+    commandes.forEach(commande => {
+      if (commande.status in statusCounts) {
+        statusCounts[commande.status]++;
+      }
+    });
+
+    // Préparer les données pour le graphique
+    const labels = Object.keys(statusCounts);
+    const data = Object.values(statusCounts);
+
+    // Créer le graphique
+    const ctx = document.getElementById('commandesChart').getContext('2d');
+    const commandesChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Nombre de commandes par statut',
+          data: data,
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 206, 86, 0.2)'
+          ],
+          borderColor: [
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error("Erreur lors de la récupération des commandes:", error);
+  }
+};
+
+updateStatutCommandesChart();
+</script>

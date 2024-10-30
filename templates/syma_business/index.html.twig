@@ -3,18 +3,7 @@
 {% block title %}Syma Business{% endblock %}
 
 {% block body %}
-{% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
-    {% if missingProperties is not empty %}
-        <h3>Informations manquantes :</h3>
-        <ul>
-            {% for property in missingProperties %}
-                <li>{{ property }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-    {% endif %}
-    
-{% endif %}
+
 
   {% if is_granted('ROLE_ADMIN') %}
       {{ include('interfaces_admin/accueil/index.html.twig') }}  

@@ -21,7 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/bonus')]
 final class BonusController extends AbstractController
 {
-    #[Route(name: 'app_bonus_index', methods: ['GET'])]
+    #[Route('/', name: 'app_bonus_index', methods: ['GET'])]
     public function index(BonusRepository $bonusRepository): Response
     {
         // Rendre la vue d'index des bonus avec tous les bonus disponibles

@@ -5,19 +5,19 @@
 {% block body %}
     <h1>Commande index</h1>
 
-    <table class="table">
+    <table id="commandeTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Numero</th>
                 <th>Qte</th>
-                <th>Qtevalidee</th>
+                <th>Qte Validée</th>
                 <th>Total</th>
                 <th>Status</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>SimType</th>
-                <th>actions</th>
+                <th>Créé le</th>
+                <th>Mis à jour le</th>
+                <th>Sim Type</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -45,5 +45,16 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_commande_new') }}">Create new</a>
+    <a href="{{ path('app_commande_new') }}" class="btn btn-primary mt-3">Create new</a>
+
+    <script>
+        $(document).ready(function() {
+            $('#commandeTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"  // Traduction en français
+                },
+                "order": [[ 0, "desc" ]]  // Ordonne par la première colonne (ID) par défaut
+            });
+        });
+    </script>
 {% endblock %}

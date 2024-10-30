@@ -14,7 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+
+#[IsGranted('ROLE_ADMIN')]
 class CommandeBipController extends AbstractController
 {
 	#[Route('/biper/{clientId}/serial-number', name: 'biper_serial_number')]
@@ -82,14 +85,14 @@ class CommandeBipController extends AbstractController
 			'code_client' => $clientId,
 			'status' => 'en_cours',
 			'simType' => $typeCarteSim->getNom(),
-		], ['createdAt' => 'DESC']);
+		], ['createdAt' => 'ASC']);
 
 		if (!$commandeEnCours) {
 			$commandeEnAttente = $commandeRepo->findOneBy([
 				'code_client' => $clientId,
 				'status' => 'en_attente',
 				'simType' => $typeCarteSim->getNom(),
-			], ['createdAt' => 'DESC']);
+			], ['createdAt' => 'ASC']);
 
 			if ($commandeEnAttente) {
 				return $commandeEnAttente;

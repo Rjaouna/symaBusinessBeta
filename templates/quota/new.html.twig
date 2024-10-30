@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Quota{% endblock %}
+{% block title %}Nouveau quota{% endblock %}
 
 {% block body %}
-    <h1>Create new Quota</h1>
+<h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-speedometer"></i> Ajouter un quota</h3>
 
     {{ include('quota/_form.html.twig') }}
 
-    <a href="{{ path('app_quota_index') }}">back to list</a>
 {% endblock %}

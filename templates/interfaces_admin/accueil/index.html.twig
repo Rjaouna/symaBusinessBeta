@@ -4,50 +4,53 @@
         <div class="row my-4 w-100">
             <!-- Colonne 1 -->
             <div class="col-md-2 my-2">
-                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-upc-scan fs-2 text-secondary"></i>
-                    <span class="mt-2">Validation Cdes</span>
-                    <span id ="nombreEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                        00+
-                    </span>
-                </button>
-            </div>
-
-            <!-- Colonne 2 -->
-            <div class="col-md-2 my-2">
-                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-speedometer fs-2 text-secondary"></i>
-                    <span class="mt-2">Gestion des quotas</span>
-                   
-                </button>
-            </div>
-
-            <!-- Colonne 3 -->
-            <div class="col-md-2 my-2">
-                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-gift fs-2 text-secondary"></i>
-                    <span class="mt-2">Gestion des bonus</span>
-                    
-                </button>
-            </div>
-            <!-- Colonne 4 -->
-            <div class="col-md-2 my-2">
-                <a href="{{path('app_user_Bonus_Controller')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-people fs-2 text-secondary"></i>
-                    <span class="mt-2">Liste clients</span>
-                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                <a href="{{path('app_commande_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-cart-fill fs-2 text-secondary"></i>
+                    <span class="mt-2">Liste des Cdes</span>
+                    <span id ="totalEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         00+
                     </span>
                 </a>
             </div>
+			<div class="col-md-2 my-2">
+                <a href="{{path('users_with_orders')}}"  class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-upc-scan fs-2 text-secondary"></i>
+                    <span class="mt-2">Validation Cdes</span>
+                    
+                </a>
+            </div>
+
+            <!-- Colonne 2 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('app_quota_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-speedometer fs-2 text-secondary"></i>
+                    <span class="mt-2">Gestion des quotas</span>
+                   
+                </a>
+            </div>
+
+            <!-- Colonne 3 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('app_bonus_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-gift fs-2 text-secondary"></i>
+                    <span class="mt-2">Gestion des bonus</span>
+                    
+                </a>
+            </div>
             <!-- Colonne 4 -->
             <div class="col-md-2 my-2">
-                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{path('app_user_index')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-people fs-2 text-secondary"></i>
+                    <span class="mt-2">Liste clients</span>
+                   
+                </a>
+            </div>
+            <!-- Colonne 4 -->
+            <div class="col-md-2 my-2">
+                <a href="{{path('app_carte_sim_index')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-sim fs-2 text-secondary"></i>
-                    <span class="mt-2">Carte Sim achetées</span>
-                    <span id="totalQuantiteValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                        99+
-                    </span>
+                    <span class="mt-2">stock cartes Sim</span>
+                   
                 </a>
             </div>
             <!-- Colonne 4 -->
@@ -55,6 +58,14 @@
                 <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-receipt fs-2 text-secondary"></i>
                     <span class="mt-2">liste Cdes clients</span>
+                    
+                </a>
+            </div>
+
+			<div class="col-md-2 my-2">
+                <a href="{{path('app_banner_index')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-image fs-2 text-secondary"></i>
+                    <span class="mt-2">Bannières</span>
                     
                 </a>
             </div>
@@ -68,7 +79,48 @@
             </div>
         </div>
         </div>
-<hr>
+        <hr>
        
     </div>
+
+<script>
+  const updateCommandesData = async () => {
+    try {
+      const response = await axios.get("/api/commande");
+      localStorage.setItem('commandesData', JSON.stringify(response.data)); // Stocker les données sous forme de chaîne JSON
+    } catch (error) {
+      console.error("Erreur lors de la récupération des commandes:", error);
+    }
+  };
+
+  // Fonction pour récupérer les données de localStorage
+  const getCommandesFromLocalStorage = () => {
+    const commandesJson = localStorage.getItem('commandesData'); // Remplacez 'commandesData' par la clé que vous utilisez
+    return commandesJson ? JSON.parse(commandesJson) : []; // Convertir en objet JavaScript
+  };
+
+  // Fonction pour mettre à jour le nombre total de commandes en attente
+  const updateTotalEnAttente = (commandes) => {
+    const totalEnAttente = commandes.filter(commande => commande.status === 'en_attente').length;
+
+    // Mettre à jour le DOM avec le nombre total des commandes en attente
+    document.getElementById('totalEnAttente').textContent = totalEnAttente;
+  };
+
+  // Fonction pour mettre à jour les commandes à intervalle régulier
+  const updateCommandesInterval = async () => {
+    await updateCommandesData(); // Mettre à jour les données depuis l'API
+    const commandesData = getCommandesFromLocalStorage(); // Récupérer les données mises à jour
+    console.log("Données de commandes :", commandesData); // Affichez les données
+    updateTotalEnAttente(commandesData); // Mettre à jour le total en attente
+  };
+
+  // Mettre à jour les commandes toutes les 3 secondes (3000 ms)
+  setInterval(updateCommandesInterval, 3000); 
+
+  // Appel initial pour mettre à jour le total en attente immédiatement
+  updateCommandesInterval();
+</script>
+
+	
 

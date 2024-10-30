@@ -1,0 +1,12 @@
+{% if is_granted('ROLE_ADMIN') %}
+      {{ include('_sidebars/right/admin/stat_commande_by_status.html.twig') }}
+      {{ include('_sidebars/right/admin/stat_commande_by_client.html.twig') }}
+
+      {% else %}
+        {% if is_granted('ROLE_USER') %}
+
+      {{ include('_sidebars/right/user/stat_stack.html.twig') }}
+      
+              
+      {% endif %}
+      {% endif %}

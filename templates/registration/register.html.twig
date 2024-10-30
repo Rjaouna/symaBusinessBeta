@@ -7,58 +7,58 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="col-12 col-md-5 mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white"> <!-- Conteneur pour les colonnes -->
+            <h1 class="h3 mb-3 font-weight-normal">Inscription !</h1>
 
-    <div class="container card bg-light mb-4">
-        <h1 class="mb-4">Créer un Compte</h1>
-        <div class="card-header">Informations Personnelles</div>
-        <div class="card-body">
-            {{ form_start(registrationForm) }}
+            <div class="card-body">
+                {{ form_start(registrationForm) }}
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    {{ form_row(registrationForm.nomResponsable, {
-                        label: 'Nom du Responsable'
+                <div class="mb-3">
+                    {{ form_widget(registrationForm.nomResponsable, {
+                        'attr': {'placeholder': 'Nom du Responsable'}
                     }) }}
                 </div>
-                <div class="col-md-6">
-                    {{ form_row(registrationForm.email, {
-                        label: 'Adresse E-mail'
+
+                <div class="mb-3">
+                    {{ form_widget(registrationForm.email, {
+                        'attr': {'placeholder': 'Adresse E-mail'}
                     }) }}
                 </div>
+
+                <div class="mb-3">
+                    {{ form_widget(registrationForm.telephoneMobile, {
+                        'attr': {'placeholder': 'Téléphone Mobile'}
+                    }) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_widget(registrationForm.telephoneFixe, {
+                        'attr': {'placeholder': 'Téléphone Fixe'}
+                    }) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_widget(registrationForm.plainPassword, {
+                        'attr': {'placeholder': 'Mot de Passe'}
+                    }) }}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                </div>
+
+                {{ form_end(registrationForm) }}
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    {{ form_row(registrationForm.telephoneMobile, {
-                        label: 'Téléphone Mobile'
-                    }) }}
-                </div>
-                <div class="col-md-6">
-                    {{ form_row(registrationForm.telephoneFixe, {
-                        label: 'Téléphone Fixe'
-                    }) }}
-                </div>
+            <!-- Lien vers la page d'inscription -->
+            <div class="mt-3 text-center">
+                <p>Vous avez déjà un compte ? <a href="{{ path('app_login') }}">Connexion</a></p>
             </div>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    {{ form_row(registrationForm.plainPassword, {
-                        label: 'Mot de Passe'
-                    }) }}
-                </div>
-                <div class="col-md-6">
-                    {{ form_row(registrationForm.agreeTerms, {
-                        label: 'J\'accepte les termes'
-                    }) }}
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <a href="{{ path('app_login') }}" class="btn btn-secondary">Annuler</a>
-                <button type="submit" class="btn btn-primary">S'inscrire</button>
-            </div>
-
-            {{ form_end(registrationForm) }}
         </div>
     </div>
 {% endblock %}

@@ -9,12 +9,13 @@
         <thead>
             <tr>
                 <th>Numéro</th>
+                <th>Type carte Sim</th>
                 <th>Qté</th>
+                <th>Qté validé</th>
                 <th>Total</th>
                 <th>Status</th>
                 <th>Date création</th>
                 <th>Dérnière MAJ</th>
-                <th>Type carte Sim</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,12 +23,13 @@
         {% for commande in commandes %}
             <tr>
                 <td>{{ commande.numero }}</td>
+                <td>{{ commande.SimType }}</td>
                 <td>{{ commande.qte }}</td>
+                <td>{{ commande.qtevalidee }}</td>
                 <td>{{ commande.total }}</td>
                 <td>{{ commande.status }}</td>
                 <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ commande.SimType }}</td>
                 <td>
                     <a href="{{ path('lignes_commande_show', {'numeroCommande': commande.numero}) }}">Détails</a>
                 </td>

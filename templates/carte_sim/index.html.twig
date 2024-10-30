@@ -5,25 +5,27 @@
 {% block body %}
     <h1>CarteSim index</h1>
 
-    <table class="table">
+    <table id="carteSimTable" class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>SerialNumber</th>
+                <th>Numéro de serie</th>
+                <th>Type</th>
                 <th>Prix</th>
-                <th>Reserved</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>Reservée</th>
+                <th>Attribuée à </th>
+                <th>Date création</th>
+                <th>Date modification</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for carte_sim in carte_sims %}
             <tr>
-                <td>{{ carte_sim.id }}</td>
                 <td>{{ carte_sim.serialNumber }}</td>
+                <td>{{ carte_sim.type }}</td>
                 <td>{{ carte_sim.type.prix }}</td> 
-                <td>{{ carte_sim.reserved ? 'Yes' : 'No' }}</td>
+                <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
+                <td>{{ carte_sim.user }}</td>
                 <td>{{ carte_sim.createdAt ? carte_sim.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
@@ -33,11 +35,21 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="7">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_carte_sim_new') }}">Create new</a>
+    <a href="{{ path('app_carte_sim_new') }}" class="btn btn-primary mt-3">Create new</a>
+    <script>
+        $(document).ready(function() {
+            $('#carteSimTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"  // Si vous voulez en français
+                },
+                "order": [[ 0, "desc" ]]  // Ordonne par la première colonne (ID) par défaut
+            });
+        });
+    </script>
 {% endblock %}

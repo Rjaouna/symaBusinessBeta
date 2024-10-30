@@ -3,48 +3,43 @@
 {% block title %}Quota{% endblock %}
 
 {% block body %}
-    <h1>Quota</h1>
+    <h1>Quota {{ quotum.nom }}</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ quotum.id }}</td>
-            </tr>
             <tr>
                 <th>Nom</th>
                 <td>{{ quotum.nom }}</td>
             </tr>
             <tr>
-                <th>Sim5Quota</th>
+                <th>Carte Sim 05</th>
                 <td>{{ quotum.sim5Quota }}</td>
             </tr>
             <tr>
-                <th>Sim10Quota</th>
+                <th>Carte Sim 10</th>
                 <td>{{ quotum.sim10Quota }}</td>
             </tr>
             <tr>
-                <th>Sim15Quota</th>
+                <th>Carte Sim 15</th>
                 <td>{{ quotum.sim15Quota }}</td>
             </tr>
             <tr>
-                <th>Sim20Quota</th>
+                <th>Carte Sim 20</th>
                 <td>{{ quotum.sim20Quota }}</td>
             </tr>
             <tr>
-                <th>CreatedAt</th>
+                <th>Date création</th>
                 <td>{{ quotum.createdAt ? quotum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>UpdatedAt</th>
+                <th>Date modification</th>
                 <td>{{ quotum.updatedAt ? quotum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_quota_index') }}">back to list</a>
+    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_quota_edit', {'id': quotum.id}) }}">edit</a>
+    <a class="btn btn-primary btn-sm" href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
 
-    {{ include('quota/_delete_form.html.twig') }}
 {% endblock %}

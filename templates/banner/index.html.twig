@@ -19,8 +19,8 @@
             <tr>
                 <td>{{ banner.id }}</td>
                 <td>{{ banner.nom }}</td>
-                <td>{{ banner.image }}</td>
-                <td>
+                <td><img src="{{ asset('uploads/banners/' ~ banner.image) }}" alt="Bannière" style="width: 50px; height: auto;"></td>
+                <td class="text-end">
                     <a class="btn btn-primary btn-sm" href="{{ path('app_banner_edit', {'id': banner.id}) }}">Modifier</a>
                 </td>
             </tr>

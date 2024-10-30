@@ -1,3 +1,4 @@
+{% if app.user %} 
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ path('app_syma_business') }}">
@@ -13,9 +14,9 @@
 
       </ul>
       <div class="dropdown ms-5"> <!-- Wrapper pour le menu déroulant -->
-      {% if app.user %}  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+       <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
           <i class="bi bi-person fs-5"></i> Bonjour {{app.user.nomResponsable}} 
-        </a> {% endif %} 
+        </a> 
         <div class="dropdown-menu dropdown-menu-end"> <!-- Classe pour aligner à droite -->
           {% if app.user %}
             <a class="dropdown-item" href="{{ path('app_profile') }}"> Mon Profil</a>
@@ -34,3 +35,4 @@
     </div>
   </div>
 </nav>
+{% endif %} 

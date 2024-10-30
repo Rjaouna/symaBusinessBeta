@@ -5,41 +5,46 @@
 {% block body %}
     <h1>User index</h1>
 
-    <table class="table">
+    <table id="userTable" class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Nom Responsable</th>
                 <th>Email</th>
                 <th>Is Verified</th>
-                <th>Nom Responsable</th>
                 <th>Telephone Fixe</th>
                 <th>Telephone Mobile</th>
-                <th></th>
-                
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
+                <td>{{ user.nomResponsable }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-                <td>{{ user.nomResponsable }}</td>
                 <td>{{ user.telephoneFixe }}</td>
                 <td>{{ user.telephoneMobile }}</td>
-                
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}">Détails</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="24">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <script>
+        $(document).ready(function() {
+            $('#userTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"
+                },
+                "order": [[ 0, "desc" ]]
+            });
+        });
+    </script>
 {% endblock %}
