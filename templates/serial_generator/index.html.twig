@@ -1,0 +1,65 @@
+{# templates/serial_generator/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Générateur de numéros de série{% endblock %}
+
+{% block body %}
+    <div class="bg-light p-4 rounded shadow-sm my-3">
+    <h5 class="mb-3">Fonctionnement de la génération des cartes Sim</h5>
+    <p>
+        Le système de génération de codes SIM repose sur la combinaison de plusieurs éléments : un 
+        <strong>préfixe</strong>, un <strong>numéro de départ</strong>, un <strong>numéro de fin</strong> et un 
+        <strong>suffixe</strong>, qui définissent les plages de numéros disponibles pour chaque type de carte SIM. 
+        Le préfixe et le suffixe encadrent le <strong>numéro de série</strong>, tandis que les valeurs de début et de 
+        fin définissent la <strong>plage spécifique de numéros à générer</strong>.
+        
+    </p>
+    <div class="alert alert-light p-3 my-3 border rounded">
+    Exemple :
+    <strong>Début :</strong> 
+    <span class="text-primary">90045</span>
+    <span class="text-primary fw-bold">90</span>
+    <span class="text-primary">5847589</span>, 
+    <strong>fin :</strong> 
+    <span class="text-primary">90045</span>
+    <span class="text-primary fw-bold">99</span>
+    <span class="text-primary">5847589</span>
+</div>
+
+</div>
+ {{ form_start(form) }}
+        {{ form_row(form.prefix) }}
+        {{ form_row(form.start) }}
+        {{ form_row(form.end) }}
+        {{ form_row(form.suffix) }}
+        {{ form_row(form.simType) }}
+        <button class="btn btn-primary my-3" type="submit">Générer les cartes Sim</button>
+    {{ form_end(form) }}
+
+    {% if serialNumbers is not empty %}
+        <div class="bg-light p-4 rounded shadow-sm mb-5">
+            <h6 class="mb-3">Numéros de série importés avec succès :</h6>
+            {% if count == 0 %} 
+                Aucun code n'a été importé
+                {% else %}
+                {{count}} carte(s) Sim importé, ci-dessous la liste :
+            {% endif %}
+            <ul>
+                {% for serialNumber in importedSerialNumbers %}
+                    <li>{{ serialNumber }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {# {% if notImportedSerialNumbers is not empty %}
+        <div class="bg-light p-4 rounded shadow-sm my-3 text-primary">
+            <h6 class="mb-3">Numéros de série non importés :</h6>
+            <ul>
+                {% for serialNumber in notImportedSerialNumbers %}
+                    <li>{{ serialNumber }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %} #}
+{% endblock %}

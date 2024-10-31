@@ -1,87 +1,91 @@
 <div class="bg-white py-4 px-2 rounded shadow-sm my-2 px-3 mx-2">
-            <h4 class="mb-1  border-bottom border-secondary"><i class="text-secondary bi bi-house-door"></i> Espace administrateur </h4>
-            <div class=" d-flex justify-content-center ">
+    <h4 class="mb-1 border-bottom border-secondary"><i class="text-secondary bi bi-house-door"></i> Espace administrateur</h4>
+    <div class="d-flex justify-content-center">
         <div class="row my-4 w-100">
             <!-- Colonne 1 -->
             <div class="col-md-2 my-2">
-                <a href="{{path('app_commande_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{ path('app_commande_index') }}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-cart-fill fs-2 text-secondary"></i>
                     <span class="mt-2">Liste des Cdes</span>
-                    <span id ="totalEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                    <span id="totalEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         00+
                     </span>
                 </a>
             </div>
-			<div class="col-md-2 my-2">
-                <a href="{{path('users_with_orders')}}"  class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+
+            <div class="col-md-2 my-2">
+                <a href="{{ path('users_with_orders') }}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-upc-scan fs-2 text-secondary"></i>
                     <span class="mt-2">Validation Cdes</span>
-                    
                 </a>
             </div>
 
             <!-- Colonne 2 -->
             <div class="col-md-2 my-2">
-                <a href="{{path('app_quota_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{ path('app_quota_index') }}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-speedometer fs-2 text-secondary"></i>
                     <span class="mt-2">Gestion des quotas</span>
-                   
                 </a>
             </div>
 
             <!-- Colonne 3 -->
             <div class="col-md-2 my-2">
-                <a href="{{path('app_bonus_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{ path('app_bonus_index') }}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-gift fs-2 text-secondary"></i>
                     <span class="mt-2">Gestion des bonus</span>
-                    
                 </a>
             </div>
+
             <!-- Colonne 4 -->
             <div class="col-md-2 my-2">
-                <a href="{{path('app_user_index')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{ path('app_user_index') }}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-people fs-2 text-secondary"></i>
                     <span class="mt-2">Liste clients</span>
-                   
                 </a>
             </div>
-            <!-- Colonne 4 -->
+
+            <!-- Colonne 5 -->
             <div class="col-md-2 my-2">
-                <a href="{{path('app_carte_sim_index')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{ path('app_carte_sim_index') }}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-sim fs-2 text-secondary"></i>
-                    <span class="mt-2">stock cartes Sim</span>
+                    <span class="mt-2">Stock cartes Sim</span>
+                </a>
+            </div>
+
+
+            
+        </div>
+    </div>
+    <hr>
+<div class="d-flex justify-content-center">
+        <div class="row my-4 w-100">
+            <!-- Colonne 1 -->
+            <div class="col-md-2 my-2">
+                <a href="{{ path('generate_serial_numbers') }}" class="shadow-sm btn btn-outline-white position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-cloud-upload fs-2 text-secondary"></i>
+                    <span class="mt-2 text-primary">Import Cartes Sim</span>
                    
                 </a>
             </div>
-            <!-- Colonne 4 -->
+
             <div class="col-md-2 my-2">
-                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-receipt fs-2 text-secondary"></i>
-                    <span class="mt-2">liste Cdes clients</span>
-                    
-                </a>
-            </div>
-
-			<div class="col-md-2 my-2">
-                <a href="{{path('app_banner_index')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                <a href="{{ path('app_banner_index') }}" class="shadow-sm btn btn-outline-white position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-image fs-2 text-secondary"></i>
-                    <span class="mt-2">Bannières</span>
-                    
+                    <span class="mt-2 text-primary">Bannières</span>
+                   
                 </a>
             </div>
 
-			<div class="col-md-2 my-2">
-                <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+            <div class="col-md-2 my-2">
+                <a href="#" class="shadow-sm btn btn-outline-white position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-gear fs-2 text-secondary"></i>
-                    <span class="mt-2">Administration</span>
-                    
+                    <span class="mt-2 text-primary">Administration</span>
+                   
                 </a>
             </div>
         </div>
-        </div>
-        <hr>
-       
-    </div>
+</div>
+</div>
 
 <script>
   const updateCommandesData = async () => {

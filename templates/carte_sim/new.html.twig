@@ -3,9 +3,30 @@
 {% block title %}New CarteSim{% endblock %}
 
 {% block body %}
-    <h1>Create new CarteSim</h1>
+<h4 class="mb-3 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-sim fs-2 text-secondary"></i> Ajouter une carte Sim</h4>
 
     {{ include('carte_sim/_form.html.twig') }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reservedCheckbox = document.getElementById('carte_sim_reserved');
+    const purchasedBySelect = document.getElementById('carte_sim_purchasedBy');
 
-    <a href="{{ path('app_carte_sim_index') }}">back to list</a>
+    // Fonction pour afficher ou masquer le champ
+    function togglePurchasedByField() {
+        if (reservedCheckbox.checked) {
+            purchasedBySelect.style.display = 'block'; // Affiche le champ
+        } else {
+            purchasedBySelect.style.display = 'none'; // Masque le champ
+        }
+    }
+
+    // Écoute l'événement 'change' sur la case à cocher
+    reservedCheckbox.addEventListener('change', togglePurchasedByField);
+
+    // Vérifie l'état initial au chargement de la page
+    togglePurchasedByField();
+});
+</script>
+
 {% endblock %}

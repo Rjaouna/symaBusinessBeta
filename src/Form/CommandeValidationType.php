@@ -13,7 +13,11 @@ class CommandeValidationType extends AbstractType
 	{
 		$builder
 			->add('serial_Number', TextType::class, [
-				'label' => 'Numéro de série',
+			'attr' => [
+				'placeholder' => 'Scannez un code !',
+				'maxlength' => 14, // Limite le nombre de caractères à 14
+			],
+			'label' => false, // Retire le label
 			]);
 	}
 

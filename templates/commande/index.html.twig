@@ -3,13 +3,15 @@
 {% block title %}Commande index{% endblock %}
 
 {% block body %}
-    <h1>Commande index</h1>
+<h4 class="mb-3 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-cart-fill fs-2 text-secondary"></i>Liste commandes</h4>
 
     <table id="commandeTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Numero</th>
+                <th>Client</th>
                 <th>Qte</th>
                 <th>Qte Validée</th>
                 <th>Total</th>
@@ -25,6 +27,7 @@
             <tr>
                 <td>{{ commande.id }}</td>
                 <td>{{ commande.numero }}</td>
+                <td>{{ commande.user.nomResponsable }}</td>
                 <td>{{ commande.qte }}</td>
                 <td>{{ commande.qtevalidee }}</td>
                 <td>{{ commande.total }}</td>
@@ -33,8 +36,8 @@
                 <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commande.SimType }}</td>
                 <td>
-                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">show</a>
-                    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
+                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">Détails</a>
+                    {# <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a> #}
                 </td>
             </tr>
         {% else %}
@@ -45,7 +48,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_commande_new') }}" class="btn btn-primary mt-3">Create new</a>
 
     <script>
         $(document).ready(function() {
@@ -57,4 +59,5 @@
             });
         });
     </script>
+ 
 {% endblock %}

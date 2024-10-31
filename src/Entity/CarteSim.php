@@ -5,8 +5,9 @@ namespace App\Entity;
 use App\Repository\CarteSimRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
+#[UniqueEntity(fields: ['serialNumber'], message: "Ce numéro de série doit être unique.")]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: CarteSimRepository::class)]
 class CarteSim
