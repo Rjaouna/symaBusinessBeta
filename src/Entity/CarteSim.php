@@ -39,6 +39,12 @@ class CarteSim
     #[ORM\ManyToOne(inversedBy: 'carteSims')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $etat = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $usageFinale = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +141,30 @@ class CarteSim
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?string $etat): static
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getUsageFinale(): ?string
+    {
+        return $this->usageFinale;
+    }
+
+    public function setUsageFinale(?string $usageFinale): static
+    {
+        $this->usageFinale = $usageFinale;
 
         return $this;
     }

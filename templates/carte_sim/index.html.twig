@@ -3,7 +3,8 @@
 {% block title %}CarteSim index{% endblock %}
 
 {% block body %}
-    <h1>CarteSim index</h1>
+<h4 class="mb-5 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-sim fs-2 text-secondary"></i> Stock Carte Sim</h4>
 
     <table id="carteSimTable" class="table table-striped">
         <thead>
@@ -41,7 +42,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_carte_sim_new') }}" class="btn btn-primary mt-3">Create new</a>
+    <a href="{{ path('app_carte_sim_new') }}" class="btn btn-primary my-3">Ajouter une carte Sim</a>
     <script>
         $(document).ready(function() {
             $('#carteSimTable').DataTable({

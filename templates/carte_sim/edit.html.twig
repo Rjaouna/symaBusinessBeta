@@ -3,11 +3,10 @@
 {% block title %}Edit CarteSim{% endblock %}
 
 {% block body %}
-    <h1>Edit CarteSim</h1>
+<h4 class="mb-5 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-sim fs-2 text-secondary"></i>Modifier la Carte Sim</h4>
 
-    {{ include('carte_sim/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('carte_sim/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
-    <a href="{{ path('app_carte_sim_index') }}">back to list</a>
 
-    {{ include('carte_sim/_delete_form.html.twig') }}
 {% endblock %}

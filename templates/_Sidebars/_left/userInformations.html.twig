@@ -1,13 +1,15 @@
 <div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
     <div class="d-flex align-items-center mb-3">
         <img src="/assets/img/profil.png" alt="Photo de profil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-        <h6 class="ms-3 text-secondary mx-2">Bonjour, <strong class="user-name"></strong> !</h6>
+        <h6 class="ms-3 text-secondary mx-2">Bonjour, <strong class="user-name">{{app.user.nomResponsable}}</strong> !</h6>
     </div>
     <p class="mb-3 text-secondary">
-        Votre quota actuel est de <strong class="user-quota"></strong>.
+        Votre quota actuel est de <strong class="user-quota">{{app.user.quotas.nom}}</strong>.
         <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://127.0.0.1:8000/quota" class="text-primary">Pourquoi le système de quotation ?</a>
-        </p><p>
-        Vous avez un bonus de <strong class="user-bonus"></strong> <br><a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="{{path('app_user_Bonus_Controller')}}" class="text-primary">Gérer mon bonus !</a>
+        </p>
+    <hr>
+        <p><i class="bi bi-wallet2 fs-3 me-2"></i>
+        Vous avez un bonus de <strong class="user-bonus">{{app.user.totalBonus}} points </strong> <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="{{path('app_user_Bonus_Controller')}}" class="text-primary">Gérer mon bonus !</a>
     </p>
 </div>
 
