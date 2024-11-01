@@ -26,20 +26,20 @@
 
             <!-- Colonne 3 -->
             <div class="col-md-2 my-2">
-                <button type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-exclamation-circle fs-2 text-secondary"></i>
-                    <span class="mt-2">Cdes validées</span>
-                    <span id ="nombreValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                <a href="{{path('user_app_commande_index')}}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-cart fs-2 text-secondary"></i>
+                    <span class="mt-2">Toutes les Cdes</span>
+                    <span id ="nombreValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                        00+
                     </span>
-                </button>
+                </a>
             </div>
             <!-- Colonne 4 -->
             <div class="col-md-2 my-2">
                 <a href="{{path('app_user_Bonus_Controller')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi bi-gift fs-2 text-secondary"></i>
                     <span class="mt-2">Gérer mon bonus !</span>
-                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                         00+
                     </span>
                 </a>
@@ -49,7 +49,7 @@
                 <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-sim fs-2 text-secondary"></i>
                     <span class="mt-2">Carte Sim achetées</span>
-                    <span id="totalQuantiteValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                    <span id="totalQuantiteValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                         99+
                     </span>
                 </a>
@@ -59,15 +59,13 @@
                 <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-cloud-download fs-2 text-secondary"></i>
                     <span class="mt-2">Facturation</span>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                         disponible
                     </span>
                 </a>
             </div>
         </div>
         </div>
-<hr>
-       
     </div>
 
 <script>

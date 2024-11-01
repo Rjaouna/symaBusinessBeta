@@ -3,9 +3,9 @@
 {% block title %}New Bonus{% endblock %}
 
 {% block body %}
-    <h1>Create new Bonus</h1>
+<h4 class="mb-3 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-gift fs-2 text-secondary"></i> Attribuer un bonus</h4>
 
     {{ include('bonus/_form.html.twig') }}
 
-    <a href="{{ path('app_bonus_index') }}">back to list</a>
 {% endblock %}

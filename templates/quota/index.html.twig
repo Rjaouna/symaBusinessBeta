@@ -31,7 +31,6 @@
                 <td>{{ quotum.createdAt ? quotum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ quotum.updatedAt ? quotum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_quota_show', {'id': quotum.id}) }}">Détails</a>
                     <a href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
                 </td>
             </tr>

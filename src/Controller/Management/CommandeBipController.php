@@ -1,5 +1,5 @@
 <?php
-// src/Controller/BiperController.php
+// src/Controller/Management/CommandeBipController.php
 namespace App\Controller\Management;
 
 use App\Entity\CarteSim;
@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
 #[IsGranted('ROLE_ADMIN')]
 class CommandeBipController extends AbstractController
 {
@@ -29,9 +28,11 @@ class CommandeBipController extends AbstractController
 		LignesCommandeRepository $lignesCommandeRepo,
 		EntityManagerInterface $entityManager
 	): Response {
+
 		$user = $this->getUser();
 		$form = $this->createForm(CommandeValidationType::class);
 		$form->handleRequest($request);
+		$commandesClient = $commandeRepo->findBy(['code_client' => $clientId, 'status' => ['en_cours', 'en_attente']]); // Récupération de toutes les commandes du client
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$data = $form->getData();
@@ -44,8 +45,8 @@ class CommandeBipController extends AbstractController
 			}
 
 			// Vérifiez si la carte SIM a déjà été réservée
-			if ($carteSim->isReserved()) { // Assurez-vous que cette méthode existe
-				$this->addFlash('error', 'Cette carte SIM a déjà été réservée ou achetée.');
+			if ($carteSim->isReserved()) {
+				$this->addFlash('primary', 'Cette carte SIM a déjà été réservée ou achetée.');
 				return $this->redirectToRoute('biper_serial_number', ['clientId' => $clientId]);
 			}
 
@@ -60,13 +61,13 @@ class CommandeBipController extends AbstractController
 			// Créer une nouvelle ligne de commande
 			$this->createLigneCommande($entityManager, $carteSim, $commande);
 
-
 			$this->addFlash('success', 'Ligne de commande créée avec succès et carte SIM réservée.');
 		}
 
 		// Retourner le rendu du template
 		return $this->render('interfaces_admin/commandes_validation.html.twig', [
 			'form' => $form->createView(),
+			'commandesClient' => $commandesClient, // Liste des commandes du client
 		]);
 	}
 
@@ -74,19 +75,21 @@ class CommandeBipController extends AbstractController
 	{
 		$carteSim = $carteSimRepo->findOneBy(['serialNumber' => $serialNumber]);
 		if (!$carteSim) {
-			$this->addFlash('error', 'Carte SIM non trouvée.');
+			$this->addFlash('primary', 'Carte SIM non trouvée.');
 		}
 		return $carteSim;
 	}
 
 	private function getCommande(CommandeRepository $commandeRepo, string $clientId, $typeCarteSim): ?Commande
 	{
+		// Recherche de la commande en cours
 		$commandeEnCours = $commandeRepo->findOneBy([
 			'code_client' => $clientId,
 			'status' => 'en_cours',
 			'simType' => $typeCarteSim->getNom(),
 		], ['createdAt' => 'ASC']);
 
+		// Si aucune commande en cours, recherche de la commande en attente
 		if (!$commandeEnCours) {
 			$commandeEnAttente = $commandeRepo->findOneBy([
 				'code_client' => $clientId,
@@ -97,7 +100,7 @@ class CommandeBipController extends AbstractController
 			if ($commandeEnAttente) {
 				return $commandeEnAttente;
 			} else {
-				$this->addFlash('error', 'Aucune commande trouvée pour ce client.');
+				$this->addFlash('primary', 'Aucune commande trouvée pour ce client.');
 				return null;
 			}
 		}
@@ -126,6 +129,7 @@ class CommandeBipController extends AbstractController
 		$ligneCommande->setNumeroCommande($commande->getNumero());
 		$ligneCommande->setPrixUnitaire($carteSim->getType()->getPrix());
 		$ligneCommande->setTypeSim($carteSim->getType());
+
 		$carteSim->setReserved(true);
 		$carteSim->setPurchasedBy($commande->getUser());
 		$carteSim->setUser($commande->getUser());
@@ -134,6 +138,4 @@ class CommandeBipController extends AbstractController
 		$entityManager->persist($carteSim);
 		$entityManager->flush();
 	}
-
-	
 }

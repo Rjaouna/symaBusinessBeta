@@ -4,9 +4,9 @@
 
 {% block body %}
 <h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-cart-fill fs-2 text-secondary"></i>Liste commandes</h4>
+    <i class="text-secondary bi bi-cart-fill fs-2 text-secondary"></i> Liste commandes</h4>
 
-    <table id="commandeTable" class="table table-striped">
+    <table id="myDataTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -36,7 +36,7 @@
                 <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commande.SimType }}</td>
                 <td>
-                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">Détails</a>
+                    <a href="{{ path('lignes_commande_show', {'numeroCommande': commande.numero}) }}">Détails</a>
                     {# <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a> #}
                 </td>
             </tr>
@@ -49,15 +49,6 @@
     </table>
 
 
-    <script>
-        $(document).ready(function() {
-            $('#commandeTable').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"  // Traduction en français
-                },
-                "order": [[ 0, "desc" ]]  // Ordonne par la première colonne (ID) par défaut
-            });
-        });
-    </script>
+
  
 {% endblock %}

@@ -4,14 +4,43 @@
 
 {% block body %}
 <h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-upc-scan fs-2 text-secondary"></i> Validation manuel</h4>
+    <i class="text-secondary bi bi-hand-index fs-2 text-secondary"></i> Validation manuel</h4>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit" class="btn btn-primary btn-sm w-100">Scanner !</button>
     {{ form_end(form) }}
+<h6 class="mt-3">Liste de commandes du Client </h6>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Client</th>
+            <th>Type carte Sim</th>
+            <th>Status</th>
+            <th>Quantité</th>
+            <th>Reste à valider</th>
+            <th>Date création</th>
+            <th>Dernière modification</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for commande in commandesClient %}
+            <tr>
+                <td>{{ commande.numero }}</td>
+                <td>{{ commande.user.nomResponsable }}</td>
+                <td>{{ commande.SimType }}</td>
+                <td {% if commande.status == 'en_cours' %} class="text-primary" {% endif %}>{{ commande.status }}</td>
+                <td>{{ commande.qte }}</td>
+                <td>{{ (commande.qte - commande.qtevalidee) }}</td> <!-- Assurez-vous que 'qte' est le bon champ -->
+                <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        {% else %}
+        {% endfor %}
+    </tbody>
+</table>
 
-    
 {% endblock %}
 
 

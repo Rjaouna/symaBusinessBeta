@@ -13,7 +13,7 @@
         </select>
     </div>
 
-    <div class="bg-primary align-items-center my-1 text-white px-2" id="quotaepuise" style="display:none;">
+    <div class="bg-danger rounded align-items-center my-1 text-white px-2" id="quotaepuise" style="display:none;">
         Le quota pour ce type de carte est épuisé
     </div>
 
@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const quotas = await fetchQuotasAndUsages(); // Appeler l'API pour récupérer les quotas et usages
         updateQuantityOptions(simType.value, quotas);
     });
+    
 });
 </script>
 

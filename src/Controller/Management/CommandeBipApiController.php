@@ -26,6 +26,36 @@ class CommandeBipApiController extends AbstractController
 		]);
 	}
 
+	#[Route('/api/commandes/{clientId}', name: 'api_commandes_client', methods: ['GET'])]
+	public function getCommandesClient(string $clientId, CommandeRepository $commandeRepo): JsonResponse
+	{
+		// Récupération des commandes avec le statut en_cours ou en_attente
+		$commandesClient = $commandeRepo->findBy([
+			'code_client' => $clientId,
+			'status' => ['en_cours', 'en_attente']
+		]);
+
+		// Transformation des données en format de réponse JSON
+		$commandesData = [];
+		foreach ($commandesClient as $commande) {
+			$commandesData[] = [
+				'id' => $commande->getId(),
+				'code_client' => $commande->getCodeClient(),
+				'typeCarte' => $commande->getSimType(),
+				'nomClient' => $commande->getUser(),
+				'numero' => $commande->getNumero(),
+				'qte' => $commande->getQte(),
+				'qtevalidee' => $commande->getQtevalidee(),
+				'status' => $commande->getStatus(),
+				'date' => $commande->getCreatedAt()->format('Y-m-d H:i:s'),
+				// Ajoutez d'autres champs que vous souhaitez retourner ici
+			];
+		}
+
+		// Retourner la réponse JSON
+		return new JsonResponse($commandesData);
+	}
+
 
 	#[Route('/api/biper/{clientId}', name: 'api_biper', methods: ['POST'])]
 	public function biperSerialNumber(

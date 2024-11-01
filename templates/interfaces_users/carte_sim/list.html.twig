@@ -6,18 +6,21 @@
 
 
 {% block body %}
-<h3 class="mb-5  border-bottom border-secondary"><i class="text-secondary bi bi-sim"></i> Mes Cartes SIM</h3>
+<h3 class="mb-3  border-bottom border-secondary"><i class="text-secondary bi bi-sim"></i> Mes Cartes SIM</h3>
 
     {% if cartesSim is empty %}
         <p>Aucune carte SIM achetée.</p>
     {% else %}
-        <table id="cartesSimTable" class="display">
+        <table id="myDataTable" class="display">
             <thead>
                 <tr>
                     <th>Serial Number</th>
                     <th>Type</th>
                     <th>Statut</th>
+                    <th>Client</th>
                     <th>Date d'attribution</th>
+                    <th>Etat</th>
+                    <th>Usage Final</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,8 +29,10 @@
                         <td>{{ carte.serialNumber }}</td>
                         <td>{{ carte.type.nom }}</td>
                         <td>{{ carte.isReserved ? 'Réservée' : 'Disponible' }}</td>
+                        <td>{{ carte.user }}</td>
                         <td>Le {{ carte.createdAt ? carte.createdAt|date('Y-m-d') : '' }} à {{ carte.createdAt ? carte.createdAt|date('H:i:s') : '' }}</td>
-
+                        <td>{{ carte.etat }}</td>
+                        <td>{{ carte.usageFinale }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -35,14 +40,5 @@
     {% endif %}
 
 
-    <script>
-        $(document).ready(function() {
-            $('#cartesSimTable').DataTable({
-                // Options de DataTables (si nécessaire)
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json' // Option pour le français
-                }
-            });
-        });
-    </script>
+
 {% endblock %}

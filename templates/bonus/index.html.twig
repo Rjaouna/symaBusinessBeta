@@ -3,31 +3,32 @@
 {% block title %}Bonus index{% endblock %}
 
 {% block body %}
-    <h1>Bonus index</h1>
+<h4 class="mb-3 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-gift fs-2 text-secondary"></i> Gestion bonus</h4>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                {# <th>Id</th> #}
                 <th>Valeur</th>
                 <th>Utilisateur</th>
                 <th>Motif</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
+                <th>Date création</th>
+                {# <th>actions</th> #}
             </tr>
         </thead>
         <tbody>
         {% for bonu in bonuses %}
             <tr>
-                <td>{{ bonu.id }}</td>
+                {# <td>{{ bonu.id }}</td> #}
                 <td>{{ bonu.valeur }}</td>
                 <td>{{ bonu.user }}</td>
                 <td>{{ bonu.motif }}</td>
                 <td>{{ bonu.createdAt ? bonu.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
+                {# <td>
                     <a href="{{ path('app_bonus_show', {'id': bonu.id}) }}">show</a>
                     <a href="{{ path('app_bonus_edit', {'id': bonu.id}) }}">edit</a>
-                </td>
+                </td> #}
             </tr>
         {% else %}
             <tr>
@@ -37,5 +38,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_bonus_new') }}">Create new</a>
+    <a class="btn btn-secondary btn-sm" href="{{ path('app_bonus_new') }}">Attribuer un bonus</a>
 {% endblock %}

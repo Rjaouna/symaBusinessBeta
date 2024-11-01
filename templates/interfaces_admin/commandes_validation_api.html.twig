@@ -4,8 +4,11 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'></script>
-
-        
+<style>
+    .table {
+        font-size: 12px; /* Ajustez cette valeur selon vos besoins */
+    }
+</style>
         <!-- Icône de la page -->
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         
@@ -20,7 +23,6 @@
         {% endblock %}
         
         {% block javascripts %}
-
         <!-- Scripts nécessaires pour le fonctionnement de Bootstrap -->
         <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-manual=""></script>
         <!-- Script personnalisé -->
@@ -31,34 +33,45 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- Import d'Axios depuis un CDN -->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        {# API User information pour le left wideget #}
-        <script  type="module" src="{{ asset('assets/js/api/commandeInformations.js') }}" ></script>
+        {# API User information pour le left widget #}
+        <script type="module" src="{{ asset('assets/js/api/commandeInformations.js') }}"></script>
         {# Initialisation de dataTable #}
-        <script  type="module" src="{{ asset('assets/js/dataTableInit.js') }}" defer></script>
+        <script type="module" src="{{ asset('assets/js/dataTableInit.js') }}" defer></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        
-
         {% endblock %}
     </head>
     
     <body>
-	<div class="container-fluid my-3 rounded  bg-white">
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-upc-scan fs-2 text-secondary"></i> Scannez une carte SIM</h4>
+        <div class="container-fluid my-3 rounded bg-white">
+            <h4 class="mb-3 border-bottom border-secondary pb-2">
+                <i class="text-secondary bi bi-upc-scan fs-2 text-secondary"></i> Scannez une carte SIM
+            </h4>
 
-<form id="biperForm">
-    <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="14" placeholder="Scannez un code !" style="font-size: 20px;">
-    <input type="hidden" readonly id="clientId" value="{{ clientId }}"> {# Remplacez par le client ID dynamique si nécessaire #}
-</form>
+            <form id="biperForm">
+                <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="14" placeholder="Scannez un code !" style="font-size: 20px;">
+                <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
+            </form>
 
-<p class ="py-2 font-weight-bold" id="responseMessage"></p> {# Zone pour afficher les messages de réponse #}
-<a href="{{path('users_with_orders')}}" type="button" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la liste des commandes</a>
-</div>
-</body>
+            <p class="py-2 font-weight-bold" id="responseMessage"></p>
+            <a href="{{ path('users_with_orders') }}" type="button" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la liste des commandes</a>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
+        <h5>Liste des Commandes</h5>
+        
+        <!-- Tableau pour afficher les commandes -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Numero</th>
+                    <th>Type Carte</th>
+                    <th>Status</th>
+                    <th>Reste à valider</th>
+                </tr>
+            </thead>
+            <tbody id="commandes-list"></tbody> <!-- Corps du tableau pour les commandes -->
+        </table>
+
+        <script>
    document.getElementById('serialNumber').addEventListener('input', function() {
        const serialNumber = this.value;
        const clientId = document.getElementById('clientId').value;
@@ -81,4 +94,50 @@
                });
        }
    });
+
+   const clientId = document.getElementById('clientId').value; // Récupération de l'ID du client
+   const url = `/api/commandes/${clientId}`;
+
+   // Fonction pour récupérer et afficher les commandes
+   function fetchAndRenderCommandes() {
+       axios.get(url)
+           .then(response => {
+               const commandes = response.data;
+               renderCommandes(commandes);
+           })
+           .catch(error => {
+               console.error('Erreur lors de la récupération des commandes:', error);
+           });
+   }
+
+   // Fonction pour afficher les commandes dans le tableau
+   function renderCommandes(commandes) {
+       const commandesList = document.getElementById('commandes-list');
+       commandesList.innerHTML = ''; // Efface le contenu précédent
+
+       if (commandes.length === 0) {
+           commandesList.innerHTML = '<tr><td colspan="7" class="text-center">Aucune commande trouvée pour ce client.</td></tr>';
+       } else {
+           commandes.forEach(commande => {
+               const row = document.createElement('tr');
+               row.innerHTML = `
+                   <td>${commande.numero}</td>
+                   <td>${commande.typeCarte}</td>
+                   <td>${commande.status}</td>
+                   <td>${(commande.qte - commande.qtevalidee)}</td>
+               `;
+               commandesList.appendChild(row);
+           });
+       }
+   }
+
+   // Appel initial pour charger les commandes
+   fetchAndRenderCommandes();
+
+   // Mettre à jour les commandes toutes les secondes
+   setInterval(fetchAndRenderCommandes, 1000);
 </script>
+        </div>
+
+    </body>
+</html>
