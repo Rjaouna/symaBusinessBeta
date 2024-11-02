@@ -6,6 +6,7 @@ use App\Repository\CarteSimRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(fields: ['serialNumber'], message: "Ce numéro de série doit être unique.")]
 #[ORM\HasLifecycleCallbacks]
@@ -19,6 +20,10 @@ class CarteSim
 
     #[ORM\Column(length: 14)]
     #[Groups('user_info')]
+    #[Assert\Regex(
+        pattern: '/^\d+$/', // Vérifie que le champ contient uniquement des chiffres
+        message: 'Le serial number ne doit contenir que des chiffres.'
+    )]
     private ?string $serialNumber = null;
 
     #[ORM\Column]

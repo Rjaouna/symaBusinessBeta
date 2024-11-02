@@ -15,6 +15,7 @@
             <div class="card bg-light mb-3">
                 <div class="card-header">Informations Personnelles</div>
                 <div class="card-body">
+                    {{ form_row(form.codeClient) }}
                     {{ form_row(form.email) }}
                     {{ form_row(form.nomResponsable) }}
                     {{ form_row(form.telephoneFixe) }}
@@ -40,7 +41,6 @@
                     {{ form_row(form.pays) }}
                     {{ form_row(form.codePostal) }}
                     {{ form_row(form.ville) }}
-                    {{ form_row(form.codeClient) }}
                     {{ form_row(form.iban) }}
                     {{ form_row(form.bic) }}
                 </div>

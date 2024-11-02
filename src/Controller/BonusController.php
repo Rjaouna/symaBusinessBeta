@@ -57,6 +57,7 @@ final class BonusController extends AbstractController
                 $entityManager->flush();
 
                 // Redirection après l'ajout du bonus
+                $this->addFlash('secondary', 'Le bonus a été bien attribué !');
                 return $this->redirectToRoute('app_bonus_index', [], Response::HTTP_SEE_OTHER);
             } else {
                 // Si aucun utilisateur n'a été trouvé, vous pouvez ajouter un message d'erreur

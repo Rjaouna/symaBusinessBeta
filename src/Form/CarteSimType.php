@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CarteSimType extends AbstractType
 {
@@ -21,6 +22,21 @@ class CarteSimType extends AbstractType
             ->add('serialNumber', TextType::class, [
                 'attr' => [
                     'placeholder' => 'Entrez le numéro de série ici', // Votre texte de placeholder
+                'maxlength' => 14, // Limiter la saisie à 14 caractères
+                'pattern' => '\d{14}', // Optionnel : pour les navigateurs qui supportent cela
+            ],
+            'constraints' => [
+                new Assert\NotBlank(), // Assurez-vous que le champ n'est pas vide
+                new Assert\Length([
+                    'min' => 14, // Limiter à 14 caractères minimum
+                    'max' => 14, // Limiter à 14 caractères maximum
+                    'minMessage' => 'Le numéro de série doit contenir exactement {{ limit }} chiffres.',
+                    'maxMessage' => 'Le numéro de série doit contenir exactement {{ limit }} chiffres.',
+                ]),
+                new Assert\Regex([
+                    'pattern' => '/^\d{14}$/', // Vérifie que le champ contient exactement 14 chiffres
+                    'message' => 'Le numéro de série doit contenir uniquement 14 chiffres.',
+                ]),
                 ],
             ])
             ->add('reserved', CheckboxType::class, [
