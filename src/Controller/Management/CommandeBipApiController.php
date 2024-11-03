@@ -77,7 +77,7 @@ class CommandeBipApiController extends AbstractController
 		// Vérification de la carte SIM
 		$carteSim = $this->getCarteSim($carteSimRepo, $serialNumber);
 		if (!$carteSim) {
-			return $this->json(['error' => 'Carte SIM non trouvée.', 'type' => 'primary'], 404);
+			return $this->json(['error' => 'Carte SIM non trouvée.'], 404);
 		}
 
 		// Vérification si la carte SIM est déjà réservée

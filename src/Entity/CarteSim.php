@@ -18,11 +18,15 @@ class CarteSim
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 14)]
+    #[ORM\Column(length: 19)]
     #[Groups('user_info')]
     #[Assert\Regex(
         pattern: '/^\d+$/', // Vérifie que le champ contient uniquement des chiffres
         message: 'Le serial number ne doit contenir que des chiffres.'
+    )]
+    #[Assert\Length(
+        max: 19,
+        maxMessage: 'Le numéro de série ne doit pas dépasser 19 caractères.'
     )]
     private ?string $serialNumber = null;
 

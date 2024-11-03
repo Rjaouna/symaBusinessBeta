@@ -21,21 +21,19 @@ class CarteSimType extends AbstractType
         $builder
             ->add('serialNumber', TextType::class, [
                 'attr' => [
-                    'placeholder' => 'Entrez le numéro de série ici', // Votre texte de placeholder
-                'maxlength' => 14, // Limiter la saisie à 14 caractères
-                'pattern' => '\d{14}', // Optionnel : pour les navigateurs qui supportent cela
+                'placeholder' => 'Entrez le numéro de série ici', // Votre texte de placeholder
+                'maxlength' => 19, // Limiter la saisie à 19 caractères
+                'pattern' => '\d{19}', // Optionnel : pour les navigateurs qui supportent cela
             ],
             'constraints' => [
                 new Assert\NotBlank(), // Assurez-vous que le champ n'est pas vide
-                new Assert\Length([
-                    'min' => 14, // Limiter à 14 caractères minimum
-                    'max' => 14, // Limiter à 14 caractères maximum
+                new Assert\Length(['min' => 19, // Limiter à 19 caractères minimum
+                    'max' => 19, // Limiter à 19 caractères maximum
                     'minMessage' => 'Le numéro de série doit contenir exactement {{ limit }} chiffres.',
                     'maxMessage' => 'Le numéro de série doit contenir exactement {{ limit }} chiffres.',
                 ]),
-                new Assert\Regex([
-                    'pattern' => '/^\d{14}$/', // Vérifie que le champ contient exactement 14 chiffres
-                    'message' => 'Le numéro de série doit contenir uniquement 14 chiffres.',
+                new Assert\Regex(['pattern' => '/^\d{19}$/', // Vérifie que le champ contient exactement 19 chiffres
+                    'message' => 'Le numéro de série doit contenir uniquement 19 chiffres.',
                 ]),
                 ],
             ])

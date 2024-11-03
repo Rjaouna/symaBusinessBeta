@@ -28,7 +28,7 @@ class CarteSimBatchType extends AbstractType
 				'attr' => [
 					'placeholder' => 'Entrez le premier numéro de série (14 chiffres)',
 					'maxlength' => 14,
-					'pattern' => '[0-9]{14}',
+				'pattern' => '[0-9]{19}',
 					'title' => 'Le numéro de série doit contenir exactement 14 chiffres',
 				],
 			])
@@ -36,8 +36,8 @@ class CarteSimBatchType extends AbstractType
 				'label' => false,
 				'attr' => [
 					'placeholder' => 'Entrez le dernier numéro de série (14 chiffres)',
-					'maxlength' => 14,
-					'pattern' => '[0-9]{14}',
+				'maxlength' => 19,
+				'pattern' => '[0-9]{19}',
 					'title' => 'Le numéro de série doit contenir exactement 14 chiffres',
 				],
 			])
