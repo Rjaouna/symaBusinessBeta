@@ -4,8 +4,14 @@
         <h6 class="ms-3 text-secondary mx-2">Bonjour, <strong class="user-name">{{app.user.nomResponsable}}</strong> !</h6>
     </div>
     <p class="mb-3 text-secondary">
-    {% if app.user.quotas.nom %}
-        Votre quota actuel est de <strong class="user-quota">{{app.user.quotas.nom}}</strong>.
+    {% if app.user.quotas is not null %}
+        {% if app.user.quotas.nom %}
+            Votre quota actuel est de <strong class="user-quota">{{ app.user.quotas.nom }}</strong>.
+        {% else %}
+            Aucuns quotas attribués.
+        {% endif %}
+    {% else %}
+        Aucuns quotas attribués.
     {% endif %}
         <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://127.0.0.1:8000/quota" class="text-primary">Pourquoi le système de quotation ?</a>
         </p>

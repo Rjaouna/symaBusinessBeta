@@ -10,6 +10,7 @@ use App\Repository\BonusRepository;
 use Symfony\Component\Mime\Address;
 use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,9 @@ class RegistrationController extends AbstractController
             $user->setSim5Usage(0); // Assigner le bonus
             $user->setSim10Usage(0); // Assigner le bonus
             $user->setSim15Usage(0); // Assigner le bonus
-            $user->setSim20Usage(0);// Assigner le bonus
+            $user->setSim20Usage(0); // Assigner le bonus
+            $user->setRoles(['ROLE_USER']);
+            $user->setQuotas(Null);
             $entityManager->persist($user);
             $entityManager->flush();
             // generate a signed url and email it to the user

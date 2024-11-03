@@ -44,17 +44,15 @@
     
     <body>
         <div class="container-fluid my-3 rounded bg-white">
-            <h4 class="mb-3 border-bottom border-secondary pb-2">
-                <i class="text-secondary bi bi-upc-scan fs-2 text-secondary"></i> Scannez une carte SIM
-            </h4>
+            
 
             <form id="biperForm">
-                <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="14" placeholder="Scannez un code !" style="font-size: 20px;">
+                <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="14" placeholder="Scannez un code !" style="font-size: 30px;font-weight:900">
                 <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
             </form>
 
             <p class="py-2 font-weight-bold" id="responseMessage"></p>
-            <a href="{{ path('users_with_orders') }}" type="button" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la liste des commandes</a>
+            
 
         <h5>Liste des Commandes</h5>
         
@@ -70,8 +68,9 @@
             </thead>
             <tbody id="commandes-list"></tbody> <!-- Corps du tableau pour les commandes -->
         </table>
-
+<a href="{{ path('users_with_orders') }}" type="button" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la liste des commandes</a>
         <script>
+         document.getElementById('serialNumber').focus(); // Met le focus sur le champ serialNumber
    document.getElementById('serialNumber').addEventListener('input', function() {
        const serialNumber = this.value;
        const clientId = document.getElementById('clientId').value;
@@ -120,11 +119,13 @@
        } else {
            commandes.forEach(commande => {
                const row = document.createElement('tr');
+               // Déterminer la classe pour le statut
+               const statusClass = commande.status === 'en_cours' ? 'table-primary' : ''; // Utilise 'table-danger' pour le rouge
                row.innerHTML = `
-                   <td>${commande.numero}</td>
-                   <td>${commande.typeCarte}</td>
-                   <td>${commande.status}</td>
-                   <td>${(commande.qte - commande.qtevalidee)}</td>
+                   <td class="${statusClass}">${commande.numero}</td>
+                   <td class="${statusClass}">${commande.typeCarte}</td>
+                   <td class="${statusClass}">${commande.status}</td>
+                   <td class="${statusClass}">${(commande.qte - commande.qtevalidee)}</td>
                `;
                commandesList.appendChild(row);
            });

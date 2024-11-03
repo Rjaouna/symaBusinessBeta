@@ -1,5 +1,7 @@
 <!-- Graphique des quotas (ApexCharts) -->
 <div class="mt-4 mb-2 px-1 py-3 rounded shadow-sm bg-white">
+<h6 class="fw-bold mb-0 ml-2">Évaluation des Quotas SIM :</h6>
+
     <div id="quota-chart" style="height: 280px;"></div>
 </div>
 
@@ -52,7 +54,7 @@ function renderQuotaChart(userData) {
             { name: 'Utilisation (%)', data: percentageUsageData }
         ],
         xaxis: { 
-            categories: ['Carte Sim 05', 'Carte Sim 10', 'Carte Sim 15', 'Carte Sim 20'] 
+            categories: ['Sim 05', 'Sim 10', 'Sim 15', 'Sim 20'] 
         },
         colors: ['#3498db'],
         fill: { opacity: 1 },

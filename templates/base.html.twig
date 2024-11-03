@@ -56,8 +56,8 @@
                         {% block left_sidebar %}
                             {{ include(('_Sidebars/_left/userInformations.html.twig')) }}
                             {% if app.user.quotas %}
-                            {{ include(('_Sidebars/_left/quotaInformations.html.twig')) }}
                             {{ include(('_Sidebars/_left/formCommandes.html.twig')) }}
+                            {{ include(('_Sidebars/_left/quotaInformations.html.twig')) }}
                             {% endif %}
                             {# {{ include(('_Sidebars/_left/_user_informations.html.twig')) }} #}
                         {% endblock %}

@@ -108,8 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
     simType.addEventListener('change', async function() {
         const quotas = await fetchQuotasAndUsages(); // Appeler l'API pour récupérer les quotas et usages
         updateQuantityOptions(simType.value, quotas);
+        
+
     });
-    
 });
 </script>
 

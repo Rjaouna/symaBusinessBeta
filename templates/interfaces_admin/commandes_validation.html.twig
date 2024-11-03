@@ -26,18 +26,22 @@
     </thead>
     <tbody>
         {% for commande in commandesClient %}
-            <tr>
-                <td>{{ commande.numero }}</td>
-                <td>{{ commande.user.nomResponsable }}</td>
-                <td>{{ commande.SimType }}</td>
-                <td {% if commande.status == 'en_cours' %} class="text-primary" {% endif %}>{{ commande.status }}</td>
-                <td>{{ commande.qte }}</td>
-                <td>{{ (commande.qte - commande.qtevalidee) }}</td> <!-- Assurez-vous que 'qte' est le bon champ -->
-                <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        {% else %}
-        {% endfor %}
+    <tr>
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.numero }}</td>
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.user.nomResponsable }}</td>
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.SimType }}</td>
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.status }}</td> <!-- Appliquez la classe si le statut est 'en_cours' -->
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.qte }}</td>
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ (commande.qte - commande.qtevalidee) }}</td> <!-- Assurez-vous que 'qte' est le bon champ -->
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+        <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="8" class="text-center">Aucune commande trouvée.</td>
+    </tr>
+{% endfor %}
+
     </tbody>
 </table>
 

@@ -23,9 +23,9 @@
             <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
             {% if is_granted('ROLE_ADMIN') %}
             <a class="dropdown-item" href="{{ path('app_syma_business_config_index') }}">Informations Agent</a>
-            {% endif %}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{path('admin_syma_business')}}">Administration</a>
+            {% endif %}
           {% else %}
             <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
             <a class="dropdown-item" href="{{ path('app_register') }}">Créer un compte !</a>
