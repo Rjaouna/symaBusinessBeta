@@ -13,7 +13,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+
+#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email.')]
+#[UniqueEntity(fields: ['codeClient'], message: 'Il existe déjà un compte avec ce code client.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -592,5 +594,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $activeRole = null;
+
+    public function setActiveRole(string $role): self
+    {
+        $this->activeRole = $role;
+        return $this;
+    }
+
+    public function getActiveRole(): ?string
+    {
+        return $this->activeRole;
     }
 }

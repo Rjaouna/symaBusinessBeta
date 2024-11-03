@@ -4,18 +4,17 @@
 
 {% block body %}
 
-
-  {% if is_granted('ROLE_ADMIN') %}
-      {{ include('interfaces_admin/accueil/index.html.twig') }}  
-
+    {% if is_granted('ROLE_ADMIN') %}
+      {% if app.user.activeRole == 'ROLE_ADMIN' %}
+        {{ include('interfaces_admin/accueil/index.html.twig') }}  
       {% else %}
+        {{ include('interfaces_users/accueil/index.html.twig') }}  
+      {% endif %}
+
+    {% else %}
         {% if is_granted('ROLE_USER') %}
-
-      {{ include('interfaces_users/accueil/index.html.twig') }}  
-      
-              
-      {% endif %}
-      {% endif %}
-
+            {{ include('interfaces_users/accueil/index.html.twig') }}  
+        {% endif %}
+    {% endif %}
 
 {% endblock %}

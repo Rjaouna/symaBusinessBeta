@@ -10,7 +10,10 @@
     <div class="collapse navbar-collapse" id="navbarColor03">
       <ul class="navbar-nav ms-auto"> <!-- Ajout de la classe ms-auto -->
        
-       
+       {% if app.user %}
+      {% if app.user.activeRole == 'ROLE_ADMIN' %}
+
+        
 
         <li class="nav-item">
           <a class="nav-link active" href="{{ path('users_with_orders') }}">
@@ -34,12 +37,25 @@
           </a>
         </li>
 
+<li class="nav-item">
+          <a class="nav-link active" href="{{ path('app_logout') }}">
+          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-gear fs-5"></i></span> 
+          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-gear-fill fs-5"></i></span>
+          </a>
+        </li>
+
+
         <li class="nav-item">
           <a class="nav-link active" href="{{ path('app_logout') }}">
           <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
           <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
           </a>
         </li>
+
+        
+
+
+
         <li class="nav-item d-none" id ="newUserWithoutCode">
           <a class="nav-link active" href="{{ path('app_logout') }}">
           <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
@@ -47,6 +63,28 @@
           </a>
         </li>
 
+
+{% endif %}
+       {% endif %}
+
+
+{% if 'ROLE_ADMIN' in app.user.roles and 'ROLE_USER' in app.user.roles %}
+<form id="switchRoleForm" class="d-flex align-items-center ms-3">
+    <button class="btn btn-secondary  mx-2 py-1" type="submit">Switch</button>
+    <select name="role" id="roleSelect" class="form-select py-1">
+        <option value="ROLE_ADMIN" {% if app.user.activeRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
+        <option value="ROLE_USER" {% if app.user.activeRole == 'ROLE_USER' %}selected{% endif %}>User</option>
+    </select>
+</form>
+{% endif %}
+
+
+
+       
+
+{# {% if app.user.activeRole == 'ROLE_ADMIN' %}
+    <li class="nav-item"><a class="nav-link active" href="#">Admin Dashboard</a></li>
+{% endif %} #}
 
 
       </ul>
@@ -125,8 +163,41 @@ fetchUsersWithoutCode();
 setInterval(fetchUsersWithoutCode, 10000);
 
 
+
+
+//Switch roles 
+document.getElementById('switchRoleForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const role = document.getElementById('roleSelect').value; // Get the selected role
+
+    axios.post('/user/switch-role', new URLSearchParams({
+        'role': role
+    }), {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+            // No CSRF token needed since the user is already authenticated
+        }
+    })
+    .then(response => {
+        console.log('Success:', response.data);
+        // Refresh the page to reflect the new role
+        location.reload();
+    })
+    .catch(error => {
+        if (error.response) {
+            console.error('Erreur lors du changement de rôle:', error.response.data.error || error.response.statusText);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error', error.message);
+        }
+    });
+});
+
+
+
 </script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
 {% endif %} 

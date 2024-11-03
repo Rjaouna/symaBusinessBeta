@@ -6,17 +6,25 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/user')]
 final class UserController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -32,6 +40,34 @@ final class UserController extends AbstractController
             'users' => $filteredUsers,
         ]);
     }
+    #[Route('/switch-role', name: 'switch_role', methods: ['POST'])]
+    public function switchRole(Request $request): JsonResponse
+    {
+        $role = $request->request->get('role');
+        $user = $this->getUser();
+
+        // Check if user is authenticated
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not authenticated'], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        // Check if role is valid
+        if (!in_array($role, ['ROLE_USER', 'ROLE_ADMIN'], true)) {
+            return new JsonResponse(['error' => 'Invalid role'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Check if user has permission to switch to this role
+        if (!in_array($role, $user->getRoles(), true)) {
+            return new JsonResponse(['error' => 'Unauthorized role switch'], JsonResponse::HTTP_FORBIDDEN);
+        }
+
+        // Update user's active role
+        $user->setActiveRole($role);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['message' => 'Role switched successfully']);
+    }
+
 
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
