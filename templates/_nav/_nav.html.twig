@@ -9,30 +9,124 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor03">
       <ul class="navbar-nav ms-auto"> <!-- Ajout de la classe ms-auto -->
-     
+       
+       
+
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ path('users_with_orders') }}">
+          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-upc-scan fs-5"></i></span> 
+          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-upc-scan fs-5"></i> Valider une cde !</span>
+          </a>
+        </li>
+
+
+
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ path('users_with_orders') }}">
+          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-briefcase fs-5"></i></span> 
+          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-briefcase fs-5"></i> Configurer l'agent</span>
+          </a>
+        </li>
+                <li class="nav-item">
+          <a class="nav-link active" href="{{ path('app_logout') }}">
+          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-person fs-5"></i></span> 
+          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-person fs-5"></i> Mon profil</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ path('app_logout') }}">
+          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
+          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
+          </a>
+        </li>
+        <li class="nav-item d-none" id ="newUserWithoutCode">
+          <a class="nav-link active" href="{{ path('app_logout') }}">
+          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
+          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i><span id="UserWithoutCode"></span></span>
+          </a>
+        </li>
+
 
 
       </ul>
-      <div class="dropdown ms-5"> <!-- Wrapper pour le menu déroulant -->
-       <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          <i class="bi bi-person fs-5"></i> Bonjour {{app.user.nomResponsable}} 
-        </a> 
-        <div class="dropdown-menu dropdown-menu-end"> <!-- Classe pour aligner à droite -->
-          {% if app.user %}
-            <a class="dropdown-item" href="{{ path('app_profile') }}"> Mon Profil</a>
-            <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
-            {% if is_granted('ROLE_ADMIN') %}
-            <a class="dropdown-item" href="{{ path('app_syma_business_config_index') }}">Informations Agent</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{path('admin_syma_business')}}">Administration</a>
-            {% endif %}
-          {% else %}
-            <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
-            <a class="dropdown-item" href="{{ path('app_register') }}">Créer un compte !</a>
-          {% endif %}
-        </div>
-      </div>
+     
     </div>
   </div>
 </nav>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sélectionne toutes les icônes avec la classe "toggle-icon-closed"
+        const closedIcons = document.querySelectorAll('.toggle-icon-closed');
+
+        closedIcons.forEach(closedIcon => {
+            const openIcon = closedIcon.nextElementSibling;
+
+            // S'assurer qu'il y a bien un élément suivant pour former une paire
+            if (openIcon && openIcon.classList.contains('toggle-icon-open')) {
+                // Survol pour afficher l'icône ouverte
+                closedIcon.addEventListener('mouseenter', () => {
+                    closedIcon.classList.add('d-none'); // Cache l'icône fermée
+                    openIcon.classList.remove('d-none'); // Affiche l'icône ouverte
+                });
+
+                // Sortie de la souris pour restaurer l'icône fermée
+                openIcon.addEventListener('mouseleave', () => {
+                    openIcon.classList.add('d-none'); // Cache l'icône ouverte
+                    closedIcon.classList.remove('d-none'); // Affiche l'icône fermée
+                });
+            }
+        });
+    });
+
+
+
+
+function fetchUsersWithoutCode() {
+    axios.get('/api/users/count/no-code-client')
+        .then(response => {
+            // Récupérer le nombre d'utilisateurs sans code_client
+            const count = response.data.count;
+            const users = response.data;
+
+            // Afficher le nombre dans la console
+            console.log('Nombre d\'utilisateurs sans code_client :',users);
+
+            // Vérifier si le nombre d'utilisateurs sans code_client est supérieur ou égal à 1
+            if (count >= 1) {
+                // Retirer la classe 'd-none' pour rendre l'élément visible
+                const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
+                const UserWithoutCodeElement = document.getElementById('UserWithoutCode');
+                if (newUserWithoutCodeElement) {
+                    newUserWithoutCodeElement.classList.remove('d-none');
+                    UserWithoutCodeElement.innerHTML=` ${count} <a href="{{path('users_count_no_code_client')}}">client(s) sans code !</a> `
+                }
+            } else {
+                // Optionnel : Si aucun utilisateur sans code_client, garder l'élément caché
+                const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
+                if (newUserWithoutCodeElement) {
+                    newUserWithoutCodeElement.classList.add('d-none');
+                }
+            }
+        })
+        .catch(error => {
+            // Gérer les erreurs
+            console.error('Erreur lors de la récupération des utilisateurs :', error.response ? error.response.data : error.message);
+        });
+}
+
+// Appeler la fonction une première fois immédiatement
+fetchUsersWithoutCode();
+
+// Configurer un intervalle pour appeler la fonction toutes les 10 secondes (10000 ms)
+setInterval(fetchUsersWithoutCode, 10000);
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
 {% endif %} 

@@ -44,9 +44,20 @@
     </head>
     
     <body>
+    
         <!-- Inclusion du fichier de navigation -->
         {{ include('_nav/_nav.html.twig') }}
-        
+        {% if app.user %}
+            {% if app.user.codeClient is null %}
+        <div class="container-fluid  my-1 bg-primary text-white">
+            <div class="row text-center">
+            <div>
+                Votre compte est actuellement en attente de validation. Pour accéder aux fonctionnalités de l'application, veuillez contacter l'administrateur du système pour activer votre compte. 
+            </div>
+            </div>
+        </div>
+         {% endif %}
+        {% endif %}
         <div class="container-fluid mt-3">
             <div class="row">
                 

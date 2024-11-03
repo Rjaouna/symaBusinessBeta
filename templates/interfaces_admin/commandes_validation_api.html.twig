@@ -47,7 +47,7 @@
             
 
             <form id="biperForm">
-                <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="14" placeholder="Scannez un code !" style="font-size: 30px;font-weight:900">
+                <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="19" placeholder="Scannez un code !" style="font-size: 30px;font-weight:900">
                 <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
             </form>
 
@@ -79,9 +79,9 @@
        console.log("Numéro de série:", serialNumber);
        console.log("Client ID:", clientId);
 
-       // Vérifiez si le nombre de caractères est 14
-       if (serialNumber.length === 14) {
-           // Envoyer la requête dès que le nombre de caractères atteint 14
+       // Vérifiez si le nombre de caractères est 19
+       if (serialNumber.length === 19) {
+           // Envoyer la requête dès que le nombre de caractères atteint 19
            axios.post(`/api/biper/${clientId}`, { serialNumber })
                .then(response => {
                    document.getElementById('responseMessage').innerText = response.data.success || response.data.error;

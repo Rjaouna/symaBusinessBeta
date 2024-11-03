@@ -48,6 +48,7 @@
                                 <p>{{ quota }}</p>
                             </td>
                             <td>{{ usages[carte.nom] }}</td> <!-- Usage de l'utilisateur pour ce type de carte -->
+                           <td>{{ quota }} - {{ usages[carte.nom] }}</td>
                             <td>
                                 <button class="btn btn-sm btn-secondary ajouter-panier w-100" 
                                         data-type="{{ carte.nom }}"

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+<h4 class="mb-3 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-person fs-2 text-secondary"></i> Liste clients sans code client</h1>
+
+    <table id="myDataTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Code client</th>
+                <th>Nom Responsable</th>
+                <th>Email</th>
+                <th>Telephone Fixe</th>
+                <th>Telephone Mobile</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>XXXXXXXXXXX</td>
+                <td>{{ user.nomResponsable }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.telephoneFixe }}</td>
+                <td>{{ user.telephoneMobile }}</td>
+                <td>
+                    {# <a href="{{ path('app_user_show', {'id': user.id}) }}">Détails</a> #}
+                    {# <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a> #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+ 
+{% endblock %}
