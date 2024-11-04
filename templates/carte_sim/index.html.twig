@@ -3,9 +3,23 @@
 {% block title %}CarteSim index{% endblock %}
 
 {% block body %}
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-sim fs-2 text-secondary"></i> Stock Cartes Sim</h4>
+<h5 class="mb-3 border-bottom border-secondary pb-2">
+    <i class="text-secondary bi bi-sim fs-4 text-secondary"></i> Stock Cartes Sim
+</h5>
 
+{% if hasMissingSerialNumbers %}
+    <div class="alert alert-warning">
+        Une mise à jour de la base Pro est en attente ! <a href="{{ path('migrate_sim_cards') }}">Synchroniser les stocks</a>
+    </div>
+{% endif %}
+
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+    <label class="form-check-label" for="flexSwitchCheckChecked">Afficher toutes les cartes Sim</label>
+</div>
+
+<div id="tableContainer">
+    <!-- Initially display carte_sims -->
     <table id="myDataTable" class="table table-striped">
         <thead>
             <tr>
@@ -13,7 +27,7 @@
                 <th>Type</th>
                 <th>Prix</th>
                 <th>Reservée</th>
-                <th>Attribuée à </th>
+                <th>Attribuée à</th>
                 <th>Date modification</th>
                 <th>Etat</th>
                 <th>Usage</th>
@@ -21,27 +35,115 @@
             </tr>
         </thead>
         <tbody>
-        {% for carte_sim in carte_sims %}
-            <tr>
-                <td>{{ carte_sim.serialNumber }}</td>
-                <td>{{ carte_sim.type }}</td>
-                <td>{{ carte_sim.type.prix }}</td> 
-                <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
-                <td>{{ carte_sim.user }}</td>
-                <td>{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ carte_sim.etat }}</td>
-                <td>{{ carte_sim.usageFinale }}</td>
-                <td>
-                    <a href="{{ path('app_carte_sim_show', {'id': carte_sim.id}) }}">Détails</a>
-                    {# <a href="{{ path('app_carte_sim_edit', {'id': carte_sim.id}) }}">edit</a> #}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">No records found</td>
-            </tr>
-        {% endfor %}
+            {% for carte_sim in carte_sims %}
+                <tr>
+                    <td  >{{ carte_sim.serialNumber }}</td>
+                    <td>{{ carte_sim.type }}</td>
+                    <td>{{ carte_sim.type.prix }}</td>
+                    <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
+                    <td>{{ carte_sim.user }}</td>
+                    <td>{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ carte_sim.etat }}</td>
+                    <td>{{ carte_sim.usageFinale }}</td>
+                    <td>
+                        <a href="{{ path('app_carte_sim_show', {'id': carte_sim.id}) }}">Détails</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
+</div>
+
+<script>
+    document.getElementById('flexSwitchCheckChecked').addEventListener('change', function() {
+        const container = document.getElementById('tableContainer');
+        
+        if (this.checked) {
+            // Afficher carte_sims lorsque la case est activée (checked)
+            container.innerHTML = `
+                <table id="myDataTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Numéro de serie</th>
+                            <th>Type</th>
+                            <th>Prix</th>
+                            <th>Reservée</th>
+                            <th>Attribuée à</th>
+                            <th>Date modification</th>
+                            <th>Etat</th>
+                            <th>Usage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for carte_sim in carte_simsreserved %}
+                            <tr>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.serialNumber }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.type }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.type.prix }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.user }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.etat }}</td>
+                                <td class="{{ carte_sim.reserved ? 'text-primary' : '' }}">{{ carte_sim.usageFinale }}</td>
+                                <td>
+                                    <a href="{{ path('app_carte_sim_show', {'id': carte_sim.id}) }}">Détails</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9">Aucun enregistrement trouvé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            `;
+        } else {
+            // Afficher carte_sims réservées lorsque la case est désactivée (unchecked)
+            container.innerHTML = `
+                <table id="myDataTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Numéro de serie</th>
+                            <th>Type</th>
+                            <th>Prix</th>
+                            <th>Reservée</th>
+                            <th>Attribuée à</th>
+                            <th>Date modification</th>
+                            <th>Etat</th>
+                            <th>Usage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for carte_sim in carte_sims %}
+                            <tr>
+                                <td ">{{ carte_sim.serialNumber }}</td>
+                                <td>{{ carte_sim.type }}</td>
+                                <td>{{ carte_sim.type.prix }}</td>
+                                <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
+                                <td>{{ carte_sim.user }}</td>
+                                <td>{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ carte_sim.etat }}</td>
+                                <td>{{ carte_sim.usageFinale }}</td>
+                                <td>
+                                    <a href="{{ path('app_carte_sim_show', {'id': carte_sim.id}) }}">Détails</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9">Aucun enregistrement trouvé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            `;
+        }
+    });
+</script>
 
 {% endblock %}

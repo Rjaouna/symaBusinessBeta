@@ -22,6 +22,7 @@
             <th>Reste à valider</th>
             <th>Date création</th>
             <th>Dernière modification</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +36,8 @@
         <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ (commande.qte - commande.qtevalidee) }}</td> <!-- Assurez-vous que 'qte' est le bon champ -->
         <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
         <td {% if commande.status == 'en_cours' %} class="table-primary" {% endif %}>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+        <td> <a  href="{{ path('Commande_Ligne_Auto_Validato', {'numeroCommande': commande.numero}) }}">Auto</a></td>
+
     </tr>
 {% else %}
     <tr>

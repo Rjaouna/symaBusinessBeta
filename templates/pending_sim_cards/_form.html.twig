@@ -1,4 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary btn-sm me-2">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-secondary btn-sm me-2" href="{{ path('app_pending_sim_cards_index') }}">Retour à la liste</a>
+
+
 {{ form_end(form) }}

@@ -20,6 +20,8 @@ class SimCardImportController extends AbstractController
 
 		if ($request->isMethod('POST')) {
 			$type = $request->request->get('type'); // Récupérer le type depuis le formulaire
+			$simTypeRecived = $simTypeRepository->findBy(['code' => $type]);
+			
 
 			/** @var UploadedFile $csvFile */
 			$csvFile = $request->files->get('csv_file');
@@ -48,7 +50,8 @@ class SimCardImportController extends AbstractController
 								// Créer un nouvel objet PendingSimCards
 								$pendingSimCard = new PendingSimCards();
 								$pendingSimCard->setSerialNumber($serialNumber);
-								$pendingSimCard->setType($type); // Utiliser le type du formulaire
+								$pendingSimCard->setType($simTypeRecived[0]); // Utiliser le type du formulaire
+								$pendingSimCard->setImportedCsv(True);
 
 								$entityManager->persist($pendingSimCard);
 								$rowCount++;

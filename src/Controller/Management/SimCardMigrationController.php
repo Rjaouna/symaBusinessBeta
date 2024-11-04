@@ -23,6 +23,7 @@ class SimCardMigrationController extends AbstractController
 	): Response {
 		// Step 1: Retrieve all PendingSimCards with migrated = false
 		$pendingCards = $pendingCardRepository->findBy(['migrated' => false]);
+		$processedCount = 0;
 
 		// Step 2: Iterate through each pending card and create a new CarteSim
 		foreach ($pendingCards as $pendingCard) {
@@ -35,19 +36,14 @@ class SimCardMigrationController extends AbstractController
 				// Create a new CarteSim entity
 				$carteSim = new CarteSim();
 				$carteSim->setSerialNumber($pendingCard->getSerialNumber());
+				$carteSim->setType($pendingCard->getType());
+				$carteSim->setReserved(False);
 
-				// Check if simType is found before setting it
-				if ($simType) {
-					$carteSim->setType($simType);
-				} else {
-					// Handle the case where simType is not found
-					// For example, you could log a warning or set a default type
-				}
-
-				$carteSim->setReserved(false);
+				
 
 				// Persist the new CarteSim entity
 				$entityManager->persist($carteSim);
+				$processedCount++;
 
 				// Mark the pending card as migrated
 				$pendingCard->setMigrated(true);
@@ -59,8 +55,8 @@ class SimCardMigrationController extends AbstractController
 
 		// Step 3: Flush the changes to the database
 		$entityManager->flush();
-
+		$this->addFlash('success', sprintf('La synchronisation a été effectuée avec succès. %d carte(s) traitée(s).', $processedCount));
 		// Redirect to the previous page (or a specific route)
-		return $this->redirectToRoute('app_pending_sim_cards_index'); // Replace 'your_route_name_here' with the actual route name
+		return $this->redirectToRoute('app_carte_sim_index'); // Replace 'your_route_name_here' with the actual route name
 	}
 }

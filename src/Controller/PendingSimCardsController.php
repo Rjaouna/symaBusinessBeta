@@ -19,7 +19,8 @@ final class PendingSimCardsController extends AbstractController
     public function index(PendingSimCardsRepository $pendingSimCardsRepository): Response
     {
         return $this->render('pending_sim_cards/index.html.twig', [
-            'pending_sim_cards' => $pendingSimCardsRepository->findAll(),
+            'pending_sim_cards_migrated' => $pendingSimCardsRepository->findBy(['migrated' => 1]),
+            'pending_sim_cards_not_migrated' => $pendingSimCardsRepository->findBy(['migrated' => 0]),
         ]);
     }
 
@@ -27,11 +28,16 @@ final class PendingSimCardsController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, SimTypeRepository $simTypeRepository): Response
     {
         $pendingSimCard = new PendingSimCards();
-        $form = $this->createForm(PendingSimCardsType::class, $pendingSimCard);
+        $form = $this->createForm(
+            PendingSimCardsType::class,
+            $pendingSimCard,
+            [
+                'is_new' => true, // This is for creating a new entity
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
 
             // Get the SimType object directly from the form data
             $simType = $pendingSimCard->getType(); // This should return the SimType object
@@ -42,6 +48,8 @@ final class PendingSimCardsController extends AbstractController
             } else {
                 // Handle the case where the simType is not set, if necessary
             }
+            $pendingSimCard->setImportedCsv(False);
+
 
             // Persist the new PendingSimCard entity
             $entityManager->persist($pendingSimCard);
@@ -68,7 +76,13 @@ final class PendingSimCardsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_pending_sim_cards_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, PendingSimCards $pendingSimCard, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(PendingSimCardsType::class, $pendingSimCard);
+        $form = $this->createForm(
+            PendingSimCardsType::class,
+            $pendingSimCard,
+            [
+                'is_new' => false, // This is for editing an existing entity
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -91,6 +105,6 @@ final class PendingSimCardsController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_pending_sim_cards_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_carte_sim_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PendingSimCardsRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[UniqueEntity(fields: ['serialNumber'], message: "Ce numéro de série doit être unique.")]
@@ -17,12 +18,18 @@ class PendingSimCards
     private ?int $id = null;
 
     #[ORM\Column(length: 19)]
+    #[Assert\Regex(
+        pattern: '/^\d+$/', // Vérifie que le champ contient uniquement des chiffres
+        message: 'Le serial number ne doit contenir que des chiffres.'
+    )]
+    #[Assert\Length(
+        max: 19,
+        maxMessage: 'Le numéro de série ne doit pas dépasser 19 caractères.'
+    )]
     private ?string $serialNumber = null;
 
 
-    #[ORM\Column(length: 50)]
-    private ?string $type = null;
-
+   
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -31,6 +38,13 @@ class PendingSimCards
 
     #[ORM\Column]
     private ?bool $migrated = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pendingSimCards')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SimType $type = null;
+
+    #[ORM\Column]
+    private ?bool $importedCsv = null;
 
     public function getId(): ?int
     {
@@ -49,17 +63,7 @@ class PendingSimCards
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+ 
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -107,5 +111,29 @@ class PendingSimCards
     public function onPreUpdate()
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getType(): ?SimType
+    {
+        return $this->type;
+    }
+
+    public function setType(?SimType $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function isImportedCsv(): ?bool
+    {
+        return $this->importedCsv;
+    }
+
+    public function setImportedCsv(bool $importedCsv): static
+    {
+        $this->importedCsv = $importedCsv;
+
+        return $this;
     }
 }
