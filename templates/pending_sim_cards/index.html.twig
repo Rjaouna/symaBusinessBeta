@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PendingSimCards index{% endblock %}
+
+{% block body %}
+    <h1>PendingSimCards index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>SerialNumber</th>
+                <th>Type</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Migrated</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pending_sim_card in pending_sim_cards %}
+            <tr>
+                <td>{{ pending_sim_card.id }}</td>
+                <td>{{ pending_sim_card.serialNumber }}</td>
+                <td>{{ pending_sim_card.type }}</td>
+                <td>{{ pending_sim_card.createdAt ? pending_sim_card.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pending_sim_card.updatedAt ? pending_sim_card.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pending_sim_card.migrated ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_pending_sim_cards_show', {'id': pending_sim_card.id}) }}">show</a>
+                    <a href="{{ path('app_pending_sim_cards_edit', {'id': pending_sim_card.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_pending_sim_cards_new') }}">Create new</a>
+<a href="{{ path('migrate_sim_cards') }}">Publication</a>
+
+{% endblock %}

@@ -58,6 +58,7 @@ class CarteSimType extends AbstractType
             ->add('type', EntityType::class, [
                 'class' => SimType::class,
                 'choice_label' => 'nom',
+            'placeholder' => 'Select a SIM type', // Placeholder text
             ]);
     }
 

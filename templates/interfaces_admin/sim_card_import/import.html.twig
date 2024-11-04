@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import SIM Cards{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+        <div class="card">
+            
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="csv_file" class="form-label">CSV File:</label>
+                        <input type="file" class="form-control" id="csv_file" name="csv_file" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Type:</label>
+                        <select id="type" name="type" class="form-select" required>
+                            <option value="">Select Type</option>
+							{% for simType in simTypes %}
+                            <option value="{{simType.code}}">{{simType.nom}}</option>
+								
+							{% endfor %}
+                            
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Import SIM Cards</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
