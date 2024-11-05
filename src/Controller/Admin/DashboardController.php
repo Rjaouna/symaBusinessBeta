@@ -2,8 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\SimType;
 use App\Entity\User;
+use App\Entity\SimType;
+use App\Entity\EmailSettings;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -46,5 +47,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Syma Business dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Clients', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Types cartes Sim', 'fas fa-users', SimType::class);
+        yield MenuItem::linkToCrud('Configuration des E-mails', 'fa fa-reply-all', EmailSettings::class);
+        
     }
 }

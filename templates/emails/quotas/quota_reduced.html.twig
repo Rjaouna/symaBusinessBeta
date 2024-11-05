@@ -1,0 +1,36 @@
+{% block content %}
+    <h1>Attention, {{ user.nomResponsable }} ! ⚠️</h1>
+
+    <p>Nous tenons à vous informer que, en raison de vos ventes récentes, votre quota a été réduit.</p>
+
+    <p>
+        <strong>Ancien quota :</strong> {{ oldQuota }} <br>
+        <strong>Nouveau quota :</strong> {{ newQuota }} <br>
+        <strong>Date de mise à jour :</strong> {{ updateDate|date('d/m/Y') }}
+    </p>
+
+    <p>
+        Cette réduction de quota est le résultat d'une faible performance en matière de ventes d'abonnements. Pour éviter d'autres dégradations de quota, il est crucial d'orienter vos ventes vers des cartes SIM qui finissent par des abonnements.
+    </p>
+
+    <p>
+        Nous vous encourageons à revoir vos stratégies de vente et à vous concentrer sur la promotion des cartes SIM avec abonnements. Chaque vente d'abonnement est une occasion de renforcer votre position et d'augmenter votre quota à l'avenir.
+    </p>
+
+    <p>
+        Pour suivre vos performances et découvrir des conseils pour améliorer vos ventes, connectez-vous à votre tableau de bord en cliquant sur le lien ci-dessous :
+    </p>
+
+    <p style="text-align: center;">
+        <a href="{{ clientDashboardUrl }}" style="background-color: #d9230f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Accéder à mon espace client</a>
+    </p>
+
+    <p>
+        Si vous avez des questions ou besoin d'assistance pour améliorer vos performances, n'hésitez pas à nous contacter. Nous sommes là pour vous aider à réussir !
+    </p>
+
+    <p>
+        Cordialement,<br>
+        <strong>L'équipe Syma-Business</strong>
+    </p>
+{% endblock %}

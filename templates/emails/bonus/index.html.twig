@@ -1,0 +1,30 @@
+<h1>Félicitations, {{ user.nomResponsable }} ! 🎉</h1>
+
+<p>Nous sommes heureux de vous informer que vous avez reçu un bonus spécial !</p>
+
+<p>
+    <strong>Montant du bonus :</strong> {{ bonu.valeur }} points <br>
+    <strong>Date d'attribution :</strong> {{ bonusDate|date('d/m/Y') }} <br>
+    <strong>Bonus actuel total :</strong> {{ user.totalBonus }} points
+</p>
+
+<p>
+    Ce bonus a été attribué en reconnaissance de votre fidélité et de votre engagement avec nous. Vous pouvez utiliser vos points pour accéder à des offres exclusives et à des avantages réservés à nos meilleurs clients.
+</p>
+
+<p>
+    Pour consulter votre solde de points et découvrir les offres disponibles, connectez-vous à votre espace client en cliquant sur le lien ci-dessous :
+</p>
+
+<p style="text-align: center;">
+    <a href="{{ clientDashboardUrl }}" style="background-color: #004080; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Accéder à mon espace client</a>
+</p>
+
+<p>
+    Si vous avez des questions ou si vous souhaitez plus d'informations, n'hésitez pas à nous contacter. Nous sommes là pour vous aider !
+</p>
+
+<p>
+    Cordialement,<br>
+    <strong>L'équipe Syma-Business</strong>
+</p>

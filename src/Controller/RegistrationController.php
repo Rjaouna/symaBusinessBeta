@@ -11,6 +11,8 @@ use Symfony\Component\Mime\Address;
 use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Null_;
+use App\Repository\EmailSettingsRepository;
+use App\Repository\QuotaRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,14 +30,17 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, EmailSettingsRepository $emailSettingsRepository, QuotaRepository $quota): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_syma_business');
         }
         $user = new User();
+        $quota = $quota->find(1);
+        // Récupérer uniquement les noms des quotas
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
@@ -48,16 +53,25 @@ class RegistrationController extends AbstractController
             $user->setSim10Usage(0); // Assigner le bonus
             $user->setSim15Usage(0); // Assigner le bonus
             $user->setSim20Usage(0); // Assigner le bonus
+            if ($quota) {
+                $user->setQuotas($quota); // Assigner le quota récupéré
+            } else {
+                // Gérer le cas où le quota avec l'ID 1 n'existe pas (optionnel)
+                $this->addFlash('error', 'Le quota demandé n\'existe pas.');
+            }
             $user->setRoles(['ROLE_USER']);
-            $user->setQuotas(Null);
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // Récupérer les paramètres d'email depuis EmailSettings
+            $emailSettings = $emailSettingsRepository->findOneBy([]);
+            $subject = $emailSettings ? $emailSettings->getConfirmationEmailSubject() : 'Confirmation de votre compte';
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('contact@cartemenu.fr', 'Syma-Business'))
                     ->to((string) $user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject($subject)
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 

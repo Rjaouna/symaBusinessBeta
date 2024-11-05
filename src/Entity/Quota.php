@@ -49,6 +49,9 @@ class Quota
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'quotas')]
     private Collection $users;
 
+    #[ORM\Column(length: 10)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -188,5 +191,17 @@ class Quota
     public function __toString()
     {
         return $this->nom;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
+
+        return $this;
     }
 }

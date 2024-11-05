@@ -599,6 +599,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $activeRole = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastUpdatedQuotaAt = null;
+
     public function setActiveRole(string $role): self
     {
         $this->activeRole = $role;
@@ -608,5 +611,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getActiveRole(): ?string
     {
         return $this->activeRole;
+    }
+
+    public function getLastUpdatedQuotaAt(): ?\DateTimeImmutable
+    {
+        return $this->lastUpdatedQuotaAt;
+    }
+
+    public function setLastUpdatedQuotaAt(?\DateTimeImmutable $lastUpdatedQuotaAt): static
+    {
+        $this->lastUpdatedQuotaAt = $lastUpdatedQuotaAt;
+
+        return $this;
     }
 }

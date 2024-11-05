@@ -36,7 +36,7 @@ final class BonusController extends AbstractController
     }
 
     #[Route('/new', name: 'app_bonus_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, MailerInterface $mailer): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, MailerInterface $mailer, \Twig\Environment $twig): Response
     {
         $bonu = new Bonus();
         $form = $this->createForm(BonusType::class, $bonu);
@@ -62,22 +62,28 @@ final class BonusController extends AbstractController
                 $entityManager->flush();
 
 
-
-
+                // Créer le contenu de l'e-mail à partir du template Twig
+                $emailContent = $twig->render('emails/bonus/index.html.twig', [
+                    'user' => $user,
+                    'bonu' => $bonu, // Passer le bonu à la template
+                    'bonusDate' => $bonu->getCreatedAt(), // Assurez-vous que cette méthode existe et retourne la date
+                    'clientDashboardUrl' => $this->generateUrl('app_user_Bonus_Controller'), // Remplacez par votre route
+                ]);
 
                 // Création de l'e-mail
                 $email = (new Email())
-                    ->from('info@symabusiness.fr')
+                    ->from('contact@cartemenu.fr')
                     ->to($user->getEmail())
                     ->subject('Bonus info')
-                    ->html('<p>Votre wallet a été alimentée de ' . $newBonusValue . ' !</p>');
+                ->html($emailContent);
+
                 // Tentative d'envoi avec gestion des erreurs
                 try {
                     $mailer->send($email);
-                    return $this->redirectToRoute('app_bonus_index', [], Response::HTTP_SEE_OTHER);
+                    $this->addFlash('success', 'Le bonus a été bien attribué et un e-mail a été envoyé à l\'utilisateur !');
                 } catch (TransportExceptionInterface $e) {
-                    dump($e); // This will dump the full exception details in Symfony's debug mode.
-                    return new Response('Erreur lors de l\'envoi de l\'e-mail : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+                    $this->addFlash('error', 'Erreur lors de l\'envoi de l\'e-mail : ' . $e->getMessage());
+                    // Log the error if necessary (optional)
                 }
 
                 // Redirection après l'ajout du bonus

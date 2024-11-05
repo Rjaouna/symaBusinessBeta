@@ -1,0 +1,22 @@
+{# templates/emails/quotas/quota_assigned.html.twig #}
+
+<h1 style="color: #d9230f;">Félicitations, {{ user.nomResponsable }} ! 🎉</h1>
+
+<p>Nous sommes ravis de vous annoncer qu'un nouveau quota vous a été attribué !</p>
+
+<p>
+    <strong>Votre Quota est :</strong> <span style="font-weight: bold; color: #d9230f;">{{ quota }}</span> <br>
+</p>
+
+<p>
+    Ce quota vous est attribué en reconnaissance de votre engagement et de votre collaboration avec nous. Profitez-en pour optimiser vos transactions !
+</p>
+
+<p style="text-align: center;">
+    <a href="{{ clientDashboardUrl }}" style="background-color: #d9230f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Accéder à mon espace client</a>
+</p>
+
+<p>
+    Cordialement,<br>
+    <strong style="color: #d9230f;">L'équipe Syma-Business</strong>
+</p>
