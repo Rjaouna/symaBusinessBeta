@@ -13,16 +13,18 @@
                 <img src="/assets/img/logo_syma.svg" class="brand_logo" alt="Logo" style="width: 40%;">
             </div>
             
-            <h1 class="h3 mb-3 font-weight-normal">Inscription !</h1>
-
+            <h1 class="h3 font-weight-normal">Inscription !</h1>
+            
             <div class="card-body">
                 {{ form_start(registrationForm) }}
-
+<div class="py-2">
+                <h5>Informations de gérant </h5>
                 <div class="mb-3 position-relative">
                     <i class="bi bi-person fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
                     {{ form_widget(registrationForm.nomResponsable, {
                         'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Nom du Responsable'}
                     }) }}
+                    {{ form_errors(registrationForm.nomResponsable) }}
                 </div>
 
                 <div class="mb-3 position-relative">
@@ -30,6 +32,7 @@
                     {{ form_widget(registrationForm.email, {
                         'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse E-mail'}
                     }) }}
+                    {{ form_errors(registrationForm.email) }}
                 </div>
 
                 <div class="mb-3 position-relative">
@@ -37,13 +40,38 @@
                     {{ form_widget(registrationForm.telephoneMobile, {
                         'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Téléphone Mobile'}
                     }) }}
+                    {{ form_errors(registrationForm.telephoneMobile) }}
                 </div>
 
+                
+
                 <div class="mb-3 position-relative">
-                    <i class="bi bi-telephone fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.telephoneFixe, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Téléphone Fixe'}
+                    <i class="bi bi-house fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                    {{ form_widget(registrationForm.adresse, {
+                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse postale'}
                     }) }}
+                    {{ form_errors(registrationForm.adresse) }}
+                </div>
+                </div>
+
+                <div class="py-2">
+                <h5>Informations de l'entreprise </h5>
+                <div class="mb-3 position-relative">
+                    <i class="bi bi-building fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                    {{ form_widget(registrationForm.nomSociete, {
+                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Raison Sociale'}
+                    }) }}
+                    {{ form_errors(registrationForm.nomSociete) }}
+                </div>
+
+                 <div class="mb-3 position-relative">
+                    <i class="bi bi-file-earmark fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                    {{ form_widget(registrationForm.numeroSiret, {
+                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'N° SIRET'}
+                    }) }}
+                    {{ form_errors(registrationForm.numeroSiret) }}
+                </div>
+
                 </div>
 
                 <div class="mb-3 position-relative">
@@ -51,12 +79,14 @@
                     {{ form_widget(registrationForm.plainPassword, {
                         'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Mot de Passe'}
                     }) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
                 </div>
 
                 <div class="form-check ps-0">
                     {{ form_widget(registrationForm.agreeTerms) }}
                     <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
                     </label>
+                    {{ form_errors(registrationForm.agreeTerms) }}
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 fs-5">

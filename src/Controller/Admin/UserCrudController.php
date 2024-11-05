@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\PasswordField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -42,39 +43,38 @@ class UserCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnIndex(),
             TextField::new('codeClient', 'Code Client')->setRequired(false)->hideOnIndex(),
             EmailField::new('email', 'Email')->setRequired(true),
+            TextField::new('password', 'Mot de passe')->hideOnDetail()->hideOnIndex() // Utilisez TextField pour afficher le mot de passe
+            ->setRequired(true) // Rendre le champ requis
+            ->setHelp('Veuillez entrer un mot de passe sécurisé.') // Message d'aide
+            ->setFormTypeOption('attr', ['type' => 'password']),
+            TextField::new('nomResponsable', 'Nom du Responsable')->setRequired(true),
+
+            BooleanField::new('isVerified', 'Est vérifié')->setRequired(false)->hideOnForm(),
             ChoiceField::new('roles', 'Rôles')
-                ->setChoices([
-                    'Utilisateur' => 'ROLE_USER',
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Super Administrateur' => 'ROLE_SUPERADMIN',
-                ])
+            ->setChoices([
+                'Utilisateur' => 'ROLE_USER',
+                'Administrateur' => 'ROLE_ADMIN',
+                'Super Administrateur' => 'ROLE_SUPERADMIN',
+            ])
                 ->setRequired(true)
                 ->allowMultipleChoices(),
-            BooleanField::new('isVerified', 'Est vérifié')->setRequired(false),
-            TextField::new('nomResponsable', 'Nom du Responsable')->setRequired(true),
-            TextField::new('telephoneFixe', 'Téléphone Fixe')->setRequired(false),
+            TextField::new('adresse', 'Adresse')->setRequired(false)->hideOnIndex(),
             TextField::new('telephoneMobile', 'Téléphone Mobile')->setRequired(false),
             TextField::new('nomSociete', 'Nom de la Société')->setRequired(false),
-            TextField::new('formeJuridique', 'Forme Juridique')->setRequired(false)->hideOnIndex(),
-            TextField::new('numeroRegistreCommerce', 'Numéro Registre de Commerce')->setRequired(false)->hideOnIndex(),
             TextField::new('numeroSiret', 'Numéro SIRET')->setRequired(false)->hideOnIndex(),
-            TextField::new('numeroRCS', 'Numéro RCS')->setRequired(false)->hideOnIndex(),
-            TextField::new('codeAPE', 'Code APE')->setRequired(false)->hideOnIndex(),
-            TextField::new('facade', 'Facade')->setRequired(false)->hideOnIndex(),
-            TextField::new('kbis', 'KBIS')->setRequired(false)->hideOnIndex(),
-            TextField::new('adresse', 'Adresse')->setRequired(false)->hideOnIndex(),
-            TextField::new('pays', 'Pays')->setRequired(false)->hideOnIndex(),
-            TextField::new('codePostal', 'Code Postal')->setRequired(false)->hideOnIndex(),
-            TextField::new('ville', 'Ville')->setRequired(false)->hideOnIndex(),
-            TextField::new('iban', 'IBAN')->setRequired(false)->hideOnIndex(),
-            TextField::new('bic', 'BIC')->setRequired(false)->hideOnIndex(),
+            TextField::new('facade', 'Facade')->setRequired(false)->hideOnIndex()->hideOnForm(),
+            TextField::new('pays', 'Pays')->setRequired(false)->hideOnIndex()->hideOnForm(),
+            TextField::new('codePostal', 'Code Postal')->setRequired(false)->hideOnIndex()->hideOnForm(),
+            TextField::new('ville', 'Ville')->setRequired(false)->hideOnIndex()->hideOnForm(),
+            TextField::new('iban', 'IBAN')->setRequired(false)->hideOnIndex()->hideOnForm(),
+            TextField::new('bic', 'BIC')->setRequired(false)->hideOnIndex()->hideOnForm(),
             // Champs liés aux quotas, commandes, et bonus (adaptation selon votre logique)
-            AssociationField::new('quotas', 'Quotas')->setRequired(false),
-            TextField::new('totalBonus', 'Total Bonus')->setRequired(false)->setDisabled(true),
-            IntegerField::new('sim5Usage', 'Utilisation SIM 5')->setRequired(false)->hideOnIndex()->setDisabled(true),
-            IntegerField::new('sim10Usage', 'Utilisation SIM 10')->setRequired(false)->hideOnIndex()->setDisabled(true),
-            IntegerField::new('sim15Usage', 'Utilisation SIM 15')->setRequired(false)->hideOnIndex()->setDisabled(true),
-            IntegerField::new('sim20Usage', 'Utilisation SIM 20')->setRequired(false)->hideOnIndex()->setDisabled(true),
+            AssociationField::new('quotas', 'Quotas')->setRequired(false)->hideOnForm(),
+            TextField::new('totalBonus', 'Total Bonus')->setRequired(false)->setDisabled(true)->hideOnForm(),
+            IntegerField::new('sim5Usage', 'Utilisation SIM 5')->setRequired(false)->hideOnIndex()->setDisabled(true)->hideOnForm(),
+            IntegerField::new('sim10Usage', 'Utilisation SIM 10')->setRequired(false)->hideOnIndex()->setDisabled(true)->hideOnForm(),
+            IntegerField::new('sim15Usage', 'Utilisation SIM 15')->setRequired(false)->hideOnIndex()->setDisabled(true)->hideOnForm(),
+            IntegerField::new('sim20Usage', 'Utilisation SIM 20')->setRequired(false)->hideOnIndex()->setDisabled(true)->hideOnForm(),
         ];
     }
 }

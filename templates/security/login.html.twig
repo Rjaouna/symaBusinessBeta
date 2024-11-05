@@ -34,12 +34,12 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="form-group mb-3">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customControlInline" name="remember_me">
+                        <div class="form-check mb-2">
+
+                    <input type="checkbox" class="form-check-input" id="customControlInline" name="remember_me">
                     <label class="custom-control-label" for="customControlInline">{{ 'Se souvenir de moi'|trans }}</label>
                 </div>
-            </div>
+            
 
             <button class="btn btn-primary w-100 fs-5" type="submit">
                 Connexion

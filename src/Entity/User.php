@@ -47,10 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups('user_info')]
     private ?string $nomResponsable = null;
 
-    #[ORM\Column(length: 10)]
-    #[Groups('user_info')]
-    private ?string $telephoneFixe = null;
-
+   
     #[ORM\Column(length: 10)]
     #[Groups('user_info')]
     private ?string $telephoneMobile = null;
@@ -59,27 +56,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups('user_info')]
     private ?string $nomSociete = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $formeJuridique = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $numeroRegistreCommerce = null;
-
+   
+  
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $numeroSiret = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $numeroRCS = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $codeAPE = null;
-
+ 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $facade = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $kbis = null;
-
+ 
     #[ORM\Column(length: 50, nullable: true)]
     #[Groups('user_info')]
     private ?string $adresse = null;
@@ -253,17 +240,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTelephoneFixe(): ?string
-    {
-        return $this->telephoneFixe;
-    }
 
-    public function setTelephoneFixe(string $telephoneFixe): static
-    {
-        $this->telephoneFixe = $telephoneFixe;
-
-        return $this;
-    }
 
     public function getTelephoneMobile(): ?string
     {
@@ -289,29 +266,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFormeJuridique(): ?string
-    {
-        return $this->formeJuridique;
-    }
-
-    public function setFormeJuridique(?string $formeJuridique): static
-    {
-        $this->formeJuridique = $formeJuridique;
-
-        return $this;
-    }
-
-    public function getNumeroRegistreCommerce(): ?string
-    {
-        return $this->numeroRegistreCommerce;
-    }
-
-    public function setNumeroRegistreCommerce(?string $numeroRegistreCommerce): static
-    {
-        $this->numeroRegistreCommerce = $numeroRegistreCommerce;
-
-        return $this;
-    }
+ 
 
     public function getNumeroSiret(): ?string
     {
@@ -325,29 +280,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNumeroRCS(): ?string
-    {
-        return $this->numeroRCS;
-    }
+   
 
-    public function setNumeroRCS(?string $numeroRCS): static
-    {
-        $this->numeroRCS = $numeroRCS;
-
-        return $this;
-    }
-
-    public function getCodeAPE(): ?string
-    {
-        return $this->codeAPE;
-    }
-
-    public function setCodeAPE(?string $codeAPE): static
-    {
-        $this->codeAPE = $codeAPE;
-
-        return $this;
-    }
+ 
 
     public function getFacade(): ?string
     {
@@ -361,17 +296,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getKbis(): ?string
-    {
-        return $this->kbis;
-    }
-
-    public function setKbis(?string $kbis): static
-    {
-        $this->kbis = $kbis;
-
-        return $this;
-    }
 
     public function getAdresse(): ?string
     {

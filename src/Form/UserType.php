@@ -25,16 +25,13 @@ class UserType extends AbstractType
             ])
             ->add('email')
             ->add('nomResponsable')
-            ->add('telephoneFixe')
             ->add('telephoneMobile')
-            ->add('nomSociete')
-            ->add('formeJuridique')
-            ->add('numeroRegistreCommerce')
-            ->add('numeroSiret')
-            ->add('numeroRCS')
-            ->add('codeAPE')
-            ->add('facade')
-            ->add('kbis')
+        ->add('nomSociete')
+        ->add('numeroSiret')
+        ->add('facade')
+
+            
+            
             ->add('adresse')
             ->add('pays')
             ->add('codePostal')
