@@ -1,11 +1,20 @@
-<h1>Hi! Please confirm your email!</h1>
+<h1>Bienvenue ! Merci de confirmer votre adresse e-mail</h1>
 
 <p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    Bonjour,
 </p>
 
 <p>
-    Cheers!
+    Pour finaliser votre inscription, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous : <br><br>
+    <a href="{{ signedUrl|raw }}">Confirmer mon adresse e-mail</a>.<br><br>
+    Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+    Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet e-mail.
+</p>
+
+<p>
+    Cordialement,<br>
+    L'équipe Syma Business
 </p>

@@ -4,16 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Bonus;
 use App\Form\BonusType;
+use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use App\Repository\BonusRepository;
 use App\Repository\QuotaRepository;
 use App\Repository\SimTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\DependencyInjection\Loader\Configurator\mailer;
+
 
 
 
@@ -31,7 +36,7 @@ final class BonusController extends AbstractController
     }
 
     #[Route('/new', name: 'app_bonus_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, MailerInterface $mailer): Response
     {
         $bonu = new Bonus();
         $form = $this->createForm(BonusType::class, $bonu);
@@ -56,6 +61,25 @@ final class BonusController extends AbstractController
                 $entityManager->persist($bonu);
                 $entityManager->flush();
 
+
+
+
+
+                // Création de l'e-mail
+                $email = (new Email())
+                    ->from('info@symabusiness.fr')
+                    ->to($user->getEmail())
+                    ->subject('Bonus info')
+                    ->html('<p>Votre wallet a été alimentée de ' . $newBonusValue . ' !</p>');
+                // Tentative d'envoi avec gestion des erreurs
+                try {
+                    $mailer->send($email);
+                    return $this->redirectToRoute('app_bonus_index', [], Response::HTTP_SEE_OTHER);
+                } catch (TransportExceptionInterface $e) {
+                    dump($e); // This will dump the full exception details in Symfony's debug mode.
+                    return new Response('Erreur lors de l\'envoi de l\'e-mail : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+
                 // Redirection après l'ajout du bonus
                 $this->addFlash('secondary', 'Le bonus a été bien attribué !');
                 return $this->redirectToRoute('app_bonus_index', [], Response::HTTP_SEE_OTHER);
@@ -63,6 +87,8 @@ final class BonusController extends AbstractController
                 // Si aucun utilisateur n'a été trouvé, vous pouvez ajouter un message d'erreur
                 $this->addFlash('error', 'Utilisateur non trouvé avec cette adresse email.');
             }
+
+            
         }
 
         return $this->render('bonus/new.html.twig', [

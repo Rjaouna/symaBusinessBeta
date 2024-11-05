@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
+
 class MailerController extends AbstractController
 {
 	#[Route('/email', name: 'send_email')]
@@ -16,18 +17,18 @@ class MailerController extends AbstractController
 	{
 		// Création de l'e-mail
 		$email = (new Email())
-			->from('hello@example.com')
-			->to('you@example.com')
-			->subject('Time for Symfony Mailer!')
-			->text('Sending emails is fun again!')
-			->html('<p>See Twig integration for better HTML integration!</p>');
-
+		->from('contact@cartemenu.fr')
+		->to('jaouna.ridouane@gmail.com')
+		->subject('Test Email')
+		->html('<p>This is a test email!</p>');
 		// Tentative d'envoi avec gestion des erreurs
 		try {
 			$mailer->send($email);
 			return new Response('E-mail envoyé avec succès !', Response::HTTP_OK);
 		} catch (TransportExceptionInterface $e) {
+			dump($e); // This will dump the full exception details in Symfony's debug mode.
 			return new Response('Erreur lors de l\'envoi de l\'e-mail : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
+
 	}
 }
