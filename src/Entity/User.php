@@ -60,13 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $numeroSiret = null;
-
-
- 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $facade = null;
-
- 
     #[ORM\Column(length: 50, nullable: true)]
     #[Groups('user_info')]
     private ?string $adresse = null;
@@ -74,10 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50, nullable: true)]
     #[Groups('user_info')]
     private ?string $pays = null;
-
-    #[ORM\Column(length: 5, nullable: true)]
-    #[Groups('user_info')]
-    private ?string $codePostal = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Groups('user_info')]
@@ -87,12 +76,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups('user_info')]
     private ?string $codeClient = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $iban = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $bic = null;
-
+  
+  
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[Groups('user_info')]
     private ?Quota $quotas = null;
@@ -280,23 +265,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-   
-
- 
-
-    public function getFacade(): ?string
-    {
-        return $this->facade;
-    }
-
-    public function setFacade(?string $facade): static
-    {
-        $this->facade = $facade;
-
-        return $this;
-    }
-
-
     public function getAdresse(): ?string
     {
         return $this->adresse;
@@ -321,18 +289,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCodePostal(): ?string
-    {
-        return $this->codePostal;
-    }
-
-    public function setCodePostal(?string $codePostal): static
-    {
-        $this->codePostal = $codePostal;
-
-        return $this;
-    }
-
     public function getVille(): ?string
     {
         return $this->ville;
@@ -353,30 +309,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCodeClient(?string $codeClient): static
     {
         $this->codeClient = $codeClient;
-
-        return $this;
-    }
-
-    public function getIban(): ?string
-    {
-        return $this->iban;
-    }
-
-    public function setIban(?string $iban): static
-    {
-        $this->iban = $iban;
-
-        return $this;
-    }
-
-    public function getBic(): ?string
-    {
-        return $this->bic;
-    }
-
-    public function setBic(?string $bic): static
-    {
-        $this->bic = $bic;
 
         return $this;
     }

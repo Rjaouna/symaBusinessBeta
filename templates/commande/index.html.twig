@@ -3,21 +3,21 @@
 {% block title %}Commande index{% endblock %}
 
 {% block body %}
-<h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase"> Liste commandes</h6>
+<h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase">Liste commandes </h6>
 
     <table id="myDataTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Numero</th>
                 <th>Client</th>
+                <th>Type de carte</th>
+                <th>Status</th>
                 <th>Qte</th>
                 <th>Qte Validée</th>
                 <th>Total</th>
-                <th>Status</th>
                 <th>Créée le</th>
                 <th>Mis à jour le</th>
-                <th>Sim Type</th>
-                <th>Actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -25,13 +25,13 @@
             <tr>
                 <td>{{ commande.numero }}</td>
                 <td>{{ commande.user.nomResponsable }}</td>
+                <td>{{ commande.SimType }}</td>
+                <td>{{ commande.status }}</td>
                 <td>{{ commande.qte }}</td>
                 <td>{{ commande.qtevalidee }}</td>
                 <td>{{ commande.total }}</td>
-                <td>{{ commande.status }}</td>
                 <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commande.updatedAt ? commande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ commande.SimType }}</td>
                 <td>
                     <a href="{{ path('lignes_commande_show', {'numeroCommande': commande.numero}) }}">Détails</a>
                     {# <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a> #}
@@ -39,7 +39,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="10">0 commande !</td>
             </tr>
         {% endfor %}
         </tbody>

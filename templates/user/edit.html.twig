@@ -16,8 +16,8 @@
                 <div class="card-header">Informations Personnelles</div>
                 <div class="card-body">
                     {{ form_row(form.codeClient) }}
-                    {{ form_row(form.email) }}
                     {{ form_row(form.nomResponsable) }}
+                    {{ form_row(form.email) }}
                     {{ form_row(form.telephoneMobile) }}
                 </div>
             </div>
@@ -30,23 +30,19 @@
                 <div class="card-body">
                     {{ form_row(form.nomSociete) }}
                     {{ form_row(form.numeroSiret) }}
-                    {{ form_row(form.facade) }}
                     {{ form_row(form.adresse) }}
                     {{ form_row(form.pays) }}
-                    {{ form_row(form.codePostal) }}
                     {{ form_row(form.ville) }}
-                    {{ form_row(form.iban) }}
-                    {{ form_row(form.bic) }}
+                   
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Section pour les quotas et boutons -->
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-md-12">
             <div class="card bg-light mb-3">
-                <div class="card-header">Quotas</div>
                 <div class="card-body">
                     {{ form_row(form.quotas) }}
                 </div>

@@ -44,17 +44,26 @@
     
     <body>
         <div class="container-fluid my-3 rounded bg-white">
-            
+            <div class="d-flex justify-content-center align-items-center my-3">
+                <div class="text-center p-1  shadow-sm rounded bg-light">
+                    
+
+                    <h2><i class="bi bi-upc-scan fs-4"></i> Scannez une carte Sim !</h2>
+                </div>
+            </div>
 
             <form id="biperForm">
-                <input class="w-100 form-control font-weight-bold" type="text" id="serialNumber" name="serialNumber" required maxlength="19" placeholder="Scannez un code !" style="font-size: 30px;font-weight:900">
+            <div class="mb-3 position-relative">
+            <i class="bi bi-sim fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                <input class="w-100 form-control-lg ps-5" type="text" id="serialNumber" name="serialNumber" required maxlength="19" placeholder="0000000000000000000" >
                 <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
+                </div>
             </form>
 
             <p class="py-2 font-weight-bold" id="responseMessage"></p>
             
 
-        <h5>Liste des Commandes</h5>
+        <h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase">Liste des Commandes</h6>
         
         <!-- Tableau pour afficher les commandes -->
         <table class="table table-striped">

@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <!-- Table jQuery -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        
         {% endblock %}
         
         {% block javascripts %}
@@ -43,8 +44,12 @@
         {% endblock %}
     </head>
     
+{% if app.user %}
     <body>
-    
+    {% else %}
+    <body style="background-position: center center;background-image: url({{asset('assets/img/group-people-working-out-business-plan-office.jpg')}});">
+
+{% endif %}    
         <!-- Inclusion du fichier de navigation -->
         {{ include('_nav/_nav.html.twig') }}
         {% if app.user %}
@@ -111,12 +116,11 @@
         </div>
         
      <!-- Footer -->
-     <footer class="bg-secondary text-center py-3 footer-fixed">
+     <footer class="bg-secondary text-center py-3 footer-fixed mt-5">
         <p class="mb-0">© 2005-2024 Syma Mobile SAS, Tous droits réservés.</p>
     </footer>
  <style>
         .footer-fixed {
-            position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;

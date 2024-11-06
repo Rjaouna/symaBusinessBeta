@@ -22,18 +22,11 @@ class ProfileCompletionService
 		if (empty($user->getPays())) {
 			$missingProperties[] = 'pays';
 		}
-		if (empty($user->getCodePostal())) {
-			$missingProperties[] = 'codePostal';
-		}
+		
 		if (empty($user->getVille())) {
 			$missingProperties[] = 'ville';
 		}
-		if (empty($user->getIban())) {
-			$missingProperties[] = 'iban';
-		}
-		if (empty($user->getBic())) {
-			$missingProperties[] = 'bic';
-		}
+		
 
 		return $missingProperties;
 	}

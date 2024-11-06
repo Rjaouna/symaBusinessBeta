@@ -6,17 +6,13 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\PasswordField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -41,7 +37,17 @@ class UserCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->onlyOnIndex(),
-            TextField::new('codeClient', 'Code Client')->setRequired(false)->hideOnIndex(),
+            TextField::new('codeClient', 'Code Client')
+            ->setRequired(false) // Le champ n'est pas obligatoire
+            ->hideOnIndex() // Masquer le champ sur la page d'index
+            ->setFormTypeOptions([
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^[A-Za-z][0-9]{8}$/',
+                        'message' => 'Le code client doit commencer par une lettre suivie de 8 chiffres. Ex : C41027544',
+                    ])
+                ]
+            ]),
             EmailField::new('email', 'Email')->setRequired(true),
             TextField::new('password', 'Mot de passe')->hideOnDetail()->hideOnIndex() // Utilisez TextField pour afficher le mot de passe
             ->setRequired(true) // Rendre le champ requis
