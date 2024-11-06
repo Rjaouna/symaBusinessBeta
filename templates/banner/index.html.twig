@@ -3,7 +3,7 @@
 {% block title %}Gestion des banners{% endblock %}
 
 {% block body %}
-    <h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-megaphone"></i> Gestion des banners</h1>
+    <h3 class="mb-3 border-bottom border-secondary pb-2 mt-2"><i class="bi bi-megaphone fs-4"></i> Gestion des banners</h1>
 
     <table class="table">
         <thead>
@@ -31,7 +31,6 @@
         {% endfor %}
         </tbody>
     </table>
-    {% if bannerCount < 3 %}
     <a class="btn btn-secondary btn-sm" href="{{ path('app_banner_new') }}">Ajouter une nouvelle pub !</a>
-    {% endif %}
+    
 {% endblock %}

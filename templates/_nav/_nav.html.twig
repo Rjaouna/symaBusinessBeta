@@ -1,4 +1,3 @@
-{% if app.user %} 
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ path('app_syma_business') }}">
@@ -8,196 +7,135 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor03">
-      <ul class="navbar-nav ms-auto"> <!-- Ajout de la classe ms-auto -->
-       
-       {% if app.user %}
-      {% if app.user.activeRole == 'ROLE_ADMIN' %}
+      <ul class="navbar-nav ms-auto">
 
-        
+        {% if app.user %}
+          {% if app.user.activeRole == 'ROLE_ADMIN' %}
 
-        <li class="nav-item">
-          <a class="nav-link active" href="{{ path('users_with_orders') }}">
-          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-upc-scan fs-5"></i></span> 
-          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-upc-scan fs-5"></i> Valider une cde !</span>
-          </a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ path('users_with_orders') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-upc-scan fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-upc-scan fs-5"></i> Valider une cde !</span>
+              </a>
+            </li>
 
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ path('app_syma_business_config_index') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-briefcase fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-briefcase fs-5"></i> Configurer l'agent</span>
+              </a>
+            </li>
 
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ path('app_profile') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-person fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-person fs-5"></i> Mon profil</span>
+              </a>
+            </li>
 
-        <li class="nav-item">
-          <a class="nav-link active" href="{{ path('app_syma_business_config_index') }}">
-          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-briefcase fs-5"></i></span> 
-          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-briefcase fs-5"></i> Configurer l'agent</span>
-          </a>
-        </li>
-                <li class="nav-item">
-          <a class="nav-link active" href="{{ path('app_profile') }}">
-          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-person fs-5"></i></span> 
-          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-person fs-5"></i> Mon profil</span>
-          </a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ path('admin_syma_business') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-gear fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-gear-fill fs-5"></i></span>
+              </a>
+            </li>
 
-<li class="nav-item">
-          <a class="nav-link active" href="{{ path('admin_syma_business') }}">
-          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-gear fs-5"></i></span> 
-          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-gear-fill fs-5"></i></span>
-          </a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ path('app_logout') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
+              </a>
+            </li>
 
+            <li class="nav-item d-none" id="newUserWithoutCode">
+              <a class="nav-link active" href="{{ path('app_logout') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i><span id="UserWithoutCode"></span></span>
+              </a>
+            </li>
 
-        <li class="nav-item">
-          <a class="nav-link active" href="{{ path('app_logout') }}">
-          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
-          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
-          </a>
-        </li>
+          {% endif %}
 
-        
-
-
-
-        <li class="nav-item d-none" id ="newUserWithoutCode">
-          <a class="nav-link active" href="{{ path('app_logout') }}">
-          <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
-          <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i><span id="UserWithoutCode"></span></span>
-          </a>
-        </li>
-
-
-{% endif %}
-       {% endif %}
-
-
-{% if 'ROLE_ADMIN' in app.user.roles and 'ROLE_USER' in app.user.roles %}
-<form id="switchRoleForm" class="d-flex align-items-center ms-3">
-    <button class="btn btn-secondary  mx-2 py-1" type="submit">Switch</button>
-    <select name="role" id="roleSelect" class="form-select py-1">
-        <option value="ROLE_ADMIN" {% if app.user.activeRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
-        <option value="ROLE_USER" {% if app.user.activeRole == 'ROLE_USER' %}selected{% endif %}>User</option>
-    </select>
-</form>
-{% endif %}
-
-
-
-       
-
-{# {% if app.user.activeRole == 'ROLE_ADMIN' %}
-    <li class="nav-item"><a class="nav-link active" href="#">Admin Dashboard</a></li>
-{% endif %} #}
-
+          {% if 'ROLE_ADMIN' in app.user.roles and 'ROLE_USER' in app.user.roles %}
+            <form id="switchRoleForm" class="d-flex align-items-center ms-3">
+              <button class="btn btn-secondary mx-2 py-1" type="submit">Switch</button>
+              <select name="role" id="roleSelect" class="form-select py-1">
+                <option value="ROLE_ADMIN" {% if app.user.activeRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
+                <option value="ROLE_USER" {% if app.user.activeRole == 'ROLE_USER' %}selected{% endif %}>User</option>
+              </select>
+            </form>
+          {% endif %}
+        {% endif %}
 
       </ul>
-     
     </div>
   </div>
 </nav>
 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Sélectionne toutes les icônes avec la classe "toggle-icon-closed"
         const closedIcons = document.querySelectorAll('.toggle-icon-closed');
-
         closedIcons.forEach(closedIcon => {
             const openIcon = closedIcon.nextElementSibling;
-
-            // S'assurer qu'il y a bien un élément suivant pour former une paire
             if (openIcon && openIcon.classList.contains('toggle-icon-open')) {
-                // Survol pour afficher l'icône ouverte
                 closedIcon.addEventListener('mouseenter', () => {
-                    closedIcon.classList.add('d-none'); // Cache l'icône fermée
-                    openIcon.classList.remove('d-none'); // Affiche l'icône ouverte
+                    closedIcon.classList.add('d-none');
+                    openIcon.classList.remove('d-none');
                 });
-
-                // Sortie de la souris pour restaurer l'icône fermée
                 openIcon.addEventListener('mouseleave', () => {
-                    openIcon.classList.add('d-none'); // Cache l'icône ouverte
-                    closedIcon.classList.remove('d-none'); // Affiche l'icône fermée
+                    openIcon.classList.add('d-none');
+                    closedIcon.classList.remove('d-none');
                 });
             }
         });
     });
 
+    function fetchUsersWithoutCode() {
+        axios.get('/api/users/count/no-code-client')
+            .then(response => {
+                const count = response.data.count;
+                const users = response.data;
+                console.log('Nombre d\'utilisateurs sans code_client :', users);
+                if (count >= 1) {
+                    const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
+                    const UserWithoutCodeElement = document.getElementById('UserWithoutCode');
+                    if (newUserWithoutCodeElement) {
+                        newUserWithoutCodeElement.classList.remove('d-none');
+                        UserWithoutCodeElement.innerHTML = ` ${count} <a href="{{ path('users_count_no_code_client') }}">client(s) sans code !</a>`;
+                    }
+                } else {
+                    const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
+                    if (newUserWithoutCodeElement) {
+                        newUserWithoutCodeElement.classList.add('d-none');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des utilisateurs :', error.response ? error.response.data : error.message);
+            });
+    }
 
+    fetchUsersWithoutCode();
+    setInterval(fetchUsersWithoutCode, 10000);
 
-
-function fetchUsersWithoutCode() {
-    axios.get('/api/users/count/no-code-client')
+    document.getElementById('switchRoleForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const role = document.getElementById('roleSelect').value;
+        axios.post('/user/switch-role', new URLSearchParams({ 'role': role }), {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
         .then(response => {
-            // Récupérer le nombre d'utilisateurs sans code_client
-            const count = response.data.count;
-            const users = response.data;
-
-            // Afficher le nombre dans la console
-            console.log('Nombre d\'utilisateurs sans code_client :',users);
-
-            // Vérifier si le nombre d'utilisateurs sans code_client est supérieur ou égal à 1
-            if (count >= 1) {
-                // Retirer la classe 'd-none' pour rendre l'élément visible
-                const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
-                const UserWithoutCodeElement = document.getElementById('UserWithoutCode');
-                if (newUserWithoutCodeElement) {
-                    newUserWithoutCodeElement.classList.remove('d-none');
-                    UserWithoutCodeElement.innerHTML=` ${count} <a href="{{path('users_count_no_code_client')}}">client(s) sans code !</a> `
-                }
-            } else {
-                // Optionnel : Si aucun utilisateur sans code_client, garder l'élément caché
-                const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
-                if (newUserWithoutCodeElement) {
-                    newUserWithoutCodeElement.classList.add('d-none');
-                }
-            }
+            console.log('Success:', response.data);
+            location.reload();
         })
         .catch(error => {
-            // Gérer les erreurs
-            console.error('Erreur lors de la récupération des utilisateurs :', error.response ? error.response.data : error.message);
+            if (error.response) {
+                console.error('Erreur lors du changement de rôle:', error.response.data.error || error.response.statusText);
+            } else if (error.request) {
+                console.error('No response received:', error.request);
+            } else {
+                console.error('Error', error.message);
+            }
         });
-}
-
-// Appeler la fonction une première fois immédiatement
-fetchUsersWithoutCode();
-
-// Configurer un intervalle pour appeler la fonction toutes les 10 secondes (10000 ms)
-setInterval(fetchUsersWithoutCode, 10000);
-
-
-
-
-//Switch roles 
-document.getElementById('switchRoleForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    const role = document.getElementById('roleSelect').value; // Get the selected role
-
-    axios.post('/user/switch-role', new URLSearchParams({
-        'role': role
-    }), {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-            // No CSRF token needed since the user is already authenticated
-        }
-    })
-    .then(response => {
-        console.log('Success:', response.data);
-        // Refresh the page to reflect the new role
-        location.reload();
-    })
-    .catch(error => {
-        if (error.response) {
-            console.error('Erreur lors du changement de rôle:', error.response.data.error || error.response.statusText);
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Error', error.message);
-        }
     });
-});
-
-
-
 </script>
-
-
-{% endif %} 

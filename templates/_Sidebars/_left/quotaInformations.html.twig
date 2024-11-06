@@ -1,5 +1,5 @@
 <!-- Container for SIM Quota Evaluation -->
-<div class="mt-4 mb-2 px-1 py-3 rounded shadow-sm bg-white">
+<div class="mt-4 mb-2 px-1 py-3 px-3 rounded shadow-sm bg-white">
     <h6 class="fw-bold mb-2 ml-2">Évaluation des Quotas SIM :</h6>
 
     <!-- Progress bars for each SIM quota -->
@@ -17,10 +17,10 @@ function renderQuotaProgress(userData) {
     }
 
     const quotaData = [
-        { name: 'Carte Sim 05', quota: userData.quotas.sim5Quota, usage: userData.sim5Usage },
-        { name: 'Carte Sim 10', quota: userData.quotas.sim10Quota, usage: userData.sim10Usage },
-        { name: 'Carte Sim 15', quota: userData.quotas.sim15Quota, usage: userData.sim15Usage },
-        { name: 'Carte Sim 20', quota: userData.quotas.sim20Quota, usage: userData.sim20Usage }
+        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 05', quota: userData.quotas.sim5Quota, usage: userData.sim5Usage },
+        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 10', quota: userData.quotas.sim10Quota, usage: userData.sim10Usage },
+        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 15', quota: userData.quotas.sim15Quota, usage: userData.sim15Usage },
+        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 20', quota: userData.quotas.sim20Quota, usage: userData.sim20Usage }
     ];
 
     const container = document.querySelector('#sim-quota-progress');
@@ -35,7 +35,7 @@ function renderQuotaProgress(userData) {
             <div class="mb-3">
                 <div class="d-flex justify-content-between">
                     <span>${item.name}</span>
-                    <span>${usagePercentage}% utilisé</span>
+                    <span class="text-secondary">${usagePercentage}% utilisé</span>
                 </div>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" style="width: ${usagePercentage}%" aria-valuenow="${usagePercentage}" aria-valuemin="0" aria-valuemax="100">

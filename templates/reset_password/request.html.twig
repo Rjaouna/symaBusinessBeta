@@ -12,7 +12,7 @@
             <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Réinitialiser votre mot de passe</h1>
+        <h1 class="h3 mb-3 fw-bold text-uppercase">Mot de passe oublié</h1>
 
         <div class="mb-4">
             Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
@@ -32,7 +32,7 @@
         {{ form_end(requestForm) }}
 
         <div class="mt-3 d-flex justify-content-between">
-    <p class="mb-0">Vous n'avez pas encore de compte ? <a href="{{ path('app_login') }}">Se connecter</a></p>
+    <p class="mb-0">Vous n'avez pas encore de compte ? <a href="{{ path('app_login') }}">S'identifier</a></p>
     <p class="mb-0"><a href="{{ path('app_register') }}">S'inscrire</a></p>
 </div>
     </div>

@@ -28,7 +28,6 @@ final class BannerController extends AbstractController
         // Retourner la vue avec les bannières et le nombre de bannières
         return $this->render('banner/index.html.twig', [
             'banners' => $banners,
-            'bannerCount' => count($banners), // Passer le nombre de bannières à Twig
         ]);
     }
 

@@ -1,10 +1,5 @@
-<style>
-  :root {
-      --primary: #d9230f; /* Define your primary color */
-  }
-</style>
 <div class="bg-white py-2 px-2 rounded shadow-sm my-2 px-3 mx-2">
-    <h4 class="mb-1 border-bottom border-secondary"><i class="text-secondary bi bi-house-door"></i> Espace administrateur</h4>
+<h6 class="mb-1 border-bottom border-secondary fw-bold text-uppercase"> Espace administrateur</h6>
     <div class="d-flex justify-content-center">
         <div class="row my-4 w-100">
             <!-- Colonne 1 -->
@@ -64,14 +59,7 @@
 
 <div class="d-flex justify-content-center">
         <div class="row my-2 w-100">
-            <!-- Colonne 1 -->
-            <div class="col-md-2 my-2">
-                <a href="{{ path('generate_serial_numbers') }}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-cloud-upload fs-4 text-secondary"></i>
-                    <span class="mt-2">Import Cartes Sim</span>
-                   
-                </a>
-            </div>
+            
 
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_banner_index') }}" class="shadow-sm btn btn-outline-secondary position-relative d-flex flex-column align-items-center w-100">
@@ -107,6 +95,44 @@
                    
                 </a>
             </div>
+
+            <!-- Colonne 1 -->
+            <div class="col-md-2 my-2">
+    <a href="#" class="shadow-sm btn btn-primary position-relative d-flex flex-column align-items-center w-100" data-bs-toggle="modal" data-bs-target="#confirmModal">
+        <i class="bi bi-arrow-clockwise fs-4 text-white"></i>
+        <span class="mt-2">Usages mensuel</span>
+    </a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmer la réinitialisation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir réinitialiser les usages mensuels de tous les utilisateurs ? Cette action est irréversible.</p>
+                <!-- Formulaire de mot de passe dans le modal -->
+            <form action="{{ path('reset_user_properties') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Entrez le mot de passe pour réinitialiser les usages :</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe secret" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Confirmer la rénitialisation pour tous les utilisateurs</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
 </div>
 </div>

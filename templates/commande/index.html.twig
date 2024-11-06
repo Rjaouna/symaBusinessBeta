@@ -3,20 +3,18 @@
 {% block title %}Commande index{% endblock %}
 
 {% block body %}
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-cart-fill fs-2 text-secondary"></i> Liste commandes</h4>
+<h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase"> Liste commandes</h6>
 
     <table id="myDataTable" class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Numero</th>
                 <th>Client</th>
                 <th>Qte</th>
                 <th>Qte Validée</th>
                 <th>Total</th>
                 <th>Status</th>
-                <th>Créé le</th>
+                <th>Créée le</th>
                 <th>Mis à jour le</th>
                 <th>Sim Type</th>
                 <th>Actions</th>
@@ -25,7 +23,6 @@
         <tbody>
         {% for commande in commandes %}
             <tr>
-                <td>{{ commande.id }}</td>
                 <td>{{ commande.numero }}</td>
                 <td>{{ commande.user.nomResponsable }}</td>
                 <td>{{ commande.qte }}</td>

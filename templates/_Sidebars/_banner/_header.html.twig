@@ -1,11 +1,27 @@
-<div class="container my-4">
-    <div class="row">
-        {% for banner in banners %}
-        <div class="col-md-4">
-            <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
-                <img class="w-100" src="{{ asset('uploads/banners/' ~ banner.image) }}" alt="{{ banner.nom }}">
+<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+  <div class="carousel-inner">
+    {% for i, banner in banners|batch(3) %}
+      <div class="carousel-item {% if loop.first %}active{% endif %}">
+        <div class="row">
+          {% for b in banner %}
+            <div class="col-md-4">
+              <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
+                <img class="w-100" src="{{ asset('uploads/banners/' ~ b.image) }}" alt="{{ b.nom }}">
+              </div>
             </div>
+          {% endfor %}
         </div>
-		{% endfor %}
-    </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Contrôles du carrousel -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Précédent</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Suivant</span>
+  </button>
 </div>

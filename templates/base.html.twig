@@ -58,7 +58,7 @@
         </div>
          {% endif %}
         {% endif %}
-        <div class="container-fluid mt-3">
+        <div class="container-fluid">
             <div class="row">
                 
                 <!-- Sidebar gauche, affichée seulement si l'utilisateur est connecté -->
@@ -77,7 +77,7 @@
                 
                 <!-- Contenu principal -->
                 {% if app.user %}
-                    <div class="col-md-7 left-align  mb-5">
+                    <div class="col-md-7 left-align">
                     <!-- Inclusion du header ou bannière -->
                     {{ include(('_Sidebars/_banner/_header.html.twig')) }}
                     
@@ -90,7 +90,7 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div class="col-md-12 left-align mb-5">
+                    <div class="col-md-12 left-align">
                 {% endif %}
                     
                     
@@ -109,5 +109,20 @@
                 {% endif %}
             </div>
         </div>
+        
+     <!-- Footer -->
+     <footer class="bg-secondary text-center py-3 footer-fixed">
+        <p class="mb-0">© 2005-2024 Syma Mobile SAS, Tous droits réservés.</p>
+    </footer>
+ <style>
+        .footer-fixed {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
     </body>
+    
 </html>
