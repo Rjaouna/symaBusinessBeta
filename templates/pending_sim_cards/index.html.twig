@@ -3,10 +3,48 @@
 {% block title %}PendingSimCards index{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-<h5 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-sim fs-4 text-secondary"></i> Stock Cartes Sim Préprod
-</h5>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Stock Carte Sim Préprod 
+            </li>
+        </ol>
+    </nav>
+<div class="alert alert-info mt-4" role="alert">
+    <h4 class="alert-heading">Instructions pour la gestion des cartes SIM en préproduction</h4>
+    <p>
+        Vous êtes actuellement dans l'environnement de préproduction. Ici, vous pouvez importer, vérifier et préparer les cartes SIM avant leur transfert vers la production.
+    </p>
+    <ul>
+        <li>Importez les cartes SIM via l'interface prévue à cet effet.</li>
+        <li>Vérifiez que toutes les informations sont correctes.</li>
+        <li>Une fois vérifiées, vous pouvez cliquer sur le bouton <strong>"Synchroniser les stocks"</strong> pour transférer les cartes SIM vers la base de données de production.</li>
+    </ul>
+    <p>
+        <strong>Important :</strong> Une fois synchronisées, les cartes SIM seront définitivement en production et ne pourront plus être modifiées dans cet environnement.
+    </p>
+</div>
+
+
         <div class="d-flex justify-content-end mb-3" style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
             <a class="btn btn-secondary btn-sm me-2" href="{{ path('app_pending_sim_cards_new') }}">Ajouter une carte Sim</a>
             <a class="btn btn-primary btn-sm" href="{{ path('migrate_sim_cards') }}">Synchroniser les stocks</a>

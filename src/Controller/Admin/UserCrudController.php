@@ -75,7 +75,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('iban', 'IBAN')->setRequired(false)->hideOnIndex()->hideOnForm(),
             TextField::new('bic', 'BIC')->setRequired(false)->hideOnIndex()->hideOnForm(),
             // Champs liés aux quotas, commandes, et bonus (adaptation selon votre logique)
-            AssociationField::new('quotas', 'Quotas')->setRequired(false)->hideOnForm(),
+            AssociationField::new('quotas', 'Attribuer un Quota')->setRequired(false),
             TextField::new('totalBonus', 'Total Bonus')->setRequired(false)->setDisabled(true)->hideOnForm(),
             IntegerField::new('sim5Usage', 'Utilisation SIM 5')->setRequired(false)->hideOnIndex()->setDisabled(true)->hideOnForm(),
             IntegerField::new('sim10Usage', 'Utilisation SIM 10')->setRequired(false)->hideOnIndex()->setDisabled(true)->hideOnForm(),

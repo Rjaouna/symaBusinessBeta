@@ -3,17 +3,44 @@
 {% block title %}Liste des Quotas{% endblock %}
 
 {% block body %}
-<h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-speedometer"></i> Gestion des Quotas</h3>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Gestion des Quotas
+        </ol>
+    </nav>
+</div>
+<div class="d-flex justify-content-end">
+    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_new') }}">Ajouter un nouveau quota</a>
+</div>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
-                <th>Sim 5 </th>
-                <th>Sim 10</th>
-                <th>Sim 15</th>
-                <th>Sim 20</th>
+                <th>Carte Sim 5 </th>
+                <th>Carte Sim 10</th>
+                <th>Carte Sim 15</th>
+                <th>Carte Sim 20</th>
                 <th>Date création </th>
                 <th>Date MAJ</th>
                 <th></th>
@@ -22,8 +49,7 @@
         <tbody>
         {% for quotum in quotas %}
             <tr>
-                <td>{{ quotum.id }}</td>
-                <td>{{ quotum.nom }}</td>
+                <td><strong>{{ quotum.nom }}</strong></td>
                 <td>{{ quotum.sim5Quota }}</td>
                 <td>{{ quotum.sim10Quota }}</td>
                 <td>{{ quotum.sim15Quota }}</td>
@@ -31,7 +57,7 @@
                 <td>{{ quotum.createdAt ? quotum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ quotum.updatedAt ? quotum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
+                    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -42,5 +68,4 @@
         </tbody>
     </table>
 
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_new') }}">Ajouter un nouveau quota</a>
 {% endblock %}

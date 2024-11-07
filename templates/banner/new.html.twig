@@ -3,8 +3,33 @@
 {% block title %}New Banner{% endblock %}
 
 {% block body %}
-    <h3 class="mb-5 border-bottom border-secondary pb-2"><i class="bi bi-megaphone"></i> Créer une pub</h3>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
 
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Créer une pub
+            </li>
+        </ol>
+    </nav>
+</div>
     {{ include('banner/_form.html.twig') }}
 
 {% endblock %}

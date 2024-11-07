@@ -13,10 +13,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin_syma_business')]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    #[Route('/administration/syma/dashboard', name: 'admin_syma_business')]
     public function index(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);

@@ -3,8 +3,33 @@
 {% block title %}CarteSim{% endblock %}
 
 {% block body %}
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-sim fs-2 text-secondary"></i>Carte Sim #{{ carte_sim.serialNumber }}</h4>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Carte Sim #{{ carte_sim.serialNumber }}
+            </li>
+        </ol>
+    </nav>
+</div>
 
     <table class="table table-hover">
         <tbody>
@@ -42,7 +67,7 @@
                 <td>{{ carte_sim.createdAt ? carte_sim.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Date de modification</th>
+                <th>{{ carte_sim.reserved ? 'Date attribution' : 'Date de modification' }} </th>
                 <td>{{ carte_sim.updatedAt ? carte_sim.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>

@@ -3,8 +3,33 @@
 {% block title %}Détails de l'utilisateur{% endblock %}
 
 {% block body %}
-<h3 class="mb-3  border-bottom border-secondary pb-2"><i class="text-secondary bi bi bi-person"></i> Détails de {{ user.nomResponsable }}
-</h3>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Client
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Profil {{ user.nomResponsable }}
+            </li>
+        </ol>
+    </nav>
+    </div>
 
 <div class="row">
     <div class="col-md-4">
@@ -44,23 +69,13 @@
             <div class="card-body">
                 <p><strong>Adresse :</strong> {{ user.adresse }}</p>
                 <p><strong>Pays :</strong> {{ user.pays }}</p>
-                <p><strong>Code Postal :</strong> {{ user.codePostal }}</p>
                 <p><strong>Ville :</strong> {{ user.ville }}</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Section pour les informations bancaires en bas sur toute la largeur -->
-<div class="card mb-4 shadow-sm">
-    <div class="card-header bg-secondary">
-        <h6 class="mb-0">Informations Bancaires</h6>
-    </div>
-    <div class="card-body">
-        <p><strong>IBAN :</strong> {{ user.iban }}</p>
-        <p><strong>BIC :</strong> {{ user.bic }}</p>
-    </div>
-</div>
+
 
 <div class="d-flex justify-content-between my-4">
     <a href="{{ path('app_syma_business') }}" class="btn btn-secondary">

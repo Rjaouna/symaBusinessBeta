@@ -3,8 +3,43 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-person fs-2 text-secondary"></i> Liste clients sans code client</h1>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Clients sans code client
+            </li>
+        </ol>
+    </nav>
+</div>
+
+    <div class="alert alert-warning mt-4" role="alert">
+    <h4 class="alert-heading">Code client manquant</h4>
+    <p>
+        Certains clients n'ont pas de code associé. Pour ajouter un code client, veuillez vous connecter en tant que <strong>Super Admin</strong> et accéder au <strong>Dashboard</strong>.
+    </p>
+    <p>
+        Une fois dans le Dashboard, vous pourrez ajouter le code client nécessaire pour chaque client. <strong>Ce code est essentiel pour le traitement des commandes</strong>, alors assurez-vous de l'ajouter dès que possible.
+    </p>
+</div>
 
     <table id="myDataTable" class="table table-striped">
         <thead>

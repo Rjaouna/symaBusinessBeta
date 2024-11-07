@@ -16,6 +16,7 @@ class CommandeValidationType extends AbstractType
 			'attr' => [
 				'placeholder' => 'Scannez un code !',
 				'maxlength' => 14, // Limite le nombre de caractères à 14
+				'class' => 'form-control-lg',
 			],
 			'label' => false, // Retire le label
 			]);

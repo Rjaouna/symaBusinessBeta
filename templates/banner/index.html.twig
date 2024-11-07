@@ -3,12 +3,36 @@
 {% block title %}Gestion des banners{% endblock %}
 
 {% block body %}
-    <h3 class="mb-3 border-bottom border-secondary pb-2 mt-2"><i class="bi bi-megaphone fs-4"></i> Gestion des banners</h1>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
 
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Gestion des bannières
+            </li>
+        </ol>
+    </nav>
+</div>
     <table class="table">
         <thead>
             <tr>
-                <th></th>
                 <th>Nom</th>
                 <th>Image</th>
                 <th></th>
@@ -17,11 +41,15 @@
         <tbody>
         {% for banner in banners %}
             <tr>
-                <td>{{ banner.id }}</td>
-                <td>{{ banner.nom }}</td>
+                <td><strong>{{ banner.nom }}</strong></td>
                 <td><img src="{{ asset('uploads/banners/' ~ banner.image) }}" alt="Bannière" style="width: 50px; height: auto;"></td>
                 <td class="text-end">
-                    <a class="btn btn-primary btn-sm" href="{{ path('app_banner_edit', {'id': banner.id}) }}">Modifier</a>
+                  <div class="d-flex justify-content-end">
+    <a class="btn btn-primary btn-sm mx-2" href="{{ path('app_banner_edit', {'id': banner.id}) }}">Modifier</a>
+    {{ include('banner/_delete_form.html.twig') }}
+</div>
+
+
                 </td>
             </tr>
         {% else %}

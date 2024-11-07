@@ -87,10 +87,10 @@ final class BonusManagementController extends AbstractController
 			}
 
 			// Vérification de la quantité demandée par rapport à la consommation disponible
-			if ($currentSimUsage < $quantity) {
-				$this->addFlash('danger', 'Quantité demandée supérieure à la consommation disponible pour ' . $typeCarte);
-				return $this->redirectToRoute('app_user_Bonus_Controller');
-			}
+			// if ($currentSimUsage < $quantity) {
+			// 	$this->addFlash('danger', 'Quantité demandée supérieure à la consommation disponible pour ' . $typeCarte);
+			// 	return $this->redirectToRoute('app_user_Bonus_Controller');
+			// }
 
 			// Mise à jour de la consommation
 			switch ($simTypeEntity->getCode()) {

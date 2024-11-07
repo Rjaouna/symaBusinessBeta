@@ -3,17 +3,45 @@
 {% block title %}Bonus index{% endblock %}
 
 {% block body %}
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-gift fs-2 text-secondary"></i> Gestion bonus</h4>
 
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Gestion des bonus 
+            </li>
+        </ol>
+    </nav>
+    
+     <div class="d-flex justify-content-end">
+    <a class="btn btn-secondary btn-sm mb-3" href="{{ path('app_bonus_new') }}">Ajouter et attribuer un bonus</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
                 {# <th>Id</th> #}
                 <th>Valeur</th>
-                <th>Utilisateur</th>
-                <th>Motif</th>
-                <th>Date création</th>
+                <th>Client</th>
+                <th>Motif de bonus</th>
+                <th>Date d'attribution</th>
                 {# <th>actions</th> #}
             </tr>
         </thead>
@@ -21,7 +49,7 @@
         {% for bonu in bonuses %}
             <tr>
                 {# <td>{{ bonu.id }}</td> #}
-                <td>{{ bonu.valeur }}</td>
+                <td><strong>{{ bonu.valeur }}</strong></td>
                 <td>{{ bonu.user }}</td>
                 <td>{{ bonu.motif }}</td>
                 <td>{{ bonu.createdAt ? bonu.createdAt|date('Y-m-d H:i:s') : '' }}</td>
@@ -38,5 +66,5 @@
         </tbody>
     </table>
 
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_bonus_new') }}">Attribuer un bonus</a>
+    </div>
 {% endblock %}

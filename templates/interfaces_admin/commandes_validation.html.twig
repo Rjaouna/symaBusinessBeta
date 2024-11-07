@@ -1,14 +1,42 @@
+{# templates/user_command/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de l'utilisateur{% endblock %}
+{% block title %}Gestion des Utilisateurs et Commandes{% endblock %}
 
 {% block body %}
-<h4 class="mb-3 border-bottom border-secondary pb-2">
-    <i class="text-secondary bi bi-hand-index fs-2 text-secondary"></i> Validation manuel</h4>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 px-4 mb-4 shadow-sm border-bottom">
+        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
 
+    <!-- Fil d'Ariane -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white rounded shadow-sm px-4 py-3 mb-4">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Validation des Commandes Clients
+            </li>
+        </ol>
+    </nav>
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary btn-sm w-100">Scanner !</button>
+        <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm d-flex justify-content-center align-items-center">
+    <i class="bi bi-upc-scan me-2"></i> Scannez
+ </button>
+
+
     {{ form_end(form) }}
 <h6 class="mt-3">Liste de commandes du Client </h6>
 <table class="table table-striped">
@@ -47,7 +75,7 @@
 
     </tbody>
 </table>
-
+</div>
 {% endblock %}
 
 

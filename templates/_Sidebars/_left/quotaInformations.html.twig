@@ -1,5 +1,4 @@
-<!-- Container for SIM Quota Evaluation -->
-<div class="mt-4 mb-2 px-1 py-3 px-3 rounded shadow-sm bg-white">
+<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-light border">
     <h6 class="fw-bold mb-2 ml-2">Évaluation des Quotas SIM :</h6>
 
     <!-- Progress bars for each SIM quota -->
@@ -17,10 +16,10 @@ function renderQuotaProgress(userData) {
     }
 
     const quotaData = [
-        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 05', quota: userData.quotas.sim5Quota, usage: userData.sim5Usage },
-        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 10', quota: userData.quotas.sim10Quota, usage: userData.sim10Usage },
-        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 15', quota: userData.quotas.sim15Quota, usage: userData.sim15Usage },
-        { name: '<i class="bi bi-speedometer fs-6 text-secondary"></i> Sim 20', quota: userData.quotas.sim20Quota, usage: userData.sim20Usage }
+        { name: 'Carte Sim 05', quota: userData.quotas.sim5Quota, usage: userData.sim5Usage },
+        { name: 'Carte Sim 10', quota: userData.quotas.sim10Quota, usage: userData.sim10Usage },
+        { name: 'Carte Sim 15', quota: userData.quotas.sim15Quota, usage: userData.sim15Usage },
+        { name: 'Carte Sim 20', quota: userData.quotas.sim20Quota, usage: userData.sim20Usage }
     ];
 
     const container = document.querySelector('#sim-quota-progress');
@@ -32,17 +31,27 @@ function renderQuotaProgress(userData) {
 
         // Create the progress bar HTML
         const progressBarHTML = `
-            <div class="mb-3">
-                <div class="d-flex justify-content-between">
-                    <span>${item.name}</span>
-                    <span class="text-secondary">${usagePercentage}% utilisé</span>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: ${usagePercentage}%" aria-valuenow="${usagePercentage}" aria-valuemin="0" aria-valuemax="100">
-                        ${usagePercentage}%
-                    </div>
-                </div>
+            <div class="d-flex align-items-center mb-3 rounded shadow-sm bg-light boder p-1" style="font-size:0.8rem">
+    <i class="bi bi-sim fs-4 text-secondary me-2 "></i>
+    <div class="w-100">
+        <div class="d-flex justify-content-between">
+            <span>${item.name}</span>
+            <span class="text-secondary">
+                ${usagePercentage < 0 ? ` ${item.quota} + ${Math.abs(usagePercentage)} <i class="bi bi-gift text-danger"></i>` : `${item.quota - usagePercentage}`}
+            </span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" 
+                style="width: ${usagePercentage < 0 ? 0 : usagePercentage}%" 
+                aria-valuenow="${usagePercentage}" 
+                aria-valuemin="0" 
+                aria-valuemax="100">
+                ${usagePercentage}%
             </div>
+        </div>
+    </div>
+</div>
+
         `;
 
         // Append the progress bar to the container

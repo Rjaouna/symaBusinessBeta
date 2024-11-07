@@ -23,11 +23,8 @@ class ProfileType extends AbstractType
 		->add('nomSociete')
 		->add('numeroSiret')
 			->add('adresse')
-			->add('pays')
-			->add('codePostal')
-			->add('ville')
-			->add('iban')
-			->add('bic')
+		->add('pays')
+		->add('ville')
 
 		;
 	}

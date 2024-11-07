@@ -6,16 +6,16 @@ $(document).ready(function () {
     info: true,
     lengthMenu: [10, 20, 30, 50],
     language: {
-      info: "Affichage des entrées _START_ à _END_ sur _TOTAL_",
+      info: "",
       infoEmpty: "Aucune entrée à afficher",
-      lengthMenu: "Afficher _MENU_ cartes Sim par page",
-      search: "Rechercher :",
-      searchPlaceholder: "Ex : 13596585246584", // Ajout du placeholder
+      lengthMenu: "Afficher _MENU_ par page",
+      search: "",
+      searchPlaceholder: "Rechercher", // Ajout du placeholder
       paginate: {
-        first: "Premier",
-        last: "Dernier",
-        next: "Suivant",
-        previous: "Précédent",
+        first: "",
+        last: "",
+        next: "",
+        previous: "",
       },
       zeroRecords: "Aucun enregistrement correspondant trouvé",
     },

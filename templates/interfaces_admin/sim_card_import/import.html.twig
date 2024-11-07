@@ -3,6 +3,42 @@
 {% block title %}Import SIM Cards{% endblock %}
 
 {% block body %}
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Importation des cartes Sim via un fichier CSV
+            </li>
+        </ol>
+    </nav>
+    <!-- Bloc d'explications -->
+    <div class="alert alert-info">
+        <h5 class="fw-bold mb-2"><i class="bi bi-info-circle-fill me-2"></i> Instructions pour l'importation :</h5>
+        <ul class="mb-0">
+            <li>Le fichier doit être au format <strong>CSV</strong>.</li>
+            <li>Il doit contenir <strong>une seule colonne</strong> avec les codes des cartes SIM.</li>
+            <li>Assurez-vous de sélectionner le <strong>type de carte</strong> avant de lancer l'importation.</li>
+        </ul>
+    </div>
+</div>
     <div class="container mt-4">
 
         {% for message in app.flashes('success') %}
@@ -17,13 +53,13 @@
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="csv_file" class="form-label">CSV File:</label>
+                        <label for="csv_file" class="form-label">Fichier CSV :</label>
                         <input type="file" class="form-control" id="csv_file" name="csv_file" required>
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Type:</label>
                         <select id="type" name="type" class="form-select" required>
-                            <option value="">Select Type</option>
+                            <option value="">Séléctionnez le type de cartes</option>
 							{% for simType in simTypes %}
                             <option value="{{simType.code}}">{{simType.nom}}</option>
 								
@@ -31,7 +67,7 @@
                             
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Import SIM Cards</button>
+                    <button type="submit" class="btn btn-primary">Lancer l'importation</button>
                 </form>
             </div>
         </div>
