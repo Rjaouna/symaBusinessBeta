@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SimCardMigrationController extends AbstractController
 {
-	#[Route('/migrate-sim-cards', name: 'migrate_sim_cards', methods: ['GET'])]
+	#[Route('/management/migrate-sim-cards', name: 'migrate_sim_cards', methods: ['GET'])]
 	public function migrate(
 		EntityManagerInterface $entityManager,
 		PendingSimCardsRepository $pendingCardRepository,

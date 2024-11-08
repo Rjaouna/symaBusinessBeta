@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\mailer;
 
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route('/bonus')]
+#[Route('/management/bonus')]
 final class BonusController extends AbstractController
 {
     #[Route('/', name: 'app_bonus_index', methods: ['GET'])]

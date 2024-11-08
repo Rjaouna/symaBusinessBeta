@@ -4,12 +4,13 @@ namespace App\Controller\api;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Repository\CommandeRepository;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserInformations extends AbstractController
 {
@@ -74,6 +75,38 @@ class UserInformations extends AbstractController
 
 		return new JsonResponse(['count' => $count, 'responsableNames' => $responsableNames], JsonResponse::HTTP_OK);
 	}
+	#[Route('/api/commandes/statistiques', name: 'api_commandes_statistics', methods: ['GET'])]
+	public function getCommandesStatistics(CommandeRepository $commandeRepo): JsonResponse
+	{
+		// Récupère toutes les commandes
+		$commandes = $commandeRepo->findAll();
+
+		// Filtrer les commandes validées uniquement
+		$commandesValidees = array_filter($commandes, function ($commande) {
+			return $commande->getStatus() === 'validee';
+		});
+
+		// Regrouper les commandes par type de carte SIM
+		$carteSimCounts = array_reduce($commandesValidees, function ($acc, $commande) {
+			$typeCarteSim = $commande->getSimType();
+			$quantite = $commande->getQtevalidee() ?: 0;
+
+			if ($typeCarteSim) {
+				$acc[$typeCarteSim] = ($acc[$typeCarteSim] ?? 0) + $quantite;
+			}
+			return $acc;
+		}, []);
+
+		// Préparer les données du graphique
+		$labels = array_keys($carteSimCounts);
+		$data = array_values($carteSimCounts);
+
+		return new JsonResponse([
+			'labels' => $labels,
+			'data' => $data,
+		], JsonResponse::HTTP_OK);
+	}
+
 
 	#[Route('/users/count/no-code-client', name: 'users_count_no_code_client', methods: ['GET'])]
 	public function getUsersCountWithoutCodeClient(UserRepository $user): Response

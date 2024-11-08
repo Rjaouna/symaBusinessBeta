@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[IsGranted('ROLE_USER')]
-#[Route('/bonus/management')]
+#[Route('/management/bonus/management')]
 final class BonusManagementController extends AbstractController
 {
 	#[Route('/updater', name: 'app_bonus_management')]

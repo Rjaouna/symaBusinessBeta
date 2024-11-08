@@ -228,7 +228,7 @@
             const remainingBonus = currentBonus.toFixed(2);
 
             // Créer une URL avec les données pour la redirection
-            const url = `/bonus/management/updater?remainingBonus=${remainingBonus}&orderItems=${encodeURIComponent(JSON.stringify(orderItems))}`;
+            const url = `/management/bonus/management/updater?remainingBonus=${remainingBonus}&orderItems=${encodeURIComponent(JSON.stringify(orderItems))}`;
 
             // Rediriger vers le contrôleur
             window.location.href = url;

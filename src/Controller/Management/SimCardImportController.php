@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SimCardImportController extends AbstractController
 {
-	#[Route('/import-sim-cards', name: 'import_sim_cards', methods: ['GET', 'POST'])]
+	#[Route('/management/import-sim-cards', name: 'import_sim_cards', methods: ['GET', 'POST'])]
 	public function import(Request $request, EntityManagerInterface $entityManager, SimTypeRepository $simTypeRepository): Response
 	{
 		$simTypes = $simTypeRepository->findAll();

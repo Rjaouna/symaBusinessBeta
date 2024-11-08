@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class UserCommandeWithOrdersController extends AbstractController
 {
-	#[Route('/admin/users-with-orders', name: 'users_with_orders')]
+	#[Route('/management/admin/users-with-orders', name: 'users_with_orders')]
 	public function index(
 		UserRepository $userRepository,
 		CommandeRepository $commandeRepository

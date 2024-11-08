@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SerialGeneratorController extends AbstractController
 {
-	#[Route('/generate-serial-numbers', name: 'generate_serial_numbers')]
+	#[Route('/management/generate-serial-numbers', name: 'generate_serial_numbers')]
 	public function generateSerialNumbers(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$form = $this->createForm(SerialNumberFormType::class);

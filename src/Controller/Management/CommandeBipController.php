@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class CommandeBipController extends AbstractController
 {
-	#[Route('/biper/{clientId}/serial-number', name: 'biper_serial_number')]
+	#[Route('/management/biper/{clientId}/serial-number', name: 'biper_serial_number')]
 	public function biperSerialNumber(
 		Request $request,
 		string $clientId,

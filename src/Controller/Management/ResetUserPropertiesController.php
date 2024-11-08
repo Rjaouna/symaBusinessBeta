@@ -20,7 +20,7 @@ class ResetUserPropertiesController extends AbstractController
 		$this->resetUserPropertiesCommand = $resetUserPropertiesCommand;
 	}
 
-	#[Route('/reset-user-properties', name: 'reset_user_properties', methods: ['POST'])]
+	#[Route('/management/reset-user-properties', name: 'reset_user_properties', methods: ['POST'])]
 	public function resetUserProperties(Request $request): Response
 	{
 		// Le mot de passe ou mot-clé que vous voulez vérifier

@@ -1,5 +1,8 @@
-<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-light border">
-    <h6 class="fw-bold mb-2 ml-2">Évaluation des Quotas SIM :</h6>
+<div class="mt-4 mb-2 px-2 py-3 rounded shadow-sm bg-light border">
+    <div class="d-flex align-items-center my-2">
+    <div class="title-icon bg-primary rounded shadow" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 10px;"></div>
+    <h4 class="mb-0 text-secondary" style=" font-weight: bold;letter-spacing: -0.5px;">Statut Quotas </h4>
+  </div>
 
     <!-- Progress bars for each SIM quota -->
     <div id="sim-quota-progress">
@@ -32,7 +35,6 @@ function renderQuotaProgress(userData) {
         // Create the progress bar HTML
         const progressBarHTML = `
             <div class="d-flex align-items-center mb-3 rounded shadow-sm bg-light boder p-1" style="font-size:0.8rem">
-    <i class="bi bi-sim fs-4 text-secondary me-2 "></i>
     <div class="w-100">
         <div class="d-flex justify-content-between">
             <span>${item.name}</span>

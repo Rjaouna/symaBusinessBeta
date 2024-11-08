@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class CommandeLigneAutoValidatorController extends AbstractController
 {
-	#[Route('/commande/{numeroCommande}/ajouter-lignes', name: 'Commande_Ligne_Auto_Validato', methods: ['GET'])]
+	#[Route('/management/commande/{numeroCommande}/ajouter-lignes', name: 'Commande_Ligne_Auto_Validato', methods: ['GET'])]
 	public function ajouterLignesCommande(
 		string $numeroCommande,
 		CommandeRepository $commandeRepo,

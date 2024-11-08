@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DashboardController extends AbstractDashboardController
 {
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    #[Route('/administration/syma/dashboard', name: 'admin_syma_business')]
+    #[Route('/admin/syma/dashboard', name: 'admin_syma_business')]
     public function index(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);

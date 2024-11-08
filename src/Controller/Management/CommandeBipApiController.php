@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CommandeBipApiController extends AbstractController
 {
 
-	#[Route('/biper/commande/{clientId}', name: 'biper_commande')]
+	#[Route('/management/biper/commande/{clientId}', name: 'biper_commande')]
 	public function showBiperCommande(string $clientId): Response
 	{
 		return $this->render('interfaces_admin/commandes_validation_api.html.twig', [

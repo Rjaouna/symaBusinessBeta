@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ path('app_syma_business') }}">
-      <img src="{{ asset('assets/img/logo_syma.svg') }}" alt="Logo Syma">
+      <img src="{{ asset('assets/img/logo-syma@4x.webp') }}" alt="Logo Syma" style="width:80px">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -95,7 +95,7 @@
             .then(response => {
                 const count = response.data.count;
                 const users = response.data;
-                console.log('Nombre d\'utilisateurs sans code_client :', users);
+                // console.log('Nombre d\'utilisateurs sans code_client :', users);
                 if (count >= 1) {
                     const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
                     const UserWithoutCodeElement = document.getElementById('UserWithoutCode');
@@ -125,7 +125,7 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(response => {
-            console.log('Success:', response.data);
+            // console.log('Success:', response.data);
             location.reload();
         })
         .catch(error => {
