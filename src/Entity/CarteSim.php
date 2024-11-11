@@ -55,6 +55,10 @@ class CarteSim
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $usageFinale = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cartesSims')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Chapelet $chapelet = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -175,6 +179,18 @@ class CarteSim
     public function setUsageFinale(?string $usageFinale): static
     {
         $this->usageFinale = $usageFinale;
+
+        return $this;
+    }
+
+    public function getChapelet(): ?Chapelet
+    {
+        return $this->chapelet;
+    }
+
+    public function setChapelet(?Chapelet $chapelet): static
+    {
+        $this->chapelet = $chapelet;
 
         return $this;
     }
