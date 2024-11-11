@@ -57,7 +57,8 @@ final class UserCommandeController extends AbstractController
 		// Générer un nouveau numéro de commande
 		$lastCommande = $commandeRepository->findOneBy([], ['id' => 'DESC']);
 		$newCode = $lastCommande ? 'CDE_' . str_pad((int)substr($lastCommande->getNumero(), 4) + 1, 6, '0', STR_PAD_LEFT) : 'CDE_000001';
-
+		//Vérifier combien de bonus utiliser 
+			
 		// Créer et persister la nouvelle commande
 		$commande = new Commande();
 		$commande->setNumero($newCode);

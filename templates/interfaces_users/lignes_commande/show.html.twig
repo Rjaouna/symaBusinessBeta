@@ -3,14 +3,96 @@
 {% block title %}Détail de la Commande {{ numeroCommande }}{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h3 class="mb-4 border-bottom border-secondary"><i class="text-secondary bi bi-cart"></i> Détail Commande : {{ numeroCommande }}</h3>
-
-    <div class="mb-4">
-	    <strong>Code client :</strong> {{app.user.codeClient}}<br>
-        <strong>Date d'envoi de la commande :</strong> Le {{ commande.createdAt ? commande.createdAt|date('Y-m-d') : 'N/A' }} à {{ commande.createdAt ? commande.createdAt|date('H:i:s') : 'N/A' }}<br>
-        <strong>Date d'envoi de validation :</strong> Le {{ commande.updatedAt ? commande.updatedAt|date('Y-m-d') : 'N/A' }} à {{ commande.updatedAt ? commande.updatedAt|date('H:i:s') : 'N/A' }}
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Client
+        </h1>
     </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Détail Commande : {{ numeroCommande }} 
+            </li>
+        </ol>
+    </nav>
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="fw-bold mb-0">Détails de la commande {{ numeroCommande }} </h5>
+    </div>
+    <div class="card-body bg-light p-4">
+        <div class="row mb-3">
+            <div class="col-6 text-muted">Code client</div>
+            <div class="col-6 text-end fw-bold">{{ app.user.codeClient }}</div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-6 text-muted">Date d'envoi de la commande</div>
+            <div class="col-6 text-end">
+                {{ commande.createdAt ? commande.createdAt|date('Y-m-d') : 'N/A' }} 
+                <small class="text-muted">à</small> 
+                {{ commande.createdAt ? commande.createdAt|date('H:i:s') : 'N/A' }}
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-6 text-muted">Date de validation</div>
+            <div class="col-6 text-end">
+                {{ commande.updatedAt ? commande.updatedAt|date('Y-m-d') : 'N/A' }} 
+                <small class="text-muted">à</small> 
+                {{ commande.updatedAt ? commande.updatedAt|date('H:i:s') : 'N/A' }}
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-6 text-muted">Statut de la commande</div>
+            <div class="col-6 text-end fw-bold">
+                <span class="{{ commande.status ? 'text-success' : 'text-warning' }}">
+                    {{ commande.status ? 'Validée' : 'En attente' }}
+                </span>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-6 text-muted">Type de SIM</div>
+            <div class="col-6 text-end">{{ commande.simType }}</div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-6 text-muted">Nombre d'articles</div>
+            <div class="col-6 text-end fw-bold">{{ commande.lignesCommandes|length }}</div>
+        </div>
+        
+        <div class="row">
+            <div class="col-6 text-muted">Prix total</div>
+            <div class="col-6 text-end fw-bold text-success">
+                {{ commande.total|number_format(2, ',', ' ') }} €
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-footer bg-white text-end">
+        <button class="btn btn-primary btn-sm" onclick="window.print()">
+            <i class="bi bi-printer"></i> Imprimer
+        </button>
+    </div>
+</div>
+
+
+
 
     {% if lignesCommande is empty %}
         <div class="alert alert-warning" role="alert">

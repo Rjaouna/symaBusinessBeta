@@ -62,24 +62,28 @@ final class BonusManagementController extends AbstractController
 			}
 
 			$currentSimUsage = null;
+			$currentSimBonus = null;
 
 			switch ($code) {
 				case 'cartesim05':
 					$currentSimUsage = $user->getSim5Usage();
+					$currentSimBonus = $user->getSim5Bonus();
 					break;
 
 
 				case 'cartesim10':
 					$currentSimUsage = $user->getSim10Usage();
-
+					$currentSimBonus = $user->getSim10Bonus();
 					break;
 
 				case 'cartesim15':
 					$currentSimUsage = $user->getSim15Usage();
+					$currentSimBonus = $user->getSim15Bonus();
 					break;
 
 				case 'cartesim20':
 					$currentSimUsage = $user->getSim20Usage();
+					$currentSimBonus = $user->getSim20Bonus();
 					break;
 
 				default:
@@ -96,18 +100,22 @@ final class BonusManagementController extends AbstractController
 			switch ($simTypeEntity->getCode()) {
 				case 'cartesim05':
 					$user->setSim5Usage($currentSimUsage - $quantity);
+					$user->setSim5Bonus($currentSimBonus + $quantity);
 					break;
 
 				case 'cartesim10':
 					$user->setSim10Usage($currentSimUsage - $quantity);
+					$user->setSim10Bonus($currentSimBonus + $quantity);
 					break;
 
 				case 'cartesim15':
 					$user->setSim15Usage($currentSimUsage - $quantity);
+					$user->setSim15Bonus($currentSimBonus + $quantity);
 					break;
 
 				case 'cartesim20':
 					$user->setSim20Usage($currentSimUsage - $quantity);
+					$user->setSim20Bonus($currentSimBonus + $quantity);
 					break;
 			}
 		}

@@ -458,6 +458,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastUpdatedQuotaAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $sim5Bonus = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sim10Bonus = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sim15Bonus = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sim20Bonus = null;
+
     public function setActiveRole(string $role): self
     {
         $this->activeRole = $role;
@@ -477,6 +489,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastUpdatedQuotaAt(?\DateTimeImmutable $lastUpdatedQuotaAt): static
     {
         $this->lastUpdatedQuotaAt = $lastUpdatedQuotaAt;
+
+        return $this;
+    }
+
+    public function getSim5Bonus(): ?int
+    {
+        return $this->sim5Bonus;
+    }
+
+    public function setSim5Bonus(?int $sim5Bonus): static
+    {
+        $this->sim5Bonus = $sim5Bonus;
+
+        return $this;
+    }
+
+    public function getSim10Bonus(): ?int
+    {
+        return $this->sim10Bonus;
+    }
+
+    public function setSim10Bonus(?int $sim10Bonus): static
+    {
+        $this->sim10Bonus = $sim10Bonus;
+
+        return $this;
+    }
+
+    public function getSim15Bonus(): ?int
+    {
+        return $this->sim15Bonus;
+    }
+
+    public function setSim15Bonus(?int $sim15Bonus): static
+    {
+        $this->sim15Bonus = $sim15Bonus;
+
+        return $this;
+    }
+
+    public function getSim20Bonus(): ?int
+    {
+        return $this->sim20Bonus;
+    }
+
+    public function setSim20Bonus(?int $sim20Bonus): static
+    {
+        $this->sim20Bonus = $sim20Bonus;
 
         return $this;
     }

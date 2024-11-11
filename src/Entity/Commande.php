@@ -66,6 +66,9 @@ class Commande
     #[ORM\OneToMany(targetEntity: LignesCommande::class, mappedBy: 'commande')]
     private Collection $lignesCommandes;
 
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $qteBonusUsed = null;
+
     public function __construct()
     {
         $this->lignesCommandes = new ArrayCollection();
@@ -247,6 +250,18 @@ class Commande
                 $lignesCommande->setCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQteBonusUsed(): ?string
+    {
+        return $this->qteBonusUsed;
+    }
+
+    public function setQteBonusUsed(?string $qteBonusUsed): static
+    {
+        $this->qteBonusUsed = $qteBonusUsed;
 
         return $this;
     }

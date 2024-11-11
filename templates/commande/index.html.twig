@@ -40,6 +40,7 @@
                 <th>Status</th>
                 <th>Qte</th>
                 <th>Qte Validée</th>
+                <th>Qte Bonus utilisée</th>
                 <th>Total</th>
                 <th>Créée le</th>
                 <th></th>
@@ -54,6 +55,7 @@
                 <td>{{ commande.status }}</td>
                 <td>{{ commande.qte }}</td>
                 <td>{{ commande.qtevalidee }}</td>
+                <td>{{ commande.qteBonusUsed }}</td>
                 <td>{{ commande.total }}</td>
                 <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
