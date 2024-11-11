@@ -36,6 +36,7 @@ class SimCardMigrationController extends AbstractController
 				// Create a new CarteSim entity
 				$carteSim = new CarteSim();
 				$carteSim->setSerialNumber($pendingCard->getSerialNumber());
+				$carteSim->setChapelet($pendingCard->getChapelet());
 				$carteSim->setType($pendingCard->getType());
 				$carteSim->setReserved(False);
 

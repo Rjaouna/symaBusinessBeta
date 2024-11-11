@@ -31,9 +31,16 @@ class Chapelet
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /**
+     * @var Collection<int, PendingSimCards>
+     */
+    #[ORM\OneToMany(targetEntity: PendingSimCards::class, mappedBy: 'chapelet')]
+    private Collection $pendingSimCards;
+
     public function __construct()
     {
         $this->cartesSims = new ArrayCollection();
+        $this->pendingSimCards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,5 +125,40 @@ class Chapelet
     public function onPreUpdate(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return Collection<int, PendingSimCards>
+     */
+    public function getPendingSimCards(): Collection
+    {
+        return $this->pendingSimCards;
+    }
+
+    public function addPendingSimCard(PendingSimCards $pendingSimCard): static
+    {
+        if (!$this->pendingSimCards->contains($pendingSimCard)) {
+            $this->pendingSimCards->add($pendingSimCard);
+            $pendingSimCard->setChapelet($this);
+        }
+
+        return $this;
+    }
+
+    public function removePendingSimCard(PendingSimCards $pendingSimCard): static
+    {
+        if ($this->pendingSimCards->removeElement($pendingSimCard)) {
+            // set the owning side to null (unless already changed)
+            if ($pendingSimCard->getChapelet() === $this) {
+                $pendingSimCard->setChapelet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return (string)$this->codeChapelet;
     }
 }

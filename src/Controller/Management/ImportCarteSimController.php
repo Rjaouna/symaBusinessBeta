@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/management/import', name: 'management_import_')]
+#[Route('/management/import')]
 class ImportCarteSimController extends AbstractController
 {
-	#[Route('/carte-sim', name: 'carte_sim', methods: ['GET', 'POST'])]
+	#[Route('/carte-sim', name: 'management_import_carte_sim', methods: ['GET', 'POST'])]
 	public function import(
 		Request $request,
 		EntityManagerInterface $entityManager,

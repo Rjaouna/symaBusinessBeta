@@ -46,6 +46,10 @@ class PendingSimCards
     #[ORM\Column]
     private ?bool $importedCsv = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pendingSimCards')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Chapelet $chapelet = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -133,6 +137,18 @@ class PendingSimCards
     public function setImportedCsv(bool $importedCsv): static
     {
         $this->importedCsv = $importedCsv;
+
+        return $this;
+    }
+
+    public function getChapelet(): ?Chapelet
+    {
+        return $this->chapelet;
+    }
+
+    public function setChapelet(?Chapelet $chapelet): static
+    {
+        $this->chapelet = $chapelet;
 
         return $this;
     }

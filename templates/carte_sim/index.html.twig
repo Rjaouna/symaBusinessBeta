@@ -54,6 +54,7 @@
             <tr>
             <th><input type="checkbox" id="select-all"></th>
                 <th>Numéro de serie</th>
+                <th>Chapelet</th>
                 <th>Type</th>
                 <th>Prix</th>
                 <th>Reservée</th>
@@ -69,6 +70,7 @@
                 <tr>
                 <td><input type="checkbox" class="row-checkbox"></td>
                     <td  >{{ carte_sim.serialNumber }}</td>
+                    <td>{{ carte_sim.chapelet.codeChapelet }}</td>
                     <td>{{ carte_sim.type }}</td>
                     <td>{{ carte_sim.type.prix }}</td>
                     <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>

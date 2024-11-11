@@ -46,7 +46,6 @@
 
 
         <div class="d-flex justify-content-end mb-3" style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
-            <a class="btn btn-secondary btn-sm me-2" href="{{ path('app_pending_sim_cards_new') }}">Ajouter une carte Sim</a>
             <a class="btn btn-primary btn-sm" href="{{ path('migrate_sim_cards') }}">Synchroniser les stocks</a>
         </div>
 <ul class="nav nav-tabs" role="tablist">
@@ -65,6 +64,7 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Serial Number</th>
+                    <th scope="col">Chapelet</th>
                     <th scope="col">Type</th>
                     <th scope="col">Created At</th>
                     <th scope="col">Updated At</th>
@@ -76,6 +76,7 @@
                 <tr>
                     <td>{{ pending_sim_card.id }}</td>
                     <td>{{ pending_sim_card.serialNumber }}</td>
+                    <td>{{ pending_sim_card.chapelet }}</td>
                     <td>{{ pending_sim_card.type.nom }}</td>  {# Adjusted to access the type's name #}
                     <td>{{ pending_sim_card.createdAt ? pending_sim_card.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ pending_sim_card.updatedAt ? pending_sim_card.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
@@ -96,6 +97,7 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Serial Number</th>
+                    <th scope="col">Chapelet</th>
                     <th scope="col">Type</th>
                     <th scope="col">Created At</th>
                     <th scope="col">Updated At</th>
@@ -108,12 +110,13 @@
                 <tr>
                     <td>{{ pending_sim_card.id }}</td>
                     <td>{{ pending_sim_card.serialNumber }}</td>
+                    <td>{{ pending_sim_card.chapelet.codeChapelet }}</td>
                     <td>{{ pending_sim_card.type.nom }}</td>  {# Adjusted to access the type's name #}
                     <td>{{ pending_sim_card.createdAt ? pending_sim_card.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ pending_sim_card.updatedAt ? pending_sim_card.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ pending_sim_card.migrated ? 'Yes' : 'No' }}</td>
                     <td>
-                        <a  href="{{ path('app_pending_sim_cards_edit', {'id': pending_sim_card.id}) }}">Modifier</a>
+                        {# <a  href="{{ path('app_pending_sim_cards_edit', {'id': pending_sim_card.id}) }}">Modifier</a> #}
                     </td>
                 </tr>
             {% else %}

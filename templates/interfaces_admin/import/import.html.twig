@@ -1,10 +1,67 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Importation de cartes SIM{% endblock %}
+
 {% block body %}
-    <h1>Importer des cartes SIM</h1>
-    {{ form_start(form) }}
-        {{ form_row(form.csvFile) }}
-        {{ form_row(form.simType) }}
-        <button type="submit" class="btn btn-primary">Importer</button>
-    {{ form_end(form) }}
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
+        </h1>
+    </div>
+
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Importation des cartes Sim
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Bloc d'explications -->
+    <div class="alert alert-info">
+        <h5 class="fw-bold mb-2"><i class="bi bi-info-circle-fill me-2"></i> Instructions pour l'importation :</h5>
+        <ul class="mb-0">
+            <li>Le fichier doit être au format <strong>CSV</strong>.</li>
+            <li>Il doit contenir <strong>deux colonnes</strong> : la première avec les codes des cartes SIM, et la deuxième avec le numéro de chapelet pour chaque carte Sim.</li>
+            <li>Assurez-vous de sélectionner le <strong>type de carte</strong> avant de lancer l'importation.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="container mt-4">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_row(form.csvFile, { 'label': 'Fichier CSV', 'attr': { 'class': 'form-control' } }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.simType, { 'label': 'Type', 'attr': { 'class': 'form-select' } }) }}
+                </div>
+                <button type="submit" class="btn btn-primary">Importer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
 {% endblock %}
