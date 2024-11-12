@@ -47,7 +47,7 @@
             <div class="container-fluid">
     <!-- Titre principal avec icône -->
     <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark ps-3 fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
             <i class="bi bi-upc-scan me-2"></i> Sacan carte Sim
         </h1>
     </div>
@@ -56,9 +56,10 @@
             <form id="biperForm">
             <div class="mb-3 position-relative">
             <i class="bi bi-sim fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                <input class="w-100 form-control-lg ps-5" type="text" id="serialNumber" name="serialNumber" required maxlength="19" placeholder="0000000000000000000" >
-                <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
+                <input class="w-100 form-control-lg ps-5" type="text" id="chapeletCode" name="chapeletCode" required maxlength="14" placeholder="SLB00000000000" >
                 </div>
+                <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
+
             </form>
 
             <p class="py-2 font-weight-bold" id="responseMessage"></p>
@@ -80,19 +81,19 @@
         </table>
 <a href="{{ path('users_with_orders') }}" type="button" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la liste des commandes</a>
         <script>
-         document.getElementById('serialNumber').focus(); // Met le focus sur le champ serialNumber
-   document.getElementById('serialNumber').addEventListener('input', function() {
-       const serialNumber = this.value;
+         document.getElementById('chapeletCode').focus(); // Met le focus sur le champ chapeletCode
+   document.getElementById('chapeletCode').addEventListener('input', function() {
+       const chapeletCode = this.value;
        const clientId = document.getElementById('clientId').value;
 
        // Loggez le numéro de série et le client ID
-       console.log("Numéro de série:", serialNumber);
+       console.log("Numéro de série:", chapeletCode);
        console.log("Client ID:", clientId);
 
-       // Vérifiez si le nombre de caractères est 19
-       if (serialNumber.length === 19) {
-           // Envoyer la requête dès que le nombre de caractères atteint 19
-           axios.post(`/api/biper/${clientId}`, { serialNumber })
+       // Vérifiez si le nombre de caractères est 14
+       if (chapeletCode.length === 14) {
+           // Envoyer la requête dès que le nombre de caractères atteint 14
+           axios.post(`/api/biper/${clientId}`, { chapeletCode })
                .then(response => {
                    document.getElementById('responseMessage').innerText = response.data.success || response.data.error;
                })

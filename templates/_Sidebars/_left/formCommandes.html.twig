@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 1; i <= available; i++) {
                 const option = document.createElement('option');
                 option.value = i;
-                option.textContent = i;
+                option.textContent = `${i} Chapelet${i > 1 ? 's' : ''} (${i * 5} cartes)`;
                 quantity.appendChild(option);
             }
             quantity.disabled = false; // Activer le champ de quantité

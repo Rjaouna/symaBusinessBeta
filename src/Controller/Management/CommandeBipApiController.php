@@ -1,5 +1,4 @@
 <?php
-// src/Controller/Management/CommandeBipApiController.php
 
 namespace App\Controller\Management;
 
@@ -7,6 +6,7 @@ use App\Entity\CarteSim;
 use App\Entity\Commande;
 use App\Entity\LignesCommande;
 use App\Repository\CarteSimRepository;
+use App\Repository\ChapeletRepository;
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommandeBipApiController extends AbstractController
 {
-
-	#[Route('/management/biper/commande/{clientId}', name: 'biper_commande')]
+	#[Route('/management/list/commande/{clientId}', name: 'biper_commande')]
 	public function showBiperCommande(string $clientId): Response
 	{
 		return $this->render('interfaces_admin/commandes_validation_api.html.twig', [
@@ -58,79 +57,75 @@ class CommandeBipApiController extends AbstractController
 
 
 	#[Route('/api/biper/{clientId}', name: 'api_biper', methods: ['POST'])]
-	public function biperSerialNumber(
+	public function biperChaplet(
 		Request $request,
 		string $clientId,
 		CarteSimRepository $carteSimRepo,
+		ChapeletRepository $chapeletRepo,
 		CommandeRepository $commandeRepo,
 		EntityManagerInterface $entityManager
 	): JsonResponse {
-		// Récupérer le contenu JSON de la requête
 		$data = json_decode($request->getContent(), true);
+		$chapeletCode = $data['chapeletCode'] ?? null;
 
-		$serialNumber = $data['serialNumber'] ?? null;
-
-		if (!$serialNumber) {
-			return $this->json(['error' => 'Le numéro de série est requis.'], 400);
+		if (!$chapeletCode) {
+			return $this->json(['error' => 'Le code chapelet est requis.'], 400);
 		}
 
-		// Vérification de la carte SIM
-		$carteSim = $this->getCarteSim($carteSimRepo, $serialNumber);
-		if (!$carteSim) {
-			return $this->json(['error' => 'Carte SIM non trouvée.'], 404);
+		// Recherche du chapelet par son code
+		$chapelet = $chapeletRepo->findOneBy(['codeChapelet' => $chapeletCode]);
+
+		if (!$chapelet) {
+			return $this->json(['error' => 'Le chapelet est introuvable.'], 404);
 		}
 
-		// Vérification si la carte SIM est déjà réservée
-		if ($carteSim->isReserved()) {
-			return $this->json(['error' => 'Cette carte SIM a déjà été réservée ou achetée.'], 400);
-		}
+		// Récupérer le type de cartes SIM du chapelet
+		$simType = $chapelet->getTypeCartes();  // Retourne un objet SimType
 
-		// Récupérer la commande pour le client
-		$commande = $this->getCommande($commandeRepo, $clientId, $carteSim->getType());
-		if (!$commande) {
-			return $this->json(['error' => 'Aucune commande en cours pour ce client.'], 404);
-		}
-
-		// Mettre à jour la commande et créer une nouvelle ligne de commande
-		$this->updateCommande($commande);
-		$this->createLigneCommande($entityManager, $carteSim, $commande);
-
-		return $this->json(['success' => 'Ligne de commande créée avec succès et carte SIM réservée.']);
-	}
-
-	private function getCarteSim(CarteSimRepository $carteSimRepo, string $serialNumber): ?CarteSim
-	{
-		return $carteSimRepo->findOneBy(['serialNumber' => $serialNumber]);
-	}
-
-	private function getCommande(CommandeRepository $commandeRepo, string $clientId, $typeCarteSim): ?Commande
-	{
-		$commandeEnCours = $commandeRepo->findOneBy([
+		// Vérifier si une commande en cours ou en attente existe pour ce client et ce type de SIM
+		$commande = $commandeRepo->findOneBy([
 			'code_client' => $clientId,
-			'status' => 'en_cours',
-			'simType' => $typeCarteSim->getNom(),
-		], ['createdAt' => 'ASC']);
+			'TypeSim' => $simType,  // Utilisation de la propriété TypeSim
+			'status' => ['en_cours', 'en_attente']  // Vérification des statuts
+		]);
 
-		if (!$commandeEnCours) {
-			return $commandeRepo->findOneBy([
-				'code_client' => $clientId,
-				'status' => 'en_attente',
-				'simType' => $typeCarteSim->getNom(),
-			], ['createdAt' => 'ASC']);
+
+		if (!$commande) {
+			return $this->json(['error' => 'Aucune commande en cours ou en attente pour ce client.'], 404);
 		}
 
-		return $commandeEnCours;
-	}
-
-	private function updateCommande(Commande $commande): void
-	{
-		$commande->setQtevalidee($commande->getQtevalidee() + 1);
-
-		if ($commande->getQtevalidee() >= $commande->getQte()) {
-			$commande->setStatus('validee');
-		} else {
-			$commande->setStatus('en_cours');
+		// Vérifier si le chapelet est réservé
+		if ($chapelet->isReserved()) {
+			return $this->json(['error' => 'Le chapelet est déjà réservé.'], 400);
 		}
+
+		// Récupérer les cartes SIM associées au chapelet
+		$cartesSim = $carteSimRepo->findBy([
+			'chapelet' => $chapelet,
+			'reserved' => false,
+		]);
+
+		// Vérifier si toutes les 5 cartes SIM sont libres
+		if (count($cartesSim) !== 5) {
+			return $this->json(['error' => 'Le chapelet ne contient pas 5 cartes SIM libres.'], 400);
+		}
+
+		// Création des lignes de commande pour les cartes SIM
+		foreach ($cartesSim as $carteSim) {
+			$this->createLigneCommande($entityManager, $carteSim, $commande);
+		}
+
+		// Mise à jour du statut de la commande
+		$this->updateCommande($commande, count($cartesSim));
+
+		// Marquer le chapelet comme réservé
+		$chapelet->setReserved(true);
+		$entityManager->persist($chapelet);
+
+		// Enregistrer les modifications dans la base de données
+		$entityManager->flush();
+
+		return $this->json(['success' => 'Chapelet réservé, les cartes SIM associées ont été bien réservées.']);
 	}
 
 	private function createLigneCommande(EntityManagerInterface $entityManager, CarteSim $carteSim, Commande $commande): void
@@ -143,14 +138,28 @@ class CommandeBipApiController extends AbstractController
 		$ligneCommande->setPrixUnitaire($carteSim->getType()->getPrix());
 		$ligneCommande->setTypeSim($carteSim->getType());
 
-		// Mise à jour de la carte SIM comme réservée
+		// Marquer la carte SIM comme réservée
 		$carteSim->setReserved(true);
 		$carteSim->setPurchasedBy($commande->getUser());
 		$carteSim->setUser($commande->getUser());
+		$carteSim->setCanalVente('Vente via Application');
 
-		// Persist des entités
+
 		$entityManager->persist($ligneCommande);
 		$entityManager->persist($carteSim);
-		$entityManager->flush();
 	}
+
+	private function updateCommande(Commande $commande, int $nbCartes): void
+	{
+		// Mise à jour de la quantité validée de la commande
+		$commande->setQtevalidee($commande->getQtevalidee() + $nbCartes);
+
+		// Vérifier si la commande est entièrement validée
+		if ($commande->getQtevalidee() >= $commande->getQte()) {
+			$commande->setStatus('validee');
+		} else {
+			$commande->setStatus('en_cours');
+		}
+	}
+
 }

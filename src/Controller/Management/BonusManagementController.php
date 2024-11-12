@@ -99,23 +99,23 @@ final class BonusManagementController extends AbstractController
 			// Mise à jour de la consommation
 			switch ($simTypeEntity->getCode()) {
 				case 'cartesim05':
-					$user->setSim5Usage($currentSimUsage - $quantity);
-					$user->setSim5Bonus($currentSimBonus + $quantity);
+					$user->setSim5Usage($currentSimUsage - ($quantity / 5));
+					$user->setSim5Bonus($currentSimBonus + ($quantity / 5));
 					break;
 
 				case 'cartesim10':
-					$user->setSim10Usage($currentSimUsage - $quantity);
-					$user->setSim10Bonus($currentSimBonus + $quantity);
+					$user->setSim10Usage($currentSimUsage - ($quantity / 5));
+					$user->setSim10Bonus($currentSimBonus + ($quantity / 5));
 					break;
 
 				case 'cartesim15':
-					$user->setSim15Usage($currentSimUsage - $quantity);
-					$user->setSim15Bonus($currentSimBonus + $quantity);
+					$user->setSim15Usage($currentSimUsage - ($quantity / 5));
+					$user->setSim15Bonus($currentSimBonus + ($quantity / 5));
 					break;
 
 				case 'cartesim20':
-					$user->setSim20Usage($currentSimUsage - $quantity);
-					$user->setSim20Bonus($currentSimBonus + $quantity);
+					$user->setSim20Usage($currentSimUsage - ($quantity / 5));
+					$user->setSim20Bonus($currentSimBonus + ($quantity / 5));
 					break;
 			}
 		}

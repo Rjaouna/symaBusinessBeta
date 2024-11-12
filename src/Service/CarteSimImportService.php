@@ -46,6 +46,8 @@ class CarteSimImportService
 				// Si le chapelet n'existe pas, créer un nouveau chapelet
 				$chapelet = new Chapelet();
 				$chapelet->setCodeChapelet($codeChapelet);
+				$chapelet->setReserved(false);
+				$chapelet->setTypeCartes($simType);
 				$this->entityManager->persist($chapelet);
 				$this->entityManager->flush(); // Persister le chapelet immédiatement pour garantir qu'il existe dans la base
 			}

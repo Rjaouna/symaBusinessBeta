@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CarteSimRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -58,6 +60,20 @@ class CarteSim
     #[ORM\ManyToOne(inversedBy: 'cartesSims')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Chapelet $chapelet = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $canalVente = null;
+
+    /**
+     * @var Collection<int, LigneFacture>
+     */
+    #[ORM\OneToMany(targetEntity: LigneFacture::class, mappedBy: 'produit')]
+    private Collection $ligneFactures;
+
+    public function __construct()
+    {
+        $this->ligneFactures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -191,6 +207,48 @@ class CarteSim
     public function setChapelet(?Chapelet $chapelet): static
     {
         $this->chapelet = $chapelet;
+
+        return $this;
+    }
+
+    public function getCanalVente(): ?string
+    {
+        return $this->canalVente;
+    }
+
+    public function setCanalVente(?string $canalVente): static
+    {
+        $this->canalVente = $canalVente;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LigneFacture>
+     */
+    public function getLigneFactures(): Collection
+    {
+        return $this->ligneFactures;
+    }
+
+    public function addLigneFacture(LigneFacture $ligneFacture): static
+    {
+        if (!$this->ligneFactures->contains($ligneFacture)) {
+            $this->ligneFactures->add($ligneFacture);
+            $ligneFacture->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneFacture(LigneFacture $ligneFacture): static
+    {
+        if ($this->ligneFactures->removeElement($ligneFacture)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneFacture->getProduit() === $this) {
+                $ligneFacture->setProduit(null);
+            }
+        }
 
         return $this;
     }

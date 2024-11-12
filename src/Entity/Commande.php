@@ -69,6 +69,10 @@ class Commande
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $qteBonusUsed = null;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SimType $TypeSim = null;
+
     public function __construct()
     {
         $this->lignesCommandes = new ArrayCollection();
@@ -262,6 +266,18 @@ class Commande
     public function setQteBonusUsed(?string $qteBonusUsed): static
     {
         $this->qteBonusUsed = $qteBonusUsed;
+
+        return $this;
+    }
+
+    public function getTypeSim(): ?SimType
+    {
+        return $this->TypeSim;
+    }
+
+    public function setTypeSim(?SimType $TypeSim): static
+    {
+        $this->TypeSim = $TypeSim;
 
         return $this;
     }

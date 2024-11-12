@@ -58,15 +58,16 @@ final class UserCommandeController extends AbstractController
 		$lastCommande = $commandeRepository->findOneBy([], ['id' => 'DESC']);
 		$newCode = $lastCommande ? 'CDE_' . str_pad((int)substr($lastCommande->getNumero(), 4) + 1, 6, '0', STR_PAD_LEFT) : 'CDE_000001';
 		//Vérifier combien de bonus utiliser 
-			
+
 		// Créer et persister la nouvelle commande
 		$commande = new Commande();
 		$commande->setNumero($newCode);
 		$commande->setUser($user);
-		$commande->setQte($quantity);
-		$commande->setTotal($quantity * $prix);
+		$commande->setQte($quantity * 5);
+		$commande->setTotal(($quantity * 5) * $prix);
 		$commande->setStatus('en_attente');
 		$commande->setSimType($typeSim->getNom());
+		$commande->setTypeSim($typeSim);
 		$commande->setCodeClient($codeClient);
 
 		$entityManager->persist($commande);

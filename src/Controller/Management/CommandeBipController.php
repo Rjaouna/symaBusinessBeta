@@ -133,6 +133,8 @@ class CommandeBipController extends AbstractController
 		$carteSim->setReserved(true);
 		$carteSim->setPurchasedBy($commande->getUser());
 		$carteSim->setUser($commande->getUser());
+		$carteSim->setCanalVente('Vente via Application');
+
 
 		$entityManager->persist($ligneCommande);
 		$entityManager->persist($carteSim);

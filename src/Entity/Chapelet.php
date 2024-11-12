@@ -37,6 +37,13 @@ class Chapelet
     #[ORM\OneToMany(targetEntity: PendingSimCards::class, mappedBy: 'chapelet')]
     private Collection $pendingSimCards;
 
+    #[ORM\Column]
+    private ?bool $reserved = null;
+
+    #[ORM\ManyToOne(inversedBy: 'chapelets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SimType $typeCartes = null;
+
     public function __construct()
     {
         $this->cartesSims = new ArrayCollection();
@@ -160,5 +167,29 @@ class Chapelet
     public function __toString()
     {
         return (string)$this->codeChapelet;
+    }
+
+    public function isReserved(): ?bool
+    {
+        return $this->reserved;
+    }
+
+    public function setReserved(bool $reserved): static
+    {
+        $this->reserved = $reserved;
+
+        return $this;
+    }
+
+    public function getTypeCartes(): ?SimType
+    {
+        return $this->typeCartes;
+    }
+
+    public function setTypeCartes(?SimType $typeCartes): static
+    {
+        $this->typeCartes = $typeCartes;
+
+        return $this;
     }
 }

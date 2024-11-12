@@ -30,7 +30,7 @@ class LignesCommande
     #[ORM\ManyToOne(inversedBy: 'lignesCommandes')]
     private ?SimType $typeSim = null;
 
-    #[ORM\Column(length: 14)]
+    #[ORM\Column(length: 19)]
     private ?string $serialNumber = null;
 
     #[ORM\Column(length: 50)]

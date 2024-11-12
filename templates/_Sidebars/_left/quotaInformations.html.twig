@@ -14,7 +14,7 @@
 // Function to render progress bars for each SIM quota
 function renderQuotaProgress(userData) {
     if (!userData) {
-        console.error('Aucune donnée utilisateur trouvée pour le graphique');
+        console.error('Aucune donnée utilisateur trouvée pour le tableau de quota');
         return;
     }
 
@@ -39,13 +39,13 @@ function renderQuotaProgress(userData) {
         <div class="d-flex justify-content-between">
             <span>${item.name}</span>
             <span class="text-secondary">
-                ${usagePercentage < 0 ? ` ${item.quota} + ${Math.abs(usagePercentage)} <i class="bi bi-gift text-danger"></i>` : `${item.quota - usagePercentage}`}
+                ${item.usage < 0 ? ` ${item.quota} + ${Math.abs(item.usage)} <i class="bi bi-gift text-danger"></i>` : `${item.quota - item.usage}`}
             </span>
         </div>
         <div class="progress">
             <div class="progress-bar" role="progressbar" 
-                style="width: ${usagePercentage < 0 ? 0 : usagePercentage}%" 
-                aria-valuenow="${usagePercentage}" 
+                style="width: ${item.usage < 0 ? 0 : usagePercentage}%" 
+                aria-valuenow="${item.usage}" 
                 aria-valuemin="0" 
                 aria-valuemax="100">
                 ${usagePercentage}%

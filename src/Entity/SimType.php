@@ -49,11 +49,25 @@ class SimType
     #[ORM\OneToMany(targetEntity: PendingSimCards::class, mappedBy: 'type')]
     private Collection $pendingSimCards;
 
+    /**
+     * @var Collection<int, Chapelet>
+     */
+    #[ORM\OneToMany(targetEntity: Chapelet::class, mappedBy: 'typeCartes')]
+    private Collection $chapelets;
+
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'TypeSim')]
+    private Collection $commandes;
+
     public function __construct()
     {
         $this->carteSims = new ArrayCollection();
         $this->lignesCommandes = new ArrayCollection();
         $this->pendingSimCards = new ArrayCollection();
+        $this->chapelets = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +235,66 @@ class SimType
             // set the owning side to null (unless already changed)
             if ($pendingSimCard->getType() === $this) {
                 $pendingSimCard->setType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Chapelet>
+     */
+    public function getChapelets(): Collection
+    {
+        return $this->chapelets;
+    }
+
+    public function addChapelet(Chapelet $chapelet): static
+    {
+        if (!$this->chapelets->contains($chapelet)) {
+            $this->chapelets->add($chapelet);
+            $chapelet->setTypeCartes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChapelet(Chapelet $chapelet): static
+    {
+        if ($this->chapelets->removeElement($chapelet)) {
+            // set the owning side to null (unless already changed)
+            if ($chapelet->getTypeCartes() === $this) {
+                $chapelet->setTypeCartes(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setTypeSim($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getTypeSim() === $this) {
+                $commande->setTypeSim(null);
             }
         }
 

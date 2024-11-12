@@ -30,8 +30,7 @@ final class CarteSimController extends AbstractController
         $this->serialNumberComparator->compareSerialNumbers();
 
         return $this->render('carte_sim/index.html.twig', [
-            'carte_simsreserved' => $carteSimRepository->findAll(),
-            'carte_sims' => $carteSimRepository->findBy(['reserved' => 0]),
+            'carte_sims' => $carteSimRepository->findAll(),
             'hasMissingSerialNumbers' =>  $this->serialNumberComparator->compareSerialNumbers()
         ]);
     }

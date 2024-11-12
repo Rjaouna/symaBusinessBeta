@@ -4,12 +4,14 @@
       {{ include('_sidebars/right/admin/stat_ventes_cartes_sim_by_type.html.twig') }}
       {% else %}
       {{ include('_sidebars/right/user/stat_stack.html.twig') }}
+      {{ include('_sidebars/right/video.html.twig') }}
       {% endif %}
 
       {% else %}
         {% if is_granted('ROLE_USER') %}
 
       {{ include('_sidebars/right/user/stat_stack.html.twig') }}
+      {{ include('_sidebars/right/video.html.twig') }}
       
               
       {% endif %}
