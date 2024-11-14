@@ -15,6 +15,31 @@ class CommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commande::class);
     }
+    public function findCommandesByClientAndMonth($clientId, $startDate, $endDate)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.createdAt BETWEEN :start AND :end')
+            ->setParameter('user', $clientId)
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findTotalCommandeByClient($clientId, $startDate, $endDate)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('SUM(c.montantHt) as total')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.createdAt BETWEEN :start AND :end')
+            ->setParameter('user', $clientId)
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 
     //    /**
     //     * @return Commande[] Returns an array of Commande objects

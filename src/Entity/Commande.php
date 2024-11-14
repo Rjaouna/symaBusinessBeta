@@ -19,7 +19,7 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 14)]
     #[Groups('user_info')]
     private ?string $numero = null;
 
@@ -72,6 +72,12 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SimType $TypeSim = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $factured = null;
+
+    #[ORM\Column]
+    private ?float $montantHt = null;
 
     public function __construct()
     {
@@ -197,6 +203,7 @@ class Commande
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->factured = false;
     }
     #[ORM\PreUpdate]
     public function onPreUpdate()
@@ -278,6 +285,30 @@ class Commande
     public function setTypeSim(?SimType $TypeSim): static
     {
         $this->TypeSim = $TypeSim;
+
+        return $this;
+    }
+
+    public function isFactured(): ?bool
+    {
+        return $this->factured;
+    }
+
+    public function setFactured(?bool $factured): static
+    {
+        $this->factured = $factured;
+
+        return $this;
+    }
+
+    public function getMontantHt(): ?float
+    {
+        return $this->montantHt;
+    }
+
+    public function setMontantHt(float $montantHt): static
+    {
+        $this->montantHt = $montantHt;
 
         return $this;
     }

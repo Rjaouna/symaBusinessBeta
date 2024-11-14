@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
 class Facture
 {
@@ -15,7 +16,7 @@ class Facture
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 14)]
     private ?string $numeroFacture = null;
 
     #[ORM\Column]
@@ -45,8 +46,11 @@ class Facture
     /**
      * @var Collection<int, LigneFacture>
      */
-    #[ORM\OneToMany(targetEntity: LigneFacture::class, mappedBy: 'facture')]
+    #[ORM\OneToMany(targetEntity: LigneFacture::class, mappedBy: 'facture', cascade: ['persist'])]
     private Collection $ligneFactures;
+
+    #[ORM\Column(length: 10)]
+    private ?string $type = null;
 
     public function __construct()
     {
@@ -195,4 +199,22 @@ class Facture
 
         return $this;
     }
+    #[ORM\PrePersist]
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+    
 }

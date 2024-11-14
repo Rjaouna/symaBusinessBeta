@@ -61,14 +61,34 @@ final class UserCommandeController extends AbstractController
 
 		// Créer et persister la nouvelle commande
 		$commande = new Commande();
+
+		// Définir le numéro de la commande
 		$commande->setNumero($newCode);
+
+		// Associer l'utilisateur à la commande
 		$commande->setUser($user);
+
+		// Calculer la quantité totale (par exemple, quantity * 5)
 		$commande->setQte($quantity * 5);
-		$commande->setTotal(($quantity * 5) * $prix);
+
+		// Calculer le montant total TTC (quantity * 5) * prix
+		$totalTTC = ($quantity * 5) * $prix;
+		$commande->setTotal($totalTTC);
+
+		// Calculer le montant HT avec une TVA de 20%
+		$montantHT = $totalTTC / 1.20;
+		$commande->setMontantHt($montantHT);
+
+		// Définir le statut de la commande
 		$commande->setStatus('en_attente');
+
+		// Définir le type de SIM
 		$commande->setSimType($typeSim->getNom());
 		$commande->setTypeSim($typeSim);
+
+		// Définir le code client
 		$commande->setCodeClient($codeClient);
+
 
 		$entityManager->persist($commande);
 		$entityManager->flush();

@@ -110,6 +110,7 @@ class VentesComptoirApiController extends AbstractController
 		$commande->setQte(count($cartesSim));
 		$commande->setQtevalidee(count($cartesSim));
 		$commande->setTotal((count($cartesSim)) * ($chapelet->getTypeCartes()->getPrix()));
+		$commande->setMontantHt(20);
 		$commande->setStatus('validee');
 		$commande->setCreatedAt(new \DateTimeImmutable());
 		$commande->setUser($client);
@@ -147,7 +148,6 @@ class VentesComptoirApiController extends AbstractController
 		$carteSim->setPurchasedBy($client); // Associer la carte SIM au client
 		$carteSim->setUser($client); // Associer le client à la carte SIM
 		$carteSim->setCanalVente('Vente Comptoir');
-
 		$entityManager->persist($ligneCommande);
 		$entityManager->persist($carteSim);
 	}

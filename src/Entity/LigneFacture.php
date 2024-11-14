@@ -13,9 +13,6 @@ class LigneFacture
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ligneFactures')]
-    private ?CarteSim $produit = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
@@ -31,22 +28,15 @@ class LigneFacture
     #[ORM\ManyToOne(inversedBy: 'ligneFactures')]
     private ?Facture $facture = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $typeCarteSim = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduit(): ?CarteSim
-    {
-        return $this->produit;
-    }
-
-    public function setProduit(?CarteSim $produit): static
-    {
-        $this->produit = $produit;
-
-        return $this;
-    }
+  
 
     public function getDescription(): ?string
     {
@@ -107,4 +97,18 @@ class LigneFacture
 
         return $this;
     }
+
+    public function getTypeCarteSim(): ?string
+    {
+        return $this->typeCarteSim;
+    }
+
+    public function setTypeCarteSim(string $typeCarteSim): static
+    {
+        $this->typeCarteSim = $typeCarteSim;
+
+        return $this;
+    }
+    
+    
 }
