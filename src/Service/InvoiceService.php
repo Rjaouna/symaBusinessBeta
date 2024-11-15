@@ -29,6 +29,15 @@ class InvoiceService
 			'Sim20' => ['quantity' => $client->getSim20Bonus(), 'price' => 19.99],
 		];
 
+		// Vérification : générer l'avoir uniquement s'il y a au moins une quantité non nulle
+		$hasValue = array_reduce($types, fn($carry, $data) => $carry || $data['quantity'] > 0, false);
+
+
+		if (!$hasValue) {
+			// Si toutes les quantités sont nulles ou égales à zéro, on ne génère pas d'avoir
+			return;
+		}
+
 		// Créer la facture
 		$facture = new Facture();
 		$facture->setNumeroFacture('AVV_' . uniqid());
@@ -83,6 +92,17 @@ class InvoiceService
 
 		foreach ($users as $user) {
 			$this->generateInvoiceForUser($user);  // Appeler la méthode pour générer la facture pour chaque utilisateur
+			// Réinitialiser les bonus de chaque utilisateur
+			$user->setSim5Bonus(null);
+			$user->setSim10Bonus(null);
+			$user->setSim15Bonus(null);
+			$user->setSim20Bonus(null);
+
+			// Persister les modifications de l'utilisateur
+			$this->entityManager->persist($user);
 		}
+		// Sauvegarder toutes les modifications en une seule transaction
+		$this->entityManager->flush();
 	}
+
 }

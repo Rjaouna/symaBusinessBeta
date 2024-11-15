@@ -3,11 +3,11 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 72vh;">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 81vh;">
     <div class="text-center w-100">
         <!-- Logo centré au-dessus du formulaire -->
         <div class="mb-4">
-            <img src="{{ asset('assets/img/logo-syma@4x.webp') }}" class="brand_logo" alt="Logo" style="width: 10%;">
+            <img src="{{ asset('/assets/img/logo-syma@4x.jpg') }}" class="brand_logo bg-white p-2 rounded" alt="Logo" style="width: 10%;">
         </div>
 
         <!-- Formulaire centré -->
@@ -37,7 +37,7 @@
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                <div class="form-check mb-2">
+                <div class="form-check mb-2 text-left">
                     <input type="checkbox" class="form-check-input" id="customControlInline" name="remember_me">
                     <label class="custom-control-label" for="customControlInline">{{ 'Se souvenir de moi'|trans }}</label>
                 </div>

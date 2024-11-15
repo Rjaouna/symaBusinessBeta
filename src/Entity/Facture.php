@@ -52,6 +52,9 @@ class Facture
     #[ORM\Column(length: 10)]
     private ?string $type = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $seen = null;
+
     public function __construct()
     {
         $this->ligneFactures = new ArrayCollection();
@@ -213,6 +216,18 @@ class Facture
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isSeen(): ?bool
+    {
+        return $this->seen;
+    }
+
+    public function setSeen(?bool $seen): static
+    {
+        $this->seen = $seen;
 
         return $this;
     }

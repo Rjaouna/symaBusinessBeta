@@ -20,9 +20,11 @@ class CommandeRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :user')
             ->andWhere('c.createdAt BETWEEN :start AND :end')
+            ->andWhere('c.factured = :factured')
             ->setParameter('user', $clientId)
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
+            ->setParameter('factured', false) // Factured est un booléen, donc false pour 0
             ->getQuery()
             ->getResult();
     }

@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Service\ProfileCompletionService;
 use App\Repository\BannerRepository;
+use App\Repository\FactureRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\Configuration\BusinessConfigChecker;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -23,12 +25,22 @@ class SymaBusinessController extends AbstractController
     
     #[IsGranted('ROLE_USER')]
     #[Route('', name: 'app_syma_business')]
-    public function index(BannerRepository $bannerRepository): Response
+    public function index(BannerRepository $bannerRepository, FactureRepository $factureRepository): Response
     {
         if (!$this->businessConfigChecker->isConfigComplete()) {
             return $this->redirectToRoute('app_syma_business_config_new'); // Redirige vers la configuration
         }
-        $user = $this->getUser(); // Récupérer l'utilisateur connecté
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        // Vérifier si l'utilisateur est bien connecté
+        if (!$user) {
+            // Rediriger vers une page de connexion si l'utilisateur n'est pas connecté
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Récupérer toutes les factures pour l'utilisateur connecté
+        $factures = $factureRepository->findBy(['client' => $user, 'seen' => Null]);
         $missingProperties = $this->profileCompletionService->checkProfileCompleteness($user);
 
         if (!empty($missingProperties) && !$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_SUPER_ADMIN')) {
@@ -40,6 +52,7 @@ class SymaBusinessController extends AbstractController
             'controller_name' => 'SymaBusinessController',
             'user' => $user,
             'missingProperties' => $missingProperties,
+            'factures' => $factures,
 
 
         ]);

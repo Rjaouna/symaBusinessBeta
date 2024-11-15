@@ -6,8 +6,33 @@
 
 
 {% block body %}
-<h3 class="mb-3  border-bottom border-secondary"><i class="text-secondary bi bi-sim"></i> Mes Cartes SIM</h3>
+<div class="container-fluid">
+    <!-- Titre principal avec icône -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+        <h1 class="text-dark  fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-shield-lock me-2"></i> Espace client
+        </h1>
+    </div>
 
+    <!-- Fil d'Ariane stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb  mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Cartes Sim attribuées
+            </li>
+        </ol>
+    </nav>
+</div>
     {% if cartesSim is empty %}
         <p>Aucune carte SIM achetée.</p>
     {% else %}

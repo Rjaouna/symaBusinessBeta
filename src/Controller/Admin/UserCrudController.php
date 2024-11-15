@@ -39,7 +39,6 @@ class UserCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnIndex(),
             TextField::new('codeClient', 'Code Client')
             ->setRequired(false) // Le champ n'est pas obligatoire
-            ->hideOnIndex() // Masquer le champ sur la page d'index
             ->setFormTypeOptions([
                 'constraints' => [
                     new Regex([

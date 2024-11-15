@@ -39,7 +39,10 @@ class FactureController extends AbstractController
 		foreach ($clients as $client) {
 			// Récupérer toutes les commandes de ce client pour le mois donné
 			$commandes = $this->commandeRepository->findCommandesByClientAndMonth($client->getId(), $startDate, $endDate);
-
+			if (count($commandes) === 0) {
+				// Passer au client suivant si aucune commande non facturée n'est trouvée
+				continue;
+			}
 			// Cumuler les quantités et montants pour chaque type de carte SIM
 			$simTypes = [];
 			$totalMontant = 0;
@@ -99,9 +102,15 @@ class FactureController extends AbstractController
 
 			// Sauvegarder la facture dans la base de données
 			$this->entityManager->persist($facture);
-			$this->entityManager->flush();
+			// Marquer toutes les commandes de ce client comme facturées
+			foreach ($commandes as $commande) {
+				$commande->setFactured(true);
+				$this->entityManager->persist($commande);
+			}
 		}
-		$this->addFlash('success', 'Génération de la facture');
+			// Sauvegarder toutes les modifications
+			$this->entityManager->flush();
+		
 		// Rediriger vers la page de génération de avoirs
 		return $this->redirectToRoute('generate_all_invoices_avv');
 	}

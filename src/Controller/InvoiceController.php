@@ -20,8 +20,7 @@ class InvoiceController extends AbstractController
 		// Appeler le service pour générer les factures pour tous les utilisateurs
 		$invoiceService->generateInvoicesForAllUsers();
 
-		$this->addFlash('success', 'Génération des avoirs');
-
+		$this->addFlash('success', 'Les factures et les avoirs ont été générés avec succès. Vous pouvez les consulter dans votre espace de gestion');
 
 		return $this->redirectToRoute('app_syma_business');
 	}

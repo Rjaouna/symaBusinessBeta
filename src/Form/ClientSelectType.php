@@ -3,9 +3,10 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ClientSelectType extends AbstractType
@@ -18,6 +19,11 @@ class ClientSelectType extends AbstractType
 				'choice_label' => 'nomResponsable', // Ce qui sera affiché dans la liste déroulante
 				'placeholder' => 'Sélectionnez un client',
 				'label' => false,
+			'query_builder' => function (UserRepository $userRepository) {
+				return $userRepository->createQueryBuilder('u')
+					->where('u.sim5Usage >= 0 AND u.sim10Usage >= 0 AND u.sim15Usage >= 0 AND u.sim20Usage >= 0');
+			}
+
 			]);
 	}
 

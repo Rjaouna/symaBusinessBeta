@@ -2,6 +2,8 @@
       {% if app.user.activeRole == 'ROLE_ADMIN' %}
       {{ include('_sidebars/right/admin/stat_quotas_by_client.html.twig') }}
       {{ include('_sidebars/right/admin/stat_ventes_cartes_sim_by_type.html.twig') }}
+      {{ include('_sidebars/right/video.html.twig') }}
+
       {% else %}
       {{ include('_sidebars/right/user/stat_stack.html.twig') }}
       {{ include('_sidebars/right/video.html.twig') }}

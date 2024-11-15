@@ -28,8 +28,12 @@
         </ol>
     </nav>
 </div>
+<div class="container-fluid">
+
     {{ form_start(form) }}
         {{ form_row(form.client) }}
-        <button class="btn btn-primary">Choisir ce client</button>
+        <button class="btn btn-primary btn-sm">Choisir ce client</button>
     {{ form_end(form) }}
+</div>
+
 {% endblock %}
