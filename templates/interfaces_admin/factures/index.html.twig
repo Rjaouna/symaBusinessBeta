@@ -31,44 +31,89 @@
     </nav>
 </div>
 
-    <div class="container mt-5">
-<a href="{{ path('generate_all_invoices_fac') }}" class="btn btn-primary my-3">Générer les factures</a>
+<!-- Bloc d'explications pour la génération des factures -->
+<div class="mx-3 alert alert-info">
+    <ul class="mb-0">
+        <li><i class="bi bi-calendar-day me-2"></i> La génération des factures doit être effectuée <strong>le dernier jour du mois</strong>, afin de couvrir toutes les commandes passées durant le mois en cours.</li>
+        <li><i class="bi bi-clock me-2"></i> Les factures incluront toutes les <strong>commandes passées entre le premier et le dernier jour du mois</strong>, du début (00:00:00) à la fin (23:59:59) du mois.</li>
+        <li><i class="bi bi-check-circle me-2"></i> Veuillez vous assurer que toutes les commandes du mois en cours sont correctement enregistrées avant de procéder à la génération des factures.</li>
+    </ul>
+</div>
 
-        <div class="card">
-            
-                <table class="table table-striped table-bordered table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Numéro de facture</th>
-                            <th>Client</th>
-                            <th>Montant HT</th>
-                            <th>TVA</th>
-                            <th>Montant TTC</th>
-                            <th>Statut paiement</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for facture in factures %}
-                            <tr>
-                                <td>{{ facture.numeroFacture }}</td>
-                                <td>{{ facture.client.nomResponsable }}</td>
-                                <td>{{ facture.montantHT | number_format(2, '.', ',') }} €</td>
-                                <td>{{ facture.montantTVA | number_format(2, '.', ',') }} €</td>
-                                <td>{{ facture.montantTTC | number_format(2, '.', ',') }} €</td>
-                                <td>
-                                    <span class="badge {{ facture.statutPaiement == 'Non payé' ? 'bg-danger' : 'bg-success' }}">
-                                        {{ facture.statutPaiement }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('facture_detail', {'id': facture.id}) }}" class="btn btn-secondary btn-sm">Détails</a>
-                                    <a href="{{ path('facture_detail', {'id': facture.id}) }}" class="btn btn-primary btn-sm">Valider le paiement</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+<div class="container mt-3">
+    <a href="{{ path('generate_all_invoices_fac') }}" class="btn btn-primary my-3">Générer les factures</a>
+
+    <div class="card">
+        <!-- Liste des factures -->
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Numéro de facture</th>
+                    <th>Client</th>
+                    <th>Montant HT</th>
+                    <th>TVA</th>
+                    <th>Montant TTC</th>
+                    <th>Statut paiement</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for facture in factures %}
+                <tr>
+                    <td>{{ facture.numeroFacture }}</td>
+                    <td>{{ facture.client.nomResponsable }}</td>
+                    <td>{{ facture.montantHT | number_format(2, '.', ',') }} €</td>
+                    <td>{{ facture.montantTVA | number_format(2, '.', ',') }} €</td>
+                    <td>{{ facture.montantTTC | number_format(2, '.', ',') }} €</td>
+                    <td>
+                        <span class="badge {{ facture.statutPaiement == 'Non payé' ? 'bg-danger' : 'bg-success' }}">
+                            {{ facture.statutPaiement }} {% if facture.statutPaiement != "Non payé" %} par {{ facture.modePaiement }}{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ path('facture_detail', {'id': facture.id}) }}" class="btn btn-secondary btn-sm">Détails</a>
+                        {% if facture.statutPaiement == "Non payé" %}
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalPaiement{{ facture.id }}">
+                            En attente de validation
+                        </button>
+                        {% else %}
+                        <button class="btn btn-primary btn-sm disabled" >
+                            Facture réglée
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Modal pour valider le paiement (en dehors de la boucle) -->
+        {% for facture in factures %}
+        <div class="modal fade" id="modalPaiement{{ facture.id }}" tabindex="-1" aria-labelledby="modalPaiementLabel{{ facture.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalPaiementLabel{{ facture.id }}">Choisir le mode de paiement</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ path('facture_update_paiement', {'id': facture.id}) }}" method="post">
+                            <div class="mb-3">
+                                <label for="modePaiement{{ facture.id }}" class="form-label">Mode de paiement</label>
+                                <select name="modePaiement" id="modePaiement{{ facture.id }}" class="form-select">
+                                    <option value="Carte">Carte</option>
+                                    <option value="Virement">Virement</option>
+                                    <option value="Chèque">Chèque</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Valider le paiement</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+        {% endfor %}
+
+    </div>
+</div> <!-- Fermeture de la div "container mt-3" -->
 {% endblock %}

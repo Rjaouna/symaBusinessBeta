@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture N° {{ facture.numeroFacture }}</title>
+    <style>
+        {{ bootstrapCss|raw }}
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            text-align: left;
+        }
+        .badge {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            border-radius: 5px;
+        }
+        .bg-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .bg-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .info-table td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h2 style="text-align:right ; background-color:#eeeeee; padding:5px">Facture N° : {{ facture.numeroFacture }}</h2>
+		<hr>
+        <p>Date : {{ facture.createdAt | date('d/m/Y') }}</p>
+
+        <!-- Table avec informations client et agent sur la même ligne -->
+        <table class="info-table" style="width: 100%; margin-top: 20px;">
+            <tr>
+                <!-- Informations Client -->
+                <td style="width: 50%; padding-right: 20px;">
+                    <div> <strong>Syma Business</strong></div>
+                    <div> {{ agent.adresse }}</div>
+                    <div> {{ agent.numeroDeTelephone }}</div>
+                    <div> {{ agent.email }}</div>
+                </td>
+                <!-- Informations Agent -->
+                <td style="width: 50%;">
+                    <div></strong> {{ facture.client.nomSociete }}</div>
+                    <div>{{ facture.client.nomResponsable }}</div>
+                    <div>{{ facture.client.adresse }}</div>
+                    <div>{{ facture.client.telephoneMobile }}</div>
+                </td>
+            </tr>
+        </table>
+		<br>
+
+        <div><strong>Montant HT :</strong> {{ facture.montantHT | number_format(2, '.', ',') }} €</div>
+        <div><strong>Montant TVA :</strong> {{ facture.montantTVA | number_format(2, '.', ',') }} €</div>
+        <div><strong>Montant TTC :</strong> <strong>{{ facture.montantTTC | number_format(2, '.', ',') }} €</strong></div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Carte SIM</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire HT</th>
+                    <th>Montant total HT</th>
+                    <th>TVA</th>
+                    <th>Total TTC</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for ligne in facture.ligneFactures %}
+                    <tr>
+                        <td>{{ ligne.typeCarteSim }}</td>
+                        <td>{{ ligne.quantite }}</td>
+                        <td>{{ ligne.prixUnitaireHT | number_format(2, '.', ',') }} €</td>
+                        <td>{{ ligne.montantTotalHT | number_format(2, '.', ',') }} €</td>
+                        <td>20%</td>
+                        <td>{{ (ligne.montantTotalHT * 1.20) | number_format(2, '.', ',') }} €</td>
+
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p><strong>Statut paiement :</strong> 
+            <span class="badge {{ facture.statutPaiement == 'Non payé' ? 'bg-danger' : 'bg-success' }}">
+				{{ facture.statutPaiement }} {% if facture.statutPaiement != "Non payé" %} par {{ facture.modePaiement }}{% endif %}
+            </span>
+        </p>
+    </div>
+</body>
+</html>

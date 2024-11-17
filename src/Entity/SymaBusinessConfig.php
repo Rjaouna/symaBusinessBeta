@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SymaBusinessConfigRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SymaBusinessConfigRepository::class)]
@@ -45,6 +46,9 @@ class SymaBusinessConfig
 
     #[ORM\Column(length: 50)]
     private ?string $numeroSiret = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $adresse = null;
 
     public function getId(): ?int
     {
@@ -179,6 +183,18 @@ class SymaBusinessConfig
     public function setNumeroSiret(string $numeroSiret): static
     {
         $this->numeroSiret = $numeroSiret;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): static
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

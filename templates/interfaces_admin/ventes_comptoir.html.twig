@@ -45,7 +45,7 @@
                 <i class="bi bi-sim fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
                 <input class="w-100 form-control-lg ps-5" type="text" id="chapeletCode" name="chapeletCode" required maxlength="14" placeholder="SLB00000000000">
             </div>
-            <input readonly id="clientId" value="{{ clientId }}">
+            <input type="hidden" readonly id="clientId" value="{{ clientId }}">
         </form>
 
         <p class="py-2 fw-bold" id="responseMessage"></p>

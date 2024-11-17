@@ -5,6 +5,7 @@ namespace App\Controller\Management;
 use Doctrine\ORM\EntityManager;
 use App\Repository\FactureRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +32,35 @@ class Factures extends AbstractController
 			'factures' => $factures
 		]);
 	}
+
+	#[Route('/facture/{id}/update-paiement', name: 'facture_update_paiement')]
+	public function factureUpdatePaiement(int $id, Request $request): Response
+	{
+		// Récupérer la facture à partir de l'ID
+		$facture = $this->factureRepository->find($id);
+
+		if (!$facture) {
+			// Si la facture n'existe pas, rediriger ou afficher une erreur
+			throw $this->createNotFoundException('Facture non trouvée.');
+		}
+
+		// Récupérer la valeur envoyée depuis le formulaire
+		$modePaiement = $request->request->get('modePaiement');
+
+		// Mettre à jour le statut de la facture et éventuellement d'autres champs
+		$facture->setStatutPaiement('Payé');
+		$facture->setModePaiement($modePaiement);
+
+		// Sauvegarder la facture
+		$this->entityManager->flush();
+
+		// Rediriger vers la liste des factures avec un message flash
+		$this->addFlash('success', 'Le paiement a été validé avec succès.');
+
+		return $this->redirectToRoute('app_facture_list');
+	}
+
+	
 	#[Route('factures/client', name: 'app_facture_client')]
 	public function factureClient(): Response
 	{
@@ -76,7 +106,7 @@ class Factures extends AbstractController
 	}
 
 	#[Route('/facture/{id}', name: 'facture_detail')]
-	public function factureDetail(int $id, EntityManager $entityManager): Response
+	public function factureDetail(int $id): Response
 	{
 		// Récupérer une facture spécifique et ses lignes
 		$facture = $this->factureRepository->find($id);

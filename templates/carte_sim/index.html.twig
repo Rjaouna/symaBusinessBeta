@@ -55,12 +55,12 @@
             {% for carte_sim in carte_sims %}
                 <tr>
                     <td><input type="checkbox" class="row-checkbox"></td>
-                    <td>{{ carte_sim.serialNumber }}</td>
+                    <td class="{% if carte_sim.reserved %}text-primary{% endif %}">{{ carte_sim.serialNumber }}</td>
                     <td>{{ carte_sim.chapelet.codeChapelet }}</td>
                     <td>{{ carte_sim.type }}</td>
                     <td>{{ carte_sim.type.prix }}</td>
                     <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
-                    <td>{{ carte_sim.canalVente == 'comptoir' ? 'Vente au comptoir' : 'Vente via application' }}</td>
+                    <td>{{ carte_sim.canalVente }}</td>
                     <td>
                         <a class="btn btn-secondary btn-sm" href="{{ path('app_carte_sim_show', {'id': carte_sim.id}) }}">Détails</a>
                     </td>

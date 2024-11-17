@@ -29,6 +29,17 @@ class FactureController extends AbstractController
 	#[Route('/generate-invoices-fac', name: 'generate_all_invoices_fac')]
 	public function generateInvoices(): Response
 	{
+		// Vérifier si des commandes sont encore en état "en_cours"
+		$commandesEnCours = $this->commandeRepository->findBy(['status' => 'en_cours']);
+
+		if (count($commandesEnCours) > 0) {
+			// Ajouter un message flash pour informer l'utilisateur
+			$this->addFlash('warning', 'Il existe des commandes en cours. Veuillez les finaliser avant de générer les factures.');
+
+			// Rediriger vers une autre page ou rester sur la page actuelle
+			return $this->redirectToRoute('app_facture_list'); // Remplacez par une route appropriée
+		}
+		
 		// Récupérer la date du début et de la fin du mois
 		$startDate = (new DateTimeImmutable('first day of this month'))->setTime(0, 0, 0);
 		$endDate = (new DateTimeImmutable('last day of this month'))->setTime(23, 59, 59);

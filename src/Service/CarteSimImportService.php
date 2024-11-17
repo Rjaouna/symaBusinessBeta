@@ -33,10 +33,28 @@ class CarteSimImportService
 			return ['Impossible d’ouvrir le fichier CSV.'];
 		}
 
-		// Lire chaque ligne du fichier CSV
+		// Lire toutes les lignes du fichier CSV dans un tableau
+		$rows = [];
 		while (($data = fgetcsv($handle, 1000, ',')) !== false) {
-			// On s'attend à ce que le CSV contienne le numéro de série et le code du chapelet
+			$rows[] = $data;
+		}
+
+
+
+		// Validation de chaque ligne et vérification des erreurs
+		foreach ($rows as $lineNumber => $data) {
 			[$serialNumber, $codeChapelet] = $data;
+
+			// Validation de la longueur du serialNumber et du codeChapelet
+			if (strlen($serialNumber) !== 19) {
+				$errors[] = "Erreur à la ligne " . ($lineNumber + 1) . ": Le numéro de série $serialNumber doit avoir 19 caractères.";
+				break; // Sortir de la boucle dès qu'une erreur est trouvée
+			}
+
+			if (strlen($codeChapelet) !== 14) {
+				$errors[] = "Erreur à la ligne " . ($lineNumber + 1) . ": Le code du chapelet $codeChapelet doit avoir 14 caractères.";
+				break; // Sortir de la boucle dès qu'une erreur est trouvée
+			}
 
 			// Vérifier si un chapelet avec ce code existe déjà
 			$chapelet = $this->entityManager->getRepository(Chapelet::class)
