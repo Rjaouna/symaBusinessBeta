@@ -44,6 +44,9 @@
     <div class="container-fluid">
         <h2 style="text-align:right ; background-color:#eeeeee; padding:5px">Facture N° : {{ facture.numeroFacture }}</h2>
 		<hr>
+		<div>
+      <img src="{{ asset('assets/img/logo-syma@4x.jpg') }}" alt="Logo sym boost" style="width:120px">
+		</div>
         <p>Date : {{ facture.createdAt | date('d/m/Y') }}</p>
 
         <!-- Table avec informations client et agent sur la même ligne -->
@@ -51,7 +54,7 @@
             <tr>
                 <!-- Informations Client -->
                 <td style="width: 50%; padding-right: 20px;">
-                    <div> <strong>Syma Business</strong></div>
+                    <div> <strong>{{ agent.raisonSociale }}</strong></div>
                     <div> {{ agent.adresse }}</div>
                     <div> {{ agent.numeroDeTelephone }}</div>
                     <div> {{ agent.email }}</div>
@@ -66,11 +69,13 @@
             </tr>
         </table>
 		<br>
+		<p><strong>Paiement :</strong> 
+            <span class="badge {{ facture.statutPaiement == 'Non payé' ? 'bg-danger' : 'bg-success' }}">
+				 {% if facture.statutPaiement != "Non payé" %} par {{ facture.modePaiement }}{% endif %}
+            </span>
+        </p>
 
-        <div><strong>Montant HT :</strong> {{ facture.montantHT | number_format(2, '.', ',') }} €</div>
-        <div><strong>Montant TVA :</strong> {{ facture.montantTVA | number_format(2, '.', ',') }} €</div>
-        <div><strong>Montant TTC :</strong> <strong>{{ facture.montantTTC | number_format(2, '.', ',') }} €</strong></div>
-
+        
         <table class="table">
             <thead>
                 <tr>
@@ -98,12 +103,20 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        <p><strong>Statut paiement :</strong> 
-            <span class="badge {{ facture.statutPaiement == 'Non payé' ? 'bg-danger' : 'bg-success' }}">
-				{{ facture.statutPaiement }} {% if facture.statutPaiement != "Non payé" %} par {{ facture.modePaiement }}{% endif %}
-            </span>
-        </p>
+		 <table class="info-table" style="width: 100%; margin-top: 20px;">
+            <tr>
+                <!-- Informations Client -->
+                <td style="width: 35%; padding-right: 20px;"></td>
+                <td style="width: 35%; padding-right: 20px;"></td>
+                <td style="width: 30%; padding-right: 20px;">
+				<div style="text-align:left ; padding:5px">
+		<div><strong>Montant HT :</strong> {{ facture.montantHT | number_format(2, '.', ',') }} €</div>
+        <div><strong>Montant TVA :</strong> {{ facture.montantTVA | number_format(2, '.', ',') }} €</div>
+        <div><strong>Montant TTC :</strong> <strong>{{ facture.montantTTC | number_format(2, '.', ',') }} €</strong></div>
+		</div>
+				</td>
+		
+        
     </div>
 </body>
 </html>

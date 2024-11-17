@@ -27,6 +27,22 @@ final class UserCommandeController extends AbstractController
 		]);
 	}
 
+	#[Route('/attente', name: 'user_app_commande_attente', methods: ['GET'])]
+	public function attente(CommandeRepository $commandeRepository): Response
+	{
+		return $this->render('interfaces_users/commande/attente.html.twig', [
+			'commandes' => $commandeRepository->findBy(['user' => $this->getUser(), 'status' => 'en_attente']),
+		]);
+	}
+
+	#[Route('/encours', name: 'user_app_commande_encours', methods: ['GET'])]
+	public function encours(CommandeRepository $commandeRepository): Response
+	{
+		return $this->render('interfaces_users/commande/encours.html.twig', [
+			'commandes' => $commandeRepository->findBy(['user' => $this->getUser(), 'status' => 'en_cours']),
+		]);
+	}
+
 	#[Route('/new', name: 'user_app_commande_new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, CommandeRepository $commandeRepository, SimTypeRepository $simTypeRepository, SimUsageUpdater $simUsageUpdater): Response
 	{

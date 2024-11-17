@@ -6,7 +6,9 @@ use App\Service\InvoiceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 class InvoiceController extends AbstractController
 {
 	#[Route('/generate-invoices-avv', name: 'generate_all_invoices_avv')]
