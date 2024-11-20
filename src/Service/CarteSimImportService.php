@@ -85,7 +85,6 @@ class CarteSimImportService
 			} else {
 				// Ajouter un message d'erreur si la carte SIM existe déjà
 				$errors[] = "Le numéro $serialNumber existe déjà. Veuillez vérifier et essayer avec un autre numéro.<br>";
-
 			}
 		}
 

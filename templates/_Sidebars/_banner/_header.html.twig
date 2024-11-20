@@ -4,7 +4,7 @@
       <div class="carousel-item {% if loop.first %}active{% endif %}">
         <div class="row">
           {% for b in banner %}
-            <div class="col-md-3">
+            <div class="col-md-2">
               <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
                 <img class="w-100" src="{{ asset('uploads/banners/' ~ b.image) }}" alt="{{ b.nom }}">
               </div>

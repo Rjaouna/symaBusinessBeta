@@ -15,6 +15,18 @@ class CarteSimRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CarteSim::class);
     }
+    public function countByType(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('t.nom as typeName, COUNT(c.id) as count')
+            ->leftJoin('c.type', 't') // Utilisation de LEFT JOIN pour inclure les types même sans cartes réservées
+            ->where('c.reserved = 0 OR c.reserved IS NULL') // Vérifier les cartes réservées à 0 ou non réservées
+            ->groupBy('t.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 //    /**
 //     * @return CarteSim[] Returns an array of CarteSim objects

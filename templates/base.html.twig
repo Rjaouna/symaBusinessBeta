@@ -44,12 +44,7 @@
         {% endblock %}
     </head>
     
-{% if app.user %}
-    <body>
-    {% else %}
-    <body style="background-position: center center;background-image: url({{asset('assets/img/group-people-working-out-business-plan-office.jpg')}});">
-
-{% endif %}    
+   
         <!-- Inclusion du fichier de navigation -->
         {{ include('_nav/_nav.html.twig') }}
         {% if app.user %}
@@ -58,11 +53,13 @@
             <div class="row text-center">
             <div>
                 Votre compte est actuellement en attente de validation. Pour accéder aux fonctionnalités de l'application, veuillez contacter l'administrateur du système pour activer votre compte. 
+            
             </div>
             </div>
         </div>
          {% endif %}
         {% endif %}
+
         <div class="container-fluid">
             <div class="row">
                 

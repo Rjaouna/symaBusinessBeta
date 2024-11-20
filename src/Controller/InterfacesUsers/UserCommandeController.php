@@ -111,12 +111,12 @@ final class UserCommandeController extends AbstractController
 		// Utilise le service pour mettre à jour l'usage
 		try {
 			$simUsageUpdater->updateSimUsage($user, $typeSim->getcode(), $quantity);
-			$this->addFlash('light', 'L\'usage du type de SIM a été mis à jour avec succès.');
+			$this->addFlash('success', 'Votre commande a bien été enregistrer.');
 		} catch (\InvalidArgumentException $e) {
 			$this->addFlash('danger', $e->getMessage());
 		}
 
-		$this->addFlash('light', 'Commande créée avec succès ! ');  // Message flash de succès
+		$this->addFlash('light', 'Commande créée avec succès, veuillez vous rapprocher a l\'administrateur du système afin de valider votre commande.');  // Message flash de succès
 
 		return $this->redirectToRoute('app_syma_business');
 	}

@@ -1,42 +1,55 @@
-<div class="mt-4 mb-2 px-2 py-3 rounded shadow-sm bg-light border">
-    <div class="d-flex align-items-center mb-3">
+<div class="mt-4 mb-3 px-4 py-3 rounded shadow-sm bg-light border">
+    <!-- Profile Section -->
+    <div class="d-flex flex-column align-items-center mb-3">
         <a href="{{ path('app_syma_business') }}">
             <img src="/assets/img/profil.png" alt="Photo de profil" 
                  class="rounded-circle border" 
-                 style="width: 50px; height: 50px; object-fit: cover;">
+                 style="width: 80px; height: 80px; object-fit: cover;">
         </a>
-        <h6 class="ms-3 text-dark mx-2">
-            Bonjour, <strong class="user-name">{{ app.user.nomResponsable }}</strong> !
+        <h5 class="mt-2 text-dark text-center">
+            <strong>{{ app.user.nomResponsable }}</strong>
+        </h5>
+        <h6 class="mb-0 text-secondary text-center" style="font-weight: 100; letter-spacing: -0.5px;">
+            {{ app.user.email }}
         </h6>
     </div>
-    <p class="mb-3 text-secondary">
-        {% if app.user.quotas is not null %}
-            {% if app.user.quotas.nom %}
-                Votre quota actuel est de 
-                <strong class="user-quota">{{ app.user.quotas.nom }}</strong>.
+
+    <!-- Quota Information: Two Columns Layout -->
+    <div class="row mb-3">
+        <div class="col-md-6   p-2 d-flex flex-column justify-content-center shadow-sm">
+            <p class="text-secondary mb-0"><strong>Statut actuel</strong></p>
+            {% if app.user.quotas is not null %}
+                <p class="user-quota">{{ app.user.quotas.nom }}</p>
             {% else %}
-                Aucun quota attribué.
+                <p>Aucun quota attribué.</p>
             {% endif %}
-        {% else %}
-            Aucun quota attribué.
-        {% endif %}
-        <a class="text-decoration-none link-primary ms-2" href="#">
-            Pourquoi le système de quotas ?
-        </a>
-    </p>
-    <hr>
-    <p class="mb-0">
+        </div>
+
+        <!-- "En savoir plus" Column -->
+        <div class="col-md-6 shadow-sm p-2 d-flex flex-column justify-content-center text-end">
+            <a class="text-decoration-none link-primary" href="#">En savoir plus</a>
+        </div>
+        <!-- Bonus Information -->
+        <div class="shadow-sm p-2  justify-content-center ">
+    <p class="mb-0 text-dark">
         <i class="bi bi-wallet2 fs-4 me-2"></i>
         Vous avez un bonus de 
-        <strong class="user-bonus">{{ app.user.totalBonus }} points</strong>.
+        <strong class="user-bonus text-success">{{ app.user.totalBonus }} points</strong>.
         <a class="text-decoration-none link-primary ms-2" 
-           href="{{path('app_user_Bonus_Controller')}}">
+           href="{{ path('app_user_Bonus_Controller') }}">
             Gérer mon bonus
         </a>
     </p>
+    </div>
+    </div>
+
+
+    
 </div>
 
 
+
+<!-- JavaScript to Fetch and Display User Data -->
 <script>
 async function fetchUserInformation() {
     try {
@@ -50,7 +63,7 @@ async function fetchUserInformation() {
 }
 
 function displayUserInformation() {
-    const userData = JSON.parse(localStorage.getItem('userData')); // Récupérez les données
+    const userData = JSON.parse(localStorage.getItem('userData')); // Retrieve user data
     console.log(userData);
 
     if (userData) {
@@ -70,5 +83,3 @@ fetchUserInformation();
 // Set interval to fetch user information every 5 seconds (5000 milliseconds)
 setInterval(fetchUserInformation, 3000);
 </script>
-
-

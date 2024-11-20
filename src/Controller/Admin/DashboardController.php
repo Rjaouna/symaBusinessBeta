@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[IsGranted('ROLE_SUPER_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/syma/dashboard', name: 'admin_syma_business')]
     public function index(): Response
     {

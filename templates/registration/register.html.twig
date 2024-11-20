@@ -7,70 +7,67 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    
-        <div class="col-12 col-md-5 mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
-            
-            
-            <h1 class="h3 fw-bold text-uppercase">Inscription !</h1>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 80vh; background-color: #ffffff;">
+        <div class="col-12 col-md-5 mt-4 mb-2 px-4 py-3 rounded shadow-sm border" style="background-color: #f8f9fa;">
+            <h1 class="h3 fw-bold text-uppercase text-center">Inscription</h1>
             
             <div class="card-body">
                 {{ form_start(registrationForm) }}
-<div class="py-2">
-                <h5>Informations de gérant </h5>
-                <div class="mb-3 position-relative">
-                    <i class="bi bi-person fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.nomResponsable, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Nom du Responsable'}
-                    }) }}
-                    {{ form_errors(registrationForm.nomResponsable) }}
-                </div>
-
-                <div class="mb-3 position-relative">
-                    <i class="bi bi-envelope fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.email, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse E-mail'}
-                    }) }}
-                    {{ form_errors(registrationForm.email) }}
-                </div>
-
-                <div class="mb-3 position-relative">
-                    <i class="bi bi-phone fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.telephoneMobile, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Téléphone Mobile'}
-                    }) }}
-                    {{ form_errors(registrationForm.telephoneMobile) }}
-                </div>
-
                 
+                <div class="py-2">
+                    <h5>Informations du Gérant</h5>
+                    
+                    <div class="mb-3 position-relative">
+                        <i class="bi bi-person fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                        {{ form_widget(registrationForm.nomResponsable, {
+                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Nom du Responsable'}
+                        }) }}
+                        {{ form_errors(registrationForm.nomResponsable) }}
+                    </div>
+                    
+                    <div class="mb-3 position-relative">
+                        <i class="bi bi-envelope fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse E-mail'}
+                        }) }}
+                        {{ form_errors(registrationForm.email) }}
+                    </div>
 
-                <div class="mb-3 position-relative">
-                    <i class="bi bi-house fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.adresse, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse postale'}
-                    }) }}
-                    {{ form_errors(registrationForm.adresse) }}
-                </div>
+                    <div class="mb-3 position-relative">
+                        <i class="bi bi-phone fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                        {{ form_widget(registrationForm.telephoneMobile, {
+                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Téléphone Mobile'}
+                        }) }}
+                        {{ form_errors(registrationForm.telephoneMobile) }}
+                    </div>
+
+                    <div class="mb-3 position-relative">
+                        <i class="bi bi-house fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                        {{ form_widget(registrationForm.adresse, {
+                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse Postale'}
+                        }) }}
+                        {{ form_errors(registrationForm.adresse) }}
+                    </div>
                 </div>
 
                 <div class="py-2">
-                <h5>Informations de l'entreprise </h5>
-                <div class="mb-3 position-relative">
-                    <i class="bi bi-building fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.nomSociete, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Raison Sociale'}
-                    }) }}
-                    {{ form_errors(registrationForm.nomSociete) }}
-                </div>
-
-                 <div class="mb-3 position-relative">
-                    <i class="bi bi-file-earmark fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.numeroSiret, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'N° SIRET'}
-                    }) }}
-                    {{ form_errors(registrationForm.numeroSiret) }}
-                </div>
-
+                    <h5>Informations de l'Entreprise</h5>
+                    
+                    <div class="mb-3 position-relative">
+                        <i class="bi bi-building fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                        {{ form_widget(registrationForm.nomSociete, {
+                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Raison Sociale'}
+                        }) }}
+                        {{ form_errors(registrationForm.nomSociete) }}
+                    </div>
+                    
+                    <div class="mb-3 position-relative">
+                        <i class="bi bi-file-earmark fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                        {{ form_widget(registrationForm.numeroSiret, {
+                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'N° SIRET'}
+                        }) }}
+                        {{ form_errors(registrationForm.numeroSiret) }}
+                    </div>
                 </div>
 
                 <div class="mb-3 position-relative">
@@ -81,21 +78,17 @@
                     {{ form_errors(registrationForm.plainPassword) }}
                 </div>
 
-                <div class="form-check ps-0">
+                <div class="form-check ps-0 mb-3">
                     {{ form_widget(registrationForm.agreeTerms) }}
-                    <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
-                    </label>
-                    {{ form_errors(registrationForm.agreeTerms) }}
+                    <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">J'accepte les termes et conditions</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 fs-5">
-                    S'inscrire
-                </button>
+                <button type="submit" class="btn btn-primary w-100 fs-5">S'inscrire</button>
 
                 {{ form_end(registrationForm) }}
             </div>
 
-            <div class="mt-3">
+            <div class="mt-3 text-center">
                 <p>Vous avez déjà un compte ? <a href="{{ path('app_login') }}">S'identifier</a></p>
             </div>
         </div>

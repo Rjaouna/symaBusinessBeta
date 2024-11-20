@@ -35,6 +35,70 @@ final class CarteSimController extends AbstractController
         ]);
     }
 
+    #[Route('/cartesim05', name: 'app_cartesim05', methods: ['GET'])]
+    public function cartesim05(CarteSimRepository $carteSimRepository): Response
+    {
+        $this->serialNumberComparator->compareSerialNumbers();
+
+        return $this->render('carte_sim/cartesim05.html.twig', [
+            'carte_sims' => $carteSimRepository->findBy(
+                ['type' => 1],               // Condition WHERE
+                [
+                    'updatedAt' => 'DESC'
+                ]      // Ensuite tri par updatedAt en ordre décroissant
+            ),
+            'hasMissingSerialNumbers' =>  $this->serialNumberComparator->compareSerialNumbers()
+        ]);
+    }
+
+    #[Route('/cartesim10', name: 'app_cartesim10', methods: ['GET'])]
+    public function cartesim10(CarteSimRepository $carteSimRepository): Response
+    {
+        $this->serialNumberComparator->compareSerialNumbers();
+
+        return $this->render('carte_sim/cartesim10.html.twig', [
+            'carte_sims' => $carteSimRepository->findBy(
+                ['type' => 2],               // Condition WHERE
+                [
+                    'updatedAt' => 'DESC'
+                ]      // Ensuite tri par updatedAt en ordre décroissant
+            ),
+            'hasMissingSerialNumbers' =>  $this->serialNumberComparator->compareSerialNumbers()
+        ]);
+    }
+
+    #[Route('/cartesim15', name: 'app_cartesim15', methods: ['GET'])]
+    public function cartesim15(CarteSimRepository $carteSimRepository): Response
+    {
+        $this->serialNumberComparator->compareSerialNumbers();
+
+        return $this->render('carte_sim/cartesim15.html.twig', [
+            'carte_sims' => $carteSimRepository->findBy(
+                ['type' => 3],               // Condition WHERE
+                [
+                    'updatedAt' => 'DESC'
+                ]      // Ensuite tri par updatedAt en ordre décroissant
+            ),
+            'hasMissingSerialNumbers' =>  $this->serialNumberComparator->compareSerialNumbers()
+        ]);
+    }
+
+    #[Route('/cartesim20', name: 'app_cartesim20', methods: ['GET'])]
+    public function cartesim20(CarteSimRepository $carteSimRepository): Response
+    {
+        $this->serialNumberComparator->compareSerialNumbers();
+
+        return $this->render('carte_sim/cartesim20.html.twig', [
+            'carte_sims' => $carteSimRepository->findBy(
+                ['type' => 4],               // Condition WHERE
+                [
+                    'updatedAt' => 'DESC'
+                ]      // Ensuite tri par updatedAt en ordre décroissant
+            ),
+            'hasMissingSerialNumbers' =>  $this->serialNumberComparator->compareSerialNumbers()
+        ]);
+    }
+
     #[Route('/new', name: 'app_carte_sim_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

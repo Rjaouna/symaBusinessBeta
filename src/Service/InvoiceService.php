@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Facture;
+use App\Entity\SimType;
 use App\Entity\LigneFacture;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,14 +20,21 @@ class InvoiceService
 	// Générer la facture pour un utilisateur spécifique
 	public function generateInvoiceForUser(User $client)
 	{
+		// Récupérer tous les utilisateurs
+		$types = $this->entityManager->getRepository(SimType::class)->findAll();
 		$totalMontant = 0;
+		$prixSimTypes = [];
+		foreach ($types as $simType) {
+			$prixSimTypes[$simType->getCode()] = $simType->getPrix();
+		}
+
 
 		// Les types de cartes et leurs prix
 		$types = [
-			'Sim5' => ['quantity' => $client->getSim5Bonus(), 'price' => 4.99],
-			'Sim10' => ['quantity' => $client->getSim10Bonus(), 'price' => 9.99],
-			'Sim15' => ['quantity' => $client->getSim15Bonus(), 'price' => 14.99],
-			'Sim20' => ['quantity' => $client->getSim20Bonus(), 'price' => 19.99],
+			'Sim5' => ['quantity' => $client->getSim5Bonus(), 'price' => $prixSimTypes['cartesim05']],
+			'Sim10' => ['quantity' => $client->getSim10Bonus(), 'price' => $prixSimTypes['cartesim10']],
+			'Sim15' => ['quantity' => $client->getSim15Bonus(), 'price' => $prixSimTypes['cartesim15']],
+			'Sim20' => ['quantity' => $client->getSim20Bonus(), 'price' => $prixSimTypes['cartesim20']],
 		];
 
 		// Vérification : générer l'avoir uniquement s'il y a au moins une quantité non nulle

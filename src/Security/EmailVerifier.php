@@ -45,6 +45,7 @@ class EmailVerifier
         $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
 
         $user->setVerified(true);
+        dd($user);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
