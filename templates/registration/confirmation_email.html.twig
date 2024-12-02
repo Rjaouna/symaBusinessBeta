@@ -1,24 +1,11 @@
-<div style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f4f4f4; padding: 20px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-        <h2 style="color: #333333; text-align: center;">Bonjour ,</h2>
+<h1>Hi! Please confirm your email!</h1>
 
-        <p style="color: #333333;">
-            Merci de vous être inscrit sur notre plateforme. Nous vous informons que votre compte est actuellement en cours d'examen par notre équipe. Nous procédons à une vérification pour nous assurer que toutes les informations sont correctes.
-        </p>
+<p>
+    Please confirm your email address by clicking the following link: <br><br>
+    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
+    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
 
-        <p style="color: #333333;">
-            Une fois votre compte validé, vous serez contacté par l'administrateur du système pour finaliser l'activation de votre accès.
-        </p>
-
-        <p style="color: #333333;">
-            Nous vous remercions de votre patience et restons à votre disposition pour toute question.
-        </p>
-
-        <br>
-        <p style="color: #333333; text-align: center;">
-            Cordialement,<br>
-            <strong>L’équipe SYM Boost</strong>
-            <a href="#" style="color: #007BFF; text-decoration: none;">Visitez notre application</a>
-        </p>
-    </div>
-</div>
+<p>
+    Cheers!
+</p>

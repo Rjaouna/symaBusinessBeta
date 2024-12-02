@@ -3,94 +3,100 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+<section class="py-5" style="background-color: #ffffff;">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <!-- Section image -->
+                        <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center">
+                            <img src="{{ asset('/assets/img/logo-syma@4x.jpg') }}"
+                                alt="register form" class="img-fluid" style="max-width: 80%; border-radius: 1rem 0 0 1rem;" />
+                        </div>
+                        <!-- Section formulaire -->
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <form method="post" class="w-100">
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Créer un compte</h5>
 
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 80vh; background-color: #ffffff;">
-        <div class="col-12 col-md-5 mt-4 mb-2 px-4 py-3 rounded shadow-sm border" style="background-color: #f8f9fa;">
-            <h1 class="h3 fw-bold text-uppercase text-center">Inscription</h1>
-            
-            <div class="card-body">
-                {{ form_start(registrationForm) }}
-                
-                <div class="py-2">
-                    <h5>Informations du Gérant</h5>
-                    
-                    <div class="mb-3 position-relative">
-                        <i class="bi bi-person fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                        {{ form_widget(registrationForm.nomResponsable, {
-                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Nom du Responsable'}
-                        }) }}
-                        {{ form_errors(registrationForm.nomResponsable) }}
-                    </div>
-                    
-                    <div class="mb-3 position-relative">
-                        <i class="bi bi-envelope fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                        {{ form_widget(registrationForm.email, {
-                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse E-mail'}
-                        }) }}
-                        {{ form_errors(registrationForm.email) }}
-                    </div>
+                                    <h6>Informations du Gérant</h6>
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.nomResponsable, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Nom du Responsable'}
+                                        }) }}
+                                        <label for="{{ registrationForm.nomResponsable.vars.id }}">Nom du Responsable</label>
+                                        {{ form_errors(registrationForm.nomResponsable) }}
+                                    </div>
 
-                    <div class="mb-3 position-relative">
-                        <i class="bi bi-phone fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                        {{ form_widget(registrationForm.telephoneMobile, {
-                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Téléphone Mobile'}
-                        }) }}
-                        {{ form_errors(registrationForm.telephoneMobile) }}
-                    </div>
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.email, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Adresse E-mail'}
+                                        }) }}
+                                        <label for="{{ registrationForm.email.vars.id }}">Adresse E-mail</label>
+                                        {{ form_errors(registrationForm.email) }}
+                                    </div>
 
-                    <div class="mb-3 position-relative">
-                        <i class="bi bi-house fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                        {{ form_widget(registrationForm.adresse, {
-                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Adresse Postale'}
-                        }) }}
-                        {{ form_errors(registrationForm.adresse) }}
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.telephoneMobile, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Téléphone Mobile'}
+                                        }) }}
+                                        <label for="{{ registrationForm.telephoneMobile.vars.id }}">Téléphone Mobile</label>
+                                        {{ form_errors(registrationForm.telephoneMobile) }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.adresse, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Adresse Postale'}
+                                        }) }}
+                                        <label for="{{ registrationForm.adresse.vars.id }}">Adresse Postale</label>
+                                        {{ form_errors(registrationForm.adresse) }}
+                                    </div>
+
+                                    <h6>Informations de l'Entreprise</h6>
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.nomSociete, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Raison Sociale'}
+                                        }) }}
+                                        <label for="{{ registrationForm.nomSociete.vars.id }}">Raison Sociale</label>
+                                        {{ form_errors(registrationForm.nomSociete) }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.numeroSiret, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'N° SIRET'}
+                                        }) }}
+                                        <label for="{{ registrationForm.numeroSiret.vars.id }}">N° SIRET</label>
+                                        {{ form_errors(registrationForm.numeroSiret) }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.plainPassword, {
+                                            'attr': {'class': 'form-control', 'placeholder': 'Mot de Passe'}
+                                        }) }}
+                                        <label for="{{ registrationForm.plainPassword.vars.id }}">Mot de Passe</label>
+                                        {{ form_errors(registrationForm.plainPassword) }}
+                                    </div>
+
+                                    <div class="form-check mb-3 ps-0">
+                                        {{ form_widget(registrationForm.agreeTerms) }}
+                                    </div>
+
+                                    <button type="submit" class="btn btn-dark btn-lg btn-block w-100">S'inscrire</button>
+
+                                    {{ form_end(registrationForm) }}
+
+                                    <p class="mb-5 pb-lg-2 mt-3 ">Vous avez déjà un compte ? <a href="{{ path('app_login') }}" style="color: #393f81;">S'identifier</a></p>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="py-2">
-                    <h5>Informations de l'Entreprise</h5>
-                    
-                    <div class="mb-3 position-relative">
-                        <i class="bi bi-building fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                        {{ form_widget(registrationForm.nomSociete, {
-                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Raison Sociale'}
-                        }) }}
-                        {{ form_errors(registrationForm.nomSociete) }}
-                    </div>
-                    
-                    <div class="mb-3 position-relative">
-                        <i class="bi bi-file-earmark fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                        {{ form_widget(registrationForm.numeroSiret, {
-                            'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'N° SIRET'}
-                        }) }}
-                        {{ form_errors(registrationForm.numeroSiret) }}
-                    </div>
-                </div>
-
-                <div class="mb-3 position-relative">
-                    <i class="bi bi-lock fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                    {{ form_widget(registrationForm.plainPassword, {
-                        'attr': {'class': 'form-control-lg ps-5 w-100', 'placeholder': 'Mot de Passe'}
-                    }) }}
-                    {{ form_errors(registrationForm.plainPassword) }}
-                </div>
-
-                <div class="form-check ps-0 mb-3">
-                    {{ form_widget(registrationForm.agreeTerms) }}
-                    <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">J'accepte les termes et conditions</label>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 fs-5">S'inscrire</button>
-
-                {{ form_end(registrationForm) }}
-            </div>
-
-            <div class="mt-3 text-center">
-                <p>Vous avez déjà un compte ? <a href="{{ path('app_login') }}">S'identifier</a></p>
             </div>
         </div>
     </div>
+</section>
 {% endblock %}

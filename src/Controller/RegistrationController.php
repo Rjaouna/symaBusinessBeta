@@ -63,15 +63,14 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Récupérer les paramètres d'email depuis EmailSettings
-            $emailSettings = $emailSettingsRepository->findOneBy([]);
-            $subject = $emailSettings ? $emailSettings->getConfirmationEmailSubject() : 'Confirmation de votre compte';
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
-                    ->from(new Address('contact@cartemenu.fr', 'Syma-Business'))
+                    ->from(new Address('contact@cartemenu.fr', 'Sym boost'))
                     ->to((string) $user->getEmail())
-                    ->subject($subject)
+                    ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 

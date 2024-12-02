@@ -1,12 +1,12 @@
-<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
   <div class="carousel-inner">
-    {% for i, banner in banners|batch(4) %}
+    {% for i, banner in banners|batch(3) %}
       <div class="carousel-item {% if loop.first %}active{% endif %}">
         <div class="row">
           {% for b in banner %}
-            <div class="col-md-2">
-              <div class="bg-white py-4 px-2 rounded shadow-sm my-2">
-                <img class="w-100" src="{{ asset('uploads/banners/' ~ b.image) }}" alt="{{ b.nom }}">
+            <div class="col-md-4">
+              <div class="bg-white m-2 my-2">
+                <img class="w-100 rounded shadow-sm" src="{{ asset('uploads/banners/' ~ b.image) }}" alt="{{ b.nom }}">
               </div>
             </div>
           {% endfor %}

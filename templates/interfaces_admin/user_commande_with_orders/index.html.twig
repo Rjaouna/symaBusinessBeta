@@ -62,9 +62,9 @@
                             <td class="text-center fw-bold">{{ item.user.nomResponsable }}</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center">
-                                    <a href="{{ path('biper_serial_number', {'clientId': item.user.codeClient}) }}" class="btn btn-outline-warning me-2" title="Pointage Manuel">
+                                    {# <a href="{{ path('biper_serial_number', {'clientId': item.user.codeClient}) }}" class="btn btn-outline-warning me-2" title="Pointage Manuel">
                                         <i class="bi bi-hand-index fs-5"></i>
-                                    </a>
+                                    </a> #}
                                     <a href="{{ path('biper_commande', {'clientId': item.user.codeClient}) }}" class="btn btn-outline-success" title="Scan">
                                         <i class="bi bi-upc-scan fs-5"></i>
                                     </a>

@@ -6,8 +6,8 @@ use App\Entity\User;
 use App\Entity\CarteSim;
 use App\Entity\Commande;
 use App\Entity\LignesCommande;
-use App\Form\ClientSelectType;
 use App\Repository\UserRepository;
+use App\Form\ClientSelectAdvincedType;
 use App\Repository\CarteSimRepository;
 use App\Repository\ChapeletRepository;
 use App\Repository\CommandeRepository;
@@ -17,16 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[IsGranted('ROLE_ADMIN')]
-class VentesComptoirApiController extends AbstractController
+class VentesComptoirAdvindedApiController extends AbstractController
 {
-	#[Route('/management/select-client', name: 'select_client')]
+	#[Route('/management/advinced/select-client', name: 'select_advinced_client')]
 	public function selectClient(Request $request, Security $security): Response
 	{
-		$form = $this->createForm(ClientSelectType::class);
+		$form = $this->createForm(ClientSelectAdvincedType::class);
 
 		$form->handleRequest($request);
 
@@ -35,14 +35,14 @@ class VentesComptoirApiController extends AbstractController
 			$user = $security->getUser(); // Utilisation du service injecté dans la méthode
 
 			// Redirection vers biper_commande_comptoir avec l'ID utilisateur
-			return $this->redirectToRoute('biper_commande_comptoir', ['clientId' => $selectedClient->getId()]);
+			return $this->redirectToRoute('advinced_biper_commande_comptoir', ['clientId' => $selectedClient->getId()]);
 		}
 
-		return $this->render('interfaces_admin/select_client.html.twig', [
+		return $this->render('interfaces_admin/advinced/select_client.html.twig', [
 			'form' => $form->createView(),
 		]);
 	}
-	#[Route('/management/list/commande/comptoir/{clientId}', name: 'biper_commande_comptoir')]
+	#[Route('/management/advinced/list/commande/comptoir/{clientId}', name: 'advinced_biper_commande_comptoir')]
 	public function showBiperCommande(string $clientId, UserRepository $userRepo): Response
 	{
 		// Récupérer le client par son ID
@@ -50,12 +50,12 @@ class VentesComptoirApiController extends AbstractController
 		if (!$client) {
 			throw $this->createNotFoundException('Client introuvable.');
 		}
-		return $this->render('interfaces_admin/ventes_comptoir.html.twig', [
+		return $this->render('interfaces_admin/advinced/ventes_comptoir.html.twig', [
 			'clientId' => $clientId, // Passer le client ID à la vue
 			'client' => $client,
 		]);
 	}
-	#[Route('/api/comptoir/{clientId}', name: 'api_comptoir', methods: ['POST'])]
+	#[Route('/advinced/api/comptoir/{clientId}', name: 'advinced_api_comptoir', methods: ['POST'])]
 	public function comptoirChaplet(
 		CommandeRepository $commandeRepository,
 		Request $request,

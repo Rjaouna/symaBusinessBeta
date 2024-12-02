@@ -41,6 +41,7 @@ class CommandeBipApiController extends AbstractController
 		foreach ($commandesClient as $commande) {
 			$commandesData[] = [
 				'id' => $commande->getId(),
+				'user' => $commande->getUser()->getNomResponsable(),
 				'code_client' => $commande->getCodeClient(),
 				'typeCarte' => $commande->getSimType(),
 				'nomClient' => $commande->getUser(),
@@ -49,7 +50,6 @@ class CommandeBipApiController extends AbstractController
 				'qtevalidee' => $commande->getQtevalidee(),
 				'status' => $commande->getStatus(),
 				'date' => $commande->getCreatedAt()->format('Y-m-d H:i:s'),
-				// Ajoutez d'autres champs que vous souhaitez retourner ici
 			];
 		}
 

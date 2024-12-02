@@ -39,6 +39,8 @@ class SymaBusinessController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        
+
         // Récupérer toutes les factures pour l'utilisateur connecté
         $factures = $factureRepository->findBy(['client' => $user, 'seen' => Null]);
         $missingProperties = $this->profileCompletionService->checkProfileCompleteness($user);

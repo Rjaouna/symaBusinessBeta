@@ -4,11 +4,14 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'></script>
-<style>
-    .table {
-        font-size: 12px; /* Ajustez cette valeur selon vos besoins */
-    }
-</style>
+        <style>
+            .card {
+                margin-bottom: 1rem;
+            }
+            .badge {
+                font-size: 1rem;
+            }
+        </style>
         <!-- Icône de la page -->
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         
@@ -29,13 +32,9 @@
         <script src="{{ asset('assets/js/custom.js') }}" data-manual=""></script>
         <!-- Prism.js (peut-être pour la coloration syntaxique) -->
         <script src="{{ asset('assets/js/prism.js') }}" data-manual=""></script>
-        {# Inclure le js pour les graphes #}
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Import d'Axios depuis un CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        {# API User information pour le left widget #}
+        <!-- API User information pour le left widget -->
         <script type="module" src="{{ asset('assets/js/api/commandeInformations.js') }}"></script>
-        {# Initialisation de dataTable #}
+        <!-- Initialisation de dataTable -->
         <script type="module" src="{{ asset('assets/js/dataTableInit.js') }}" defer></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -45,111 +44,130 @@
     <body>
         <div class="container-fluid my-3 rounded bg-white">
             <div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-upc-scan me-2"></i> Sacan carte Sim
-        </h1>
-    </div>
-
-
-            <form id="biperForm">
-            <div class="mb-3 position-relative">
-            <i class="bi bi-sim fs-4 position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
-                <input class="w-100 form-control-lg ps-5" type="text" id="chapeletCode" name="chapeletCode" required maxlength="14" placeholder="SLB00000000000" >
+                <!-- Titre principal avec icône -->
+                <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+                    <h3 class="text-dark fw-bold text-uppercase mb-0">
+                        <i class="bi bi-upc-scan me-2"></i> Scannez un chapelet !
+                    </h3>
+                    dd
                 </div>
-                <input type="hidden" readonly id="clientId" value="{{ clientId }}"> 
 
-            </form>
+                <form id="biperForm">
+                    <div class="form-floating mb-3 position-relative">
+                        <input 
+                            class="form-control ps-5" 
+                            type="text" 
+                            id="chapeletCode" 
+                            name="chapeletCode" 
+                            required 
+                            maxlength="14" 
+                            placeholder="SBL00000000000"
+                            style="padding-left: 3rem;">
+                        <label for="chapeletCode">Code Chapelet</label>
+                    </div>
+                    <input type="hidden" readonly id="clientId" value="{{ clientId }}">
+                </form>
 
-            <p class="py-2 font-weight-bold" id="responseMessage"></p>
-            
+                <h6 class="py-2 font-weight-bold" id="responseMessage"></h6>
+                <span class="fw-bold">Client : </span><span class="badge bg-primary" id="clientEnCours">Client non défini</span>
 
-        <h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase">Liste des Commandes</h6>
-        
-        <!-- Tableau pour afficher les commandes -->
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Numero</th>
-                    <th>Type Carte</th>
-                    <th>Status</th>
-                    <th>Reste à valider</th>
-                </tr>
-            </thead>
-            <tbody id="commandes-list"></tbody> <!-- Corps du tableau pour les commandes -->
-        </table>
-<a href="{{ path('users_with_orders') }}" type="button" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la liste des commandes</a>
-        <script>
-         document.getElementById('chapeletCode').focus(); // Met le focus sur le champ chapeletCode
-   document.getElementById('chapeletCode').addEventListener('input', function() {
-       const chapeletCode = this.value;
-       const clientId = document.getElementById('clientId').value;
+                <h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase">Liste des Commandes</h6>
+                
+                <!-- Section pour afficher les commandes sous forme de cartes -->
+                <div id="commandes-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    <!-- Les cartes des commandes seront ajoutées ici dynamiquement -->
+                </div>
 
-       // Loggez le numéro de série et le client ID
-       console.log("Numéro de série:", chapeletCode);
-       console.log("Client ID:", clientId);
+                <a href="{{ path('users_with_orders') }}" type="button" class="btn btn-primary btn-lg w-100 mb-5" style="font-size: 17px;">Revenir à la liste des commandes</a>
 
-       // Vérifiez si le nombre de caractères est 14
-       if (chapeletCode.length === 14) {
-           // Envoyer la requête dès que le nombre de caractères atteint 14
-           axios.post(`/api/biper/${clientId}`, { chapeletCode })
-               .then(response => {
-                   document.getElementById('responseMessage').innerText = response.data.success || response.data.error;
-               })
-               .catch(error => {
-                   console.error("Erreur lors de l'envoi:", error.response.data); // Loggez l'erreur pour obtenir plus de détails
-                   const errorMsg = error.response ? error.response.data.error : 'Une erreur est survenue.';
-                   document.getElementById('responseMessage').innerText = errorMsg;
-               });
-       }
-   });
+                <script>
+                    document.getElementById('chapeletCode').focus(); // Met le focus sur le champ chapeletCode
+                    document.getElementById('chapeletCode').addEventListener('input', function() {
+                        const chapeletCode = this.value;
+                        const clientId = document.getElementById('clientId').value;
 
-   const clientId = document.getElementById('clientId').value; // Récupération de l'ID du client
-   const url = `/api/commandes/${clientId}`;
+                        // Loggez le numéro de série et le client ID
+                        console.log("Numéro de série:", chapeletCode);
+                        console.log("Client ID:", clientId);
 
-   // Fonction pour récupérer et afficher les commandes
-   function fetchAndRenderCommandes() {
-       axios.get(url)
-           .then(response => {
-               const commandes = response.data;
-               renderCommandes(commandes);
-           })
-           .catch(error => {
-               console.error('Erreur lors de la récupération des commandes:', error);
-           });
-   }
+                        // Vérifiez si le nombre de caractères est 14
+                        if (chapeletCode.length === 14) {
+                            // Envoyer la requête dès que le nombre de caractères atteint 14
+                            axios.post(`/api/biper/${clientId}`, { chapeletCode })
+                                .then(response => {
+                                    document.getElementById('responseMessage').innerText = response.data.success || response.data.error;
+                                })
+                                .catch(error => {
+                                    console.error("Erreur lors de l'envoi:", error.response.data); // Loggez l'erreur pour obtenir plus de détails
+                                    const errorMsg = error.response ? error.response.data.error : 'Une erreur est survenue.';
+                                    document.getElementById('responseMessage').innerText = errorMsg;
+                                });
+                        }
+                    });
 
-   // Fonction pour afficher les commandes dans le tableau
-   function renderCommandes(commandes) {
-       const commandesList = document.getElementById('commandes-list');
-       commandesList.innerHTML = ''; // Efface le contenu précédent
+                    const clientId = document.getElementById('clientId').value; // Récupération de l'ID du client
+                    const url = `/api/commandes/${clientId}`;
 
-       if (commandes.length === 0) {
-           commandesList.innerHTML = '<tr><td colspan="7" class="text-center">Aucune commande trouvée pour ce client.</td></tr>';
-       } else {
-           commandes.forEach(commande => {
-               const row = document.createElement('tr');
-               // Déterminer la classe pour le statut
-               const statusClass = commande.status === 'en_cours' ? 'table-primary' : ''; // Utilise 'table-danger' pour le rouge
-               row.innerHTML = `
-                   <td class="${statusClass}">${commande.numero}</td>
-                   <td class="${statusClass}">${commande.typeCarte}</td>
-                   <td class="${statusClass}">${commande.status}</td>
-                   <td class="${statusClass}">${(commande.qte - commande.qtevalidee)}</td>
-               `;
-               commandesList.appendChild(row);
-           });
-       }
-   }
+                    // Fonction pour récupérer et afficher les commandes
+                    function fetchAndRenderCommandes() {
+                        axios.get(url)
+                            .then(response => {
+                                const commandes = response.data;
+                                renderCommandes(commandes);
+                            })
+                            .catch(error => {
+                                console.error('Erreur lors de la récupération des commandes:', error);
+                            });
+                    }
 
-   // Appel initial pour charger les commandes
-   fetchAndRenderCommandes();
+                    // Fonction pour afficher les commandes sous forme de cartes
+                    function renderCommandes(commandes) {
+                        const commandesList = document.getElementById('commandes-list');
+                        commandesList.innerHTML = ''; // Efface le contenu précédent
 
-   // Mettre à jour les commandes toutes les secondes
-   setInterval(fetchAndRenderCommandes, 1000);
-</script>
+                        if (commandes.length === 0) {
+                            commandesList.innerHTML = '<div class="col-12 text-center">Aucune commande trouvée pour ce client.</div>';
+                        } else {
+                            commandes.forEach(commande => {
+                                // Affiche le client en cours
+                                document.getElementById('clientEnCours').innerHTML = `${commande.user}`;
+
+                                // Créer une carte pour chaque commande
+                                const card = document.createElement('div');
+                                card.classList.add('col', 'mb-3');
+
+                                const statusClass = commande.status === 'en_cours' ? 'bg-warning text-dark' : 'bg-success';
+                                const statusText = commande.status === 'en_cours' ? 'En Cours' : 'En Attente';
+
+                                card.innerHTML = `
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6 class="card-title mb-2">
+                                                <span class="badge ${statusClass}">
+                                                    ${statusText}
+                                                </span>
+                                            </h6>
+                                            <p class="card-text">
+                                                <strong>Commande ID:</strong> ${commande.numero} <br>
+                                                <strong>Type:</strong> ${commande.typeCarte} <br>
+                                                <strong>Qtée:</strong> ${commande.qte - commande.qtevalidee}
+                                            </p>
+                                        </div>
+                                    </div>
+                                `;
+
+                                commandesList.appendChild(card);
+                            });
+                        }
+                    }
+
+                    // Appel initial pour charger les commandes
+                    fetchAndRenderCommandes();
+
+                    // Mettre à jour les commandes toutes les secondes
+                    setInterval(fetchAndRenderCommandes, 1000);
+                </script>
+            </div>
         </div>
-
     </body>
 </html>

@@ -35,19 +35,17 @@
                       </div>
                   {% endif %}
 
-                  <div class="d-flex align-items-center mb-3 pb-1">
-                    <span class="h1 fw-bold mb-0">Page de connexion</span>
-                  </div>
+                 
 
                   <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Identifiez-vous</h5>
 
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-control-lg" placeholder="Entrez votre adresse email" autocomplete="email" required autofocus>
+                  <div data-mdb-input-init class="form-floating my-2">
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Entrez votre adresse email" autocomplete="email" required autofocus>
                     <label class="form-label" for="inputEmail">Adresse email</label>
                   </div>
 
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" name="password" id="inputPassword" class="form-control form-control-lg" placeholder="Entrez votre mot de passe" autocomplete="current-password" required>
+                  <div data-mdb-input-init class="form-floating my-2">
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Entrez votre mot de passe" autocomplete="current-password" required>
                     <label class="form-label" for="inputPassword">Mot de passe</label>
                   </div>
 

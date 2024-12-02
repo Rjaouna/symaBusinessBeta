@@ -1,0 +1,87 @@
+<div class="mt-4 mb-3 px-2 py-3 rounded shadow-sm bg-light border">
+    <div class="menu">
+        <!-- Menu 1 -->
+        <a href="{{ path('app_commande_index') }}" 
+           class="btn {{ app.request.attributes.get('_route') == 'app_commande_index' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
+            Commandes clients
+        </a>
+    </div>
+
+    <div class="menu">
+        <!-- Menu 2 -->
+        <a href="{{ path('users_with_orders') }}" 
+           class="btn {{ app.request.attributes.get('_route') == 'users_with_orders' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
+            Valider une commande
+        </a>
+    </div>
+
+    <div class="menu">
+        <!-- Menu 3 -->
+        <button class="btn {{ app.request.attributes.get('_route') in ['app_quota_index', 'app_quota_new'] ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1" 
+                data-bs-toggle="collapse" data-bs-target="#submenu3">
+            Gestion des quotas
+        </button>
+        <div id="submenu3" class="collapse {{ app.request.attributes.get('_route') in ['app_quota_index', 'app_quota_new'] ? 'show' : '' }}">
+            <a href="{{ path('app_quota_index') }}" 
+               class="btn {{ app.request.attributes.get('_route') == 'app_quota_index' ? '' : 'btn-link' }} text-start w-100 ps-4">
+                Liste des quotas
+            </a>
+            <a href="{{ path('app_quota_new') }}" 
+               class="btn {{ app.request.attributes.get('_route') == 'app_quota_new' ? '' : 'btn-link' }} text-start w-100 ps-4">
+                Ajouter un quota
+            </a>
+        </div>
+    </div>
+
+    <div class="menu">
+        <!-- Menu 4 -->
+        <button class="btn {{ app.request.attributes.get('_route') in ['app_bonus_index', 'app_bonus_new'] ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1" 
+                data-bs-toggle="collapse" data-bs-target="#submenu4">
+            Gestion des bonus
+        </button>
+        <div id="submenu4" class="collapse {{ app.request.attributes.get('_route') in ['app_bonus_index', 'app_bonus_new'] ? 'show' : '' }}">
+            <a href="{{ path('app_bonus_index') }}" 
+               class="btn {{ app.request.attributes.get('_route') == 'app_bonus_index' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
+                Liste des bonus
+            </a>
+            <a href="{{ path('app_bonus_new') }}" 
+               class="btn {{ app.request.attributes.get('_route') == 'app_bonus_new' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
+                Attribuer un bonus
+            </a>
+        </div>
+    </div>
+
+    <div class="menu">
+        <!-- Menu 5 -->
+        <a href="{{ path('app_user_index') }}" 
+           class="btn {{ app.request.attributes.get('_route') == 'app_user_index' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
+            Liste des revendeurs
+        </a>
+    </div>
+
+    <div class="menu">
+        <!-- Menu 6 -->
+        <button class="btn {{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1" 
+                data-bs-toggle="collapse" data-bs-target="#submenu6">
+            Base de données
+        </button>
+        <div id="submenu6" class="collapse {{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'show' : '' }}">
+            <a href="{{ path('app_carte_sim_types_block_index') }}" 
+               class="btn {{ app.request.attributes.get('_route') == 'app_carte_sim_types_block_index' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
+                Base de production
+            </a>
+            <a href="{{ path('app_pending_sim_cards_index') }}" 
+               class="btn {{ app.request.attributes.get('_route') == 'app_pending_sim_cards_index' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
+                Base préproduction
+            </a>
+        </div>
+    </div>
+
+    <div class="menu">
+        <!-- Menu 7 -->
+        <a href="{{ path('app_facture_list') }}" 
+           class="btn {{ app.request.attributes.get('_route') == 'app_facture_list' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
+            Gestion des factures
+        </a>
+    </div>
+</div>

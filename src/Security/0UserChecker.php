@@ -16,10 +16,10 @@ class UserChecker implements UserCheckerInterface
 			return;
 		}
 
-		// Si l'utilisateur n'est pas vérifié, lancer une exception avec un message
-		if (!$user->isVerified()) {
-			throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas encore activé.');
-		}
+		// // Si l'utilisateur n'est pas vérifié, lancer une exception avec un message
+		// if (!$user->isVerified()) {
+		// 	throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas encore activé.');
+		// }
 	}
 
 	public function checkPostAuth(UserInterface $user): void

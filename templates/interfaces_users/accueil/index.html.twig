@@ -30,7 +30,7 @@
             <div class="col-md-2 my-2 text-secondary">
                 <a href="{{path('user_app_commande_attente')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-arrow-repeat fs-4 text-secondary"></i>
-                    <span class="mt-2">Cdes en attente</span>
+                    <span class="mt-2">Commandes en <br>attente</span>
                     <span id ="nombreEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         00+
                     </span>
@@ -41,7 +41,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{path('user_app_commande_encours')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-x-circle fs-4 text-secondary"></i>
-                    <span class="mt-2">Cdes en cours</span>
+                    <span class="mt-2">Livraisons en <br>attente</span>
                     <span id ="nombreEnCours" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         00+
                     </span>
@@ -52,7 +52,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{path('user_app_commande_index')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-cart fs-4 text-secondary"></i>
-                    <span class="mt-2">Toutes les Cdes</span>
+                    <span class="mt-2">Historique des <br>commandes</span>
                     <span id ="nombreValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                        00+
                     </span>
@@ -62,8 +62,8 @@
             <div class="col-md-2 my-2">
                 <a href="{{path('app_user_Bonus_Controller')}}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi bi-gift fs-4 text-secondary"></i>
-                    <span class="mt-2">Gérer mon bonus !</span>
-                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                    <span class="mt-2">Utiliser mon <br>bonus</span>
+                    <span id="totalBonus" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                         00+
                     </span>
                 </a>
@@ -72,7 +72,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{path('cartesim_purchased')}}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-sim fs-4 text-secondary"></i>
-                    <span class="mt-2">Carte Sim achetées</span>
+                    <span class="mt-2">Mes cartes SIM <br>attribuées</span>
                     <span id="totalQuantiteValidee" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                         99+
                     </span>
@@ -82,7 +82,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{path('app_facture_client')}}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-cloud-download fs-4 text-secondary"></i>
-                    <span class="mt-2">Facturation</span>
+                    <span class="mt-2">Télécharger mes <br>factures</span>
                         {% for facture in factures %}
                         {% if not facture.seen %}
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
