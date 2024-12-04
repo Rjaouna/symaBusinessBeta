@@ -33,6 +33,25 @@ class QuotaType extends AbstractType
                 ]),
             ],
         ])
+        ->add(
+            'code',
+            null,
+            [
+                'label' => false, // Retire le label
+                'attr' => [
+                    'placeholder' => 'Entrez le code'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le code est obligatoire.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z\s\-]+$/u',
+                        'message' => 'Le nom ne peut contenir que des lettres, des espaces ou des traits d’union.',
+                    ]),
+                ],
+            ]
+        )
         ->add('sim5Quota', null, [
             'label' => false,
             'attr' => ['placeholder' => 'Entrez le quota pour Sim 05'],

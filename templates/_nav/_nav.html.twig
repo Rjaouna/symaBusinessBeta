@@ -10,9 +10,9 @@
       <ul class="navbar-nav ms-auto">
 
         {% if app.user %}
-        
-          {% if app.user.activeRole == 'ROLE_ADMIN' %}
-
+          
+          {# Liens spécifiques aux administrateurs #}
+          {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
               <a class="nav-link active" href="{{ path('users_with_orders') }}">
                 <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-upc-scan fs-5"></i></span> 
@@ -27,8 +27,6 @@
               </a>
             </li>
 
-            
-
             <li class="nav-item">
               <a class="nav-link active" href="{{ path('admin_syma_business') }}">
                 <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-gear fs-5"></i></span> 
@@ -36,43 +34,40 @@
               </a>
             </li>
 
-           
-
-            <li class="nav-item d-none" id="newUserWithoutCode">
-              <a class="nav-link active" href="{{ path('app_logout') }}">
-                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
-                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i><span id="UserWithoutCode"></span></span>
-              </a>
-            </li>
-
+            {# Formulaire de changement de rôle pour les administrateurs ayant également le rôle ROLE_USER #}
+            {% if 'ROLE_USER' in app.user.roles %}
+              <form id="switchRoleForm" class="d-flex align-items-center ms-3">
+                <button class="btn btn-secondary mx-2 py-1" type="submit">Switch</button>
+                <select name="role" id="roleSelect" class="form-select py-1">
+                  <option value="ROLE_ADMIN" {% if app.user.activeRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
+                  <option value="ROLE_USER" {% if app.user.activeRole == 'ROLE_USER' %}selected{% endif %}>User</option>
+                </select>
+              </form>
+            {% endif %}
           {% endif %}
+
+          {# Liens communs pour tous les utilisateurs authentifiés #}
           <li class="nav-item">
-              <a class="nav-link active" href="{{ path('app_profile') }}">
-                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-person fs-5"></i></span> 
-                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-person fs-5"></i> Mon profil</span>
-              </a>
-            </li>
-<li class="nav-item">
-              <a class="nav-link active" href="{{ path('app_logout') }}">
-                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
-                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
-              </a>
-            </li>
-          {% if 'ROLE_ADMIN' in app.user.roles and 'ROLE_USER' in app.user.roles %}
-            <form id="switchRoleForm" class="d-flex align-items-center ms-3">
-              <button class="btn btn-secondary mx-2 py-1" type="submit">Switch</button>
-              <select name="role" id="roleSelect" class="form-select py-1">
-                <option value="ROLE_ADMIN" {% if app.user.activeRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
-                <option value="ROLE_USER" {% if app.user.activeRole == 'ROLE_USER' %}selected{% endif %}>User</option>
-              </select>
-            </form>
-          {% endif %}
+            <a class="nav-link active" href="{{ path('app_profile') }}">
+              <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-person fs-5"></i></span> 
+              <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-person fs-5"></i> Mon profil</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ path('app_logout') }}">
+              <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
+              <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
+            </a>
+          </li>
+
         {% endif %}
 
       </ul>
     </div>
   </div>
 </nav>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

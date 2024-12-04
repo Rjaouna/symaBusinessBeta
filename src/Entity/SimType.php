@@ -300,4 +300,5 @@ class SimType
 
         return $this;
     }
+    
 }

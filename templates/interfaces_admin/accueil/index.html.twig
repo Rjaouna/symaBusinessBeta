@@ -34,7 +34,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_commande_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-cart fs-4 text-secondary"></i>
-                    <span class="mt-2">Commandes clients</span>
+                    <span class="mt-2">Commandes<br>clients</span>
                     <span id="totalEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         00+
                     </span>
@@ -44,7 +44,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('users_with_orders') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-upc-scan fs-4 text-secondary"></i>
-                    <span class="mt-2">Valider une commandes</span>
+                    <span class="mt-2">Valider une<br>commandes</span>
                 </a>
             </div>
 
@@ -52,7 +52,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_quota_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-speedometer fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion des quotas</span>
+                    <span class="mt-2">Gestion<br>des quotas</span>
                 </a>
             </div>
 
@@ -60,7 +60,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_bonus_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-gift fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion des bonus</span>
+                    <span class="mt-2">Gestion<br>des bonus</span>
                 </a>
             </div>
 
@@ -68,7 +68,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_user_index') }}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-people fs-4 text-secondary"></i>
-                    <span class="mt-2">Liste des revendeurs</span>
+                    <span class="mt-2">Liste<br>des revendeurs</span>
                 </a>
             </div>
 
@@ -76,7 +76,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_carte_sim_types_block_index') }}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-sim fs-4 text-secondary"></i>
-                    <span class="mt-2">Base de production</span>
+                    <span class="mt-2">Base<br>de production</span>
                 </a>
             </div>
 
@@ -92,7 +92,7 @@
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_banner_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-image fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion des Bannières</span>
+                    <span class="mt-2">Gestion<br>des Bannières</span>
                    
                 </a>
             </div>
@@ -100,7 +100,22 @@
             <div class="col-md-2 my-2">
                 <a href="{{path('select_client')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                     <i class="bi bi-bag-check fs-4 text-secondary"></i>
-                    <span class="mt-2">Vente directe (comptoir)</span>
+                    <span class="mt-2">Vente<br>directe (comptoir)</span>
+                   
+                </a>
+            </div>
+
+            <div class="col-md-2 my-2">
+                <a href="{{path('app_limitation_index')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-exclamation-triangle fs-4 text-secondary"></i>
+                    <span class="mt-2">Gestion<br>des limitations</span>
+                   
+                </a>
+            </div>
+            <div class="col-md-2 my-2">
+                <a href="{{path('select_advinced_client')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-bag-check fs-4 text-secondary"></i>
+                    <span class="mt-2">Vente<br>directe (Terrain)</span>
                    
                 </a>
             </div>
@@ -111,7 +126,7 @@
                 <a  href="{{path('management_import_carte_sim')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                                      <i class="bi bi-cloud-upload fs-4 text-primary"></i>
 
-                    <span class="mt-2">Importation des stocks</span>
+                    <span class="mt-2">Importation<br>des stocks</span>
                    
                 </a>
             </div>
@@ -119,7 +134,7 @@
                 <a  href="{{path('app_pending_sim_cards_index')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                                      <i class="bi bi-sim fs-4 text-primary"></i>
 
-                    <span class="mt-2">Base Préproduction</span>
+                    <span class="mt-2">Base<br>Préproduction</span>
                    
                 </a>
             </div>
@@ -128,7 +143,7 @@
                 <a  href="{{path('app_facture_list')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
                                      <i class="bi bi-receipt fs-4 text-primary"></i>
 
-                    <span class="mt-2">Gestion des factures</span>
+                    <span class="mt-2">Gestion<br>des factures</span>
                    
                 </a>
             </div>
@@ -137,7 +152,7 @@
             <div class="col-md-2 my-2">
     <a href="#" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100" data-bs-toggle="modal" data-bs-target="#confirmModal">
         <i class="bi bi-arrow-clockwise fs-4 text-primary"></i>
-        <span class="mt-2">Réinitialiser l'usage mensuel</span>
+        <span class="mt-2">Réinitialiser<br>l'usage mensuel</span>
     </a>
 </div>
 

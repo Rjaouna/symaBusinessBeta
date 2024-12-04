@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Limitation{% endblock %}
+
+{% block body %}
+    <h1>Limitation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Type de la carte Sim</th>
+                <td>{{ limitation.typeCarte}}</td>
+
+            </tr>
+            <tr>
+                <th>Limite</th>
+                <td>{{ limitation.limite }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ limitation.prix }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_limitation_index') }}">back to list</a>
+
+    <a href="{{ path('app_limitation_edit', {'id': limitation.id}) }}">edit</a>
+
+    {{ include('limitation/_delete_form.html.twig') }}
+{% endblock %}

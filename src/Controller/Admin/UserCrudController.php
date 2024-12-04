@@ -56,10 +56,10 @@ class UserCrudController extends AbstractCrudController
 
             BooleanField::new('isVerified', 'Est vérifié')->setRequired(false)->hideOnForm(),
             ChoiceField::new('roles', 'Rôles')
-            ->setChoices([
-                'Utilisateur' => 'ROLE_USER',
+            ->setChoices(['Utilisateur' => 'ROLE_USER',
                 'Administrateur' => 'ROLE_ADMIN',
-                'Super Administrateur' => 'ROLE_SUPERADMIN',
+                'Super Administrateur' => 'ROLE_SUPERADMIN','Commercial' => 'ROLE_COMMERCIAL',
+                
             ])
                 ->setRequired(true)
                 ->allowMultipleChoices(),

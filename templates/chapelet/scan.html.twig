@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Alimenter le stock{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'></script>
+        <style>
+            .card {
+                margin-bottom: 1rem;
+            }
+            .badge {
+                font-size: 1rem;
+            }
+        </style>
+        <!-- Icône de la page -->
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+        <!-- Lien vers la bibliothèque Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+
+        {% block stylesheets %}
+        <!-- Lien vers la feuille de style Bootstrap -->
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        <!-- Table jQuery -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        {% endblock %}
+        
+        {% block javascripts %}
+        <!-- Scripts nécessaires pour le fonctionnement de Bootstrap -->
+        <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-manual=""></script>
+        <!-- Script personnalisé -->
+        <script src="{{ asset('assets/js/custom.js') }}" data-manual=""></script>
+        <!-- Prism.js (peut-être pour la coloration syntaxique) -->
+        <script src="{{ asset('assets/js/prism.js') }}" data-manual=""></script>
+        <!-- API User information pour le left widget -->
+        <script type="module" src="{{ asset('assets/js/api/commandeInformations.js') }}"></script>
+        <!-- Initialisation de dataTable -->
+        <script type="module" src="{{ asset('assets/js/dataTableInit.js') }}" defer></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        {% endblock %}
+    </head>
+    
+    <body>
+	
+<div class="container-fluid my-3 rounded bg-white">
+    <div class="container-fluid">
+        <!-- Titre principal avec icône -->
+        <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+            <h3 class="text-dark fw-bold text-uppercase mb-0">
+                <i class="bi bi-upc-scan me-2"></i> Scannez un chapelet !
+            </h3>
+            <!-- Vous pouvez ajouter un élément ici si nécessaire -->
+        </div>
+		<!-- Section des boutons -->
+<div class="d-flex  align-items-center action-buttons mb-3 p-2 bg-light rounded border">
+ <a href="{{ path('app_syma_business') }}" class="btn btn-secondary me-2">
+       <i class="bi bi-arrow-left-short"></i> Retour à la page d'accueil
+    </a>
+</div>
+
+        <form id="biperForm">
+            <div class="form-floating mb-3 position-relative">
+                <input 
+                    class="form-control ps-5" 
+                    type="text" 
+                    id="chapeletCode" 
+                    name="chapeletCode" 
+                    required 
+                    maxlength="14" 
+                    placeholder="SBL00000000000"
+                    style="padding-left: 3rem;">
+                <label for="chapeletCode">Code Chapelet</label>
+            </div>
+
+            <div class="mb-3 card p-2">
+                <label class="form-label"><h5 class=" fw-bold">Type de Carte</h5></label>
+                {% for simType in simTypes %}
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="typeCarteId" id="typeCarte{{ simType.id }}" value="{{ simType.id }}" {% if loop.first %}checked{% endif %}>
+					    <label class="form-check-label " for="typeCarte{{ simType.id }}">
+                            {{ simType.nom }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </form>
+
+        <p class="py-2 font-weight-bold" id="responseMessage"></p>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mettre le focus sur le champ de saisie
+    const chapeletCodeInput = document.getElementById('chapeletCode');
+    chapeletCodeInput.focus();
+
+    // Écouter les changements sur le champ de saisie
+    chapeletCodeInput.addEventListener('input', function() {
+        const codeChapelet = chapeletCodeInput.value;
+
+        if (codeChapelet.length === 14) {
+            // Récupérer l'ID du type de carte sélectionné
+            const typeCarteId = document.querySelector('input[name="typeCarteId"]:checked').value;
+
+            // Désactiver le champ pour éviter des saisies supplémentaires
+            chapeletCodeInput.disabled = true;
+
+            // Effectuer la requête API avec Axios
+            axios.post('{{ path('api_scan_chapelet') }}', {
+                codeChapelet: codeChapelet,
+                typeCarteId: typeCarteId
+            })
+            .then(response => {
+                document.getElementById('responseMessage').innerHTML = '<div class="alert alert-success">' + response.data.message + '</div>';
+
+                // Réinitialiser le champ de saisie après un court délai
+                setTimeout(() => {
+                    chapeletCodeInput.value = '';
+                    chapeletCodeInput.disabled = false;
+                    chapeletCodeInput.focus();
+                    document.getElementById('responseMessage').innerHTML = '';
+                }, 2000);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête API:', error);
+                let errorMessage = 'Une erreur est survenue.';
+                if (error.response && error.response.data && error.response.data.error) {
+                    errorMessage = error.response.data.error;
+                } else if (error.response && error.response.data && error.response.data.message) {
+                    errorMessage = error.response.data.message;
+                }
+                document.getElementById('responseMessage').innerHTML = '<div class="alert alert-primary">' + errorMessage + '</div>';
+
+                // Réactiver le champ de saisie pour permettre une nouvelle tentative
+                chapeletCodeInput.disabled = false;
+            });
+        }
+    });
+});
+
+</script>
+    </body>
+</html>

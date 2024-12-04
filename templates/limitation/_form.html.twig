@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+    <div class="form-floating my-2">
+        {{ form_widget(form.typeCarte, { 'attr': { 'class': 'form-control', 'placeholder': 'Sélectionnez un type de carte' } }) }}
+        <label for="{{ form.typeCarte.vars.id }}">Type de carte</label>
+    </div>
+
+    <div class="form-floating my-2">
+        {{ form_widget(form.limite, { 'attr': { 'class': 'form-control', 'placeholder': 'Entrez la limite' } }) }}
+        <label for="{{ form.limite.vars.id }}">Limite</label>
+    </div>
+
+    <div class="form-floating my-2">
+        {{ form_widget(form.prix, { 'attr': { 'class': 'form-control', 'placeholder': 'Entrez le prix' } }) }}
+        <label for="{{ form.prix.vars.id }}">Prix</label>
+    </div>
+    <a class="btn btn-secondary btn-sm" href="{{ path('app_limitation_index') }}">Annuler</a>
+    <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+
+{{ form_end(form) }}

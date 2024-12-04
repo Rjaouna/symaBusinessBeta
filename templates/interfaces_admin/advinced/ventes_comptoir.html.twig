@@ -35,56 +35,183 @@
 <body>
     <div class="container-fluid my-3 rounded bg-white">
         <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-            <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-                <i class="bi bi-upc-scan me-2"></i> Vante comptoir pour : #<span class="text-primary">{{client.nomResponsable}}</span>
-            </h1>
+            <h2 class="text-dark fw-bold text-uppercase mb-0">
+                <i class="bi bi-upc-scan me-2"></i>
+                Vente comptoir :
+                <span class="text-primary">{{ client.nomResponsable }}</span>
+            </h2>
         </div>
-        
-        <form id="biperForm">
-    <div class="form-floating mb-3 position-relative">
-        <input 
-            class="form-control form-control-lg ps-5" 
-            type="text" 
-            id="chapeletCode" 
-            name="chapeletCode" 
-            required 
-            maxlength="14" 
-            placeholder="SBL00000000000" 
-            style="padding-left: 3rem;">
-        <label for="chapeletCode">Code Chapelet</label>
-    </div>
-    <input type="hidden" readonly id="clientId" value="{{ clientId }}">
-</form>
+        <!-- Bouton pour passer toutes les commandes à "facturé" -->
 
+
+<!-- Section des boutons -->
+<div class="d-flex  align-items-center action-buttons mb-3 p-2 bg-light rounded border">
+{% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('app_syma_business') }}" class="btn btn-secondary me-2">
+       <i class="bi bi-arrow-left-short"></i> Retour à la page d'accueil
+    </a>
+	{% else %}
+	<a href="{{ path('select_advinced_client_for_commercial') }}" class="btn btn-secondary me-2">
+       <i class="bi bi-arrow-left-short"></i> Retour à la page d'accueil
+    </a>
+{% endif %}
+
+ 
+    <button id="facturerCommandesBtn" class="btn btn-success me-2">
+      <i class="bi bi-check2-all"></i> Valider le paiement
+    </button>
+   
+</div>
+
+
+        <form id="biperForm">
+            <div class="form-floating mb-3 position-relative">
+                <input 
+                    class="form-control form-control-lg ps-5" 
+                    type="text" 
+                    id="chapeletCode" 
+                    name="chapeletCode" 
+                    required 
+                    maxlength="14" 
+                    placeholder="SBL00000000000" 
+                    style="padding-left: 3rem;">
+                <label for="chapeletCode">Code Chapelet</label>
+            </div>
+            <input type="hidden" readonly id="clientId" value="{{ clientId }}">
+        </form>
+
+        <!-- Div pour afficher le total des commandes -->
+        <div class="total-commandes my-3">
+            <p><strong>Total de toutes les commandes :</strong> <span class ="text-primary fw-bold" id="total-commandes-amount">0</span> €</p>
+        </div>
 
         <p class="py-2 fw-bold" id="responseMessage"></p>
 
-       
 
-        <a href="{{path('app_syma_business')}}" class="btn btn-primary w-100 mb-5" style="font-size: 17px;">Retour à la page d'accueil</a>
+        <!-- Div pour afficher les commandes -->
+        <div id="commandes-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        </div>
+
         
-        <script>
-            document.getElementById('chapeletCode').focus();
-            
-            document.getElementById('chapeletCode').addEventListener('input', function() {
-                const chapeletCode = this.value;
-                const clientId = document.getElementById('clientId').value;
+    </div> <!-- Fin de container-fluid -->
 
-                if (chapeletCode.length === 14) {
-                    axios.post(`/api/comptoir/${clientId}`, { chapeletCode })
-                        .then(response => {
-                            document.getElementById('responseMessage').innerText = response.data.success || response.data.error;
-                        })
-                        .catch(error => {
-                            const errorMsg = error.response ? error.response.data.error : 'Une erreur est survenue.';
-                            document.getElementById('responseMessage').innerText = errorMsg;
-                        });
-                }
-            });
+    <script>
+        document.getElementById('chapeletCode').focus();
+        
+        document.getElementById('chapeletCode').addEventListener('input', function() {
+            const chapeletCode = this.value;
+            const clientId = document.getElementById('clientId').value;
 
-           
-            
-        </script>
-    </div>
+            if (chapeletCode.length === 14) {
+                axios.post(`/advinced/api/comptoir/${clientId}`, { chapeletCode })
+                    .then(response => {
+                        document.getElementById('responseMessage').innerText = response.data.success || response.data.error;
+                    })
+                    .catch(error => {
+                        const errorMsg = error.response ? error.response.data.error : 'Une erreur est survenue.';
+                        document.getElementById('responseMessage').innerText = errorMsg;
+                    });
+            }
+        });
+
+        const clientId = document.getElementById('clientId').value; // Récupération de l'ID du client
+        const url = `/advinced/api/commandes/${clientId}`;
+
+        // Fonction pour récupérer et afficher les commandes
+        function fetchAndRenderCommandes() {
+            axios.get(url)
+                .then(response => {
+                    const commandes = response.data;
+                    renderCommandes(commandes);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des commandes:', error);
+                });
+        }
+
+        // Fonction pour afficher les commandes sous forme de cartes
+        function renderCommandes(commandes) {
+            const commandesList = document.getElementById('commandes-list');
+            commandesList.innerHTML = ''; // Efface le contenu précédent
+
+            let totalAllCommandes = 0; // Variable pour accumuler le total
+
+            if (commandes.length === 0) {
+                commandesList.innerHTML = '<div class="container-fluid col-12 text-center">Aucune commande trouvée pour ce client.</div>';
+                // Mettre à jour le total à zéro si aucune commande
+                document.getElementById('total-commandes-amount').innerText = '0';
+            } else {
+                commandes.forEach(commande => {
+                    // Vérifier que 'commande.total' est un nombre
+                    const commandeTotal = parseFloat(commande.total) || 0;
+                    totalAllCommandes += commandeTotal;
+
+                    // Construire l'URL des détails de la commande
+                    const detailsUrl = `/commandes/${encodeURIComponent(commande.numero)}/lignes`;
+
+                    // Créer une carte pour chaque commande
+                    const card = document.createElement('div');
+                    card.classList.add('col', 'mb-3');
+
+                    card.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title mb-2">
+                                    <!-- Vous pouvez ajouter du contenu ici si nécessaire -->
+                                </h6>
+                                <p class="card-text">
+                                    <strong>Date de la vente : </strong> ${commande.date} <br>
+                                    <strong>Type de cartes:</strong> ${commande.typeCarte} <br>
+                                    <strong>Nombre de cartes :</strong> ${commande.qte}<br>
+                                    <strong>Total :</strong> ${commande.total} €
+                                </p>
+                                <a class="btn btn-secondary btn-sm" href="${detailsUrl}">Détails de la vente</a>
+                            </div>
+                        </div>
+                    `;
+
+                    commandesList.appendChild(card);
+                });
+
+                // Après la boucle, mettre à jour le total des commandes
+                document.getElementById('total-commandes-amount').innerText = totalAllCommandes.toFixed(2);
+            }
+        }
+
+        // Appel initial pour charger les commandes
+        fetchAndRenderCommandes();
+
+        // Mettre à jour les commandes toutes les secondes
+        setInterval(fetchAndRenderCommandes, 1000);
+
+
+
+		// Fonction pour facturer toutes les commandes
+function facturerToutesCommandes() {
+    const clientId = document.getElementById('clientId').value;
+    const url = `/advinced/api/commandes/${clientId}/facturer`;
+
+    axios.post(url)
+        .then(response => {
+            // Afficher un message de succès
+            alert('Toutes les commandes ont été facturées avec succès.');
+
+            // Rafraîchir la liste des commandes
+            fetchAndRenderCommandes();
+        })
+        .catch(error => {
+            // Gérer les erreurs
+            alert('Une erreur est survenue lors de la facturation des commandes.');
+            console.error('Erreur lors de la facturation des commandes:', error);
+        });
+}
+
+// Ajouter un écouteur d'événement sur le bouton
+document.getElementById('facturerCommandesBtn').addEventListener('click', function(e) {
+    e.preventDefault(); // Empêcher le comportement par défaut si nécessaire
+    facturerToutesCommandes();
+});
+
+    </script>
 </body>
 </html>

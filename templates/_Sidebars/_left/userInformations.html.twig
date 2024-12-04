@@ -6,7 +6,7 @@
                  class="rounded-circle border" 
                  style="width: 80px; height: 80px; object-fit: cover;">
         </a>
-        <h5 class="mt-2 text-dark text-center">
+        <h5 class="mt-2 text-dark text-center user-name">
             <strong>{{ app.user.nomResponsable }}</strong>
         </h5>
         <h6 class="mb-0 text-secondary text-center" style="font-weight: 100; letter-spacing: -0.5px;">
@@ -56,9 +56,12 @@
     </div>
 
 </div>
+
+{% if is_granted('ROLE_ADMIN') %}
+
         {{ include('_nav/_nav_laterale.html.twig') }}
-
-
+    
+{% endif %}
 
 <!-- JavaScript to Fetch and Display User Data -->
 <script>

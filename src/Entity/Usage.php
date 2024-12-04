@@ -14,67 +14,54 @@ class Usage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $sim5Usage = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $sim10Usage = null;
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $sim15Usage = null;
+    #[ORM\ManyToOne]
+    private ?SimType $type = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $sim20Usage = null;
+    #[ORM\Column]
+    private ?int $consomation = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSim5Usage(): ?string
+
+    public function getUser(): ?User
     {
-        return $this->sim5Usage;
+        return $this->user;
     }
 
-    public function setSim5Usage(string $sim5Usage): static
+    public function setUser(?User $user): static
     {
-        $this->sim5Usage = $sim5Usage;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getSim10Usage(): ?string
+    public function getType(): ?SimType
     {
-        return $this->sim10Usage;
+        return $this->type;
     }
 
-    public function setSim10Usage(string $sim10Usage): static
+    public function setType(?SimType $type): static
     {
-        $this->sim10Usage = $sim10Usage;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getSim15Usage(): ?string
+    public function getConsomation(): ?int
     {
-        return $this->sim15Usage;
+        return $this->consomation;
     }
 
-    public function setSim15Usage(string $sim15Usage): static
+    public function setConsomation(int $consomation): static
     {
-        $this->sim15Usage = $sim15Usage;
-
-        return $this;
-    }
-
-    public function getSim20Usage(): ?string
-    {
-        return $this->sim20Usage;
-    }
-
-    public function setSim20Usage(string $sim20Usage): static
-    {
-        $this->sim20Usage = $sim20Usage;
+        $this->consomation = $consomation;
 
         return $this;
     }

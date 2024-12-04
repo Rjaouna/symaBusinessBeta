@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Routing\RouterInterface;
 
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -42,11 +43,17 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Récupérer l'utilisateur authentifié
+        $user = $token->getUser();
+
+        // Vérifier le rôle de l'utilisateur et rediriger en conséquence
+        if (in_array('ROLE_COMMERCIAL', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('select_advinced_client_for_commercial'));
+        }
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
-        // For example:
+        // Redirection par défaut pour les autres utilisateurs
         return new RedirectResponse($this->urlGenerator->generate('app_syma_business'));
         throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
     }

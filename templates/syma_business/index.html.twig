@@ -5,16 +5,22 @@
 {% block body %}
 
     {% if is_granted('ROLE_ADMIN') %}
-      {% if app.user.activeRole == 'ROLE_ADMIN' %}
-        {{ include('interfaces_admin/accueil/index.html.twig') }}  
-      {% else %}
-        {{ include('interfaces_users/accueil/index.html.twig') }}  
-      {% endif %}
+        {# Vérifie si l'utilisateur a explicitement activé le rôle ROLE_ADMIN #}
+        {% if app.user.activeRole == 'ROLE_ADMIN' %}
+            {{ include('interfaces_admin/accueil/index.html.twig') }}
+        {% else %}
+            {{ include('interfaces_users/accueil/index.html.twig') }}
+        {% endif %}
+
+    {% elseif is_granted('ROLE_COMMERCIAL') %}
+        {{ include('interfaces_commercial/accueil/index.html.twig') }}
+
+    {% elseif is_granted('ROLE_USER') %}
+        {{ include('interfaces_users/accueil/index.html.twig') }}
 
     {% else %}
-        {% if is_granted('ROLE_USER') %}
-            {{ include('interfaces_users/accueil/index.html.twig') }}  
-        {% endif %}
+        {# Optionnel : Contenu pour les utilisateurs non authentifiés ou sans rôle spécifique #}
+        <p>Vous n'avez pas les permissions nécessaires pour accéder à cette page.</p>
     {% endif %}
 
 {% endblock %}

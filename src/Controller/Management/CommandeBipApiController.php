@@ -14,9 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ADMIN')]
 class CommandeBipApiController extends AbstractController
 {
 	#[Route('/management/list/commande/{clientId}', name: 'biper_commande')]
@@ -55,6 +53,69 @@ class CommandeBipApiController extends AbstractController
 
 		// Retourner la réponse JSON
 		return new JsonResponse($commandesData);
+	}
+
+	#[Route('/advinced/api/commandes/{clientId}', name: 'advinced_api_commandes_client', methods: ['GET'])]
+	public function getAdvincedCommandesClient($clientId, CommandeRepository $commandeRepo): JsonResponse
+	{
+		// Récupération des commandes avec le statut en_cours ou en_attente
+		$commandesClient = $commandeRepo->findBy([
+			'user' => $clientId,
+			'factured' => 0
+		]);
+
+		// Transformation des données en format de réponse JSON
+		$commandesData = [];
+		foreach ($commandesClient as $commande) {
+			$commandesData[] = [
+				'id' => $commande->getId(),
+				'user' => $commande->getUser()->getNomResponsable(),
+				'code_client' => $commande->getCodeClient(),
+				'typeCarte' => $commande->getSimType(),
+				'nomClient' => $commande->getUser(),
+				'numero' => $commande->getNumero(),
+				'qte' => $commande->getQte(),
+				'qtevalidee' => $commande->getQtevalidee(),
+				'status' => $commande->getStatus(),
+				'total' => $commande->getTotal(),
+				'date' => $commande->getCreatedAt()->format('Y-m-d H:i:s'),
+			];
+		}
+
+		// Retourner la réponse JSON
+		return new JsonResponse($commandesData);
+	}
+
+
+
+	#[Route('/advinced/api/commandes/{clientId}/facturer', name: 'advinced_api_commandes_facturer', methods: ['POST'])]
+	public function facturerCommandesClient(
+		$clientId,
+		CommandeRepository $commandeRepo,
+		EntityManagerInterface $entityManager
+	): JsonResponse {
+		// Récupérer les commandes du client avec le statut approprié
+		$commandesClient = $commandeRepo->createQueryBuilder('c')
+		->where('c.user = :clientId')
+		->andWhere('c.factured != :statutFacture')
+		->setParameter('clientId', $clientId)
+			->setParameter('statutFacture', 1)
+			->getQuery()
+			->getResult();
+
+		if (empty($commandesClient)) {
+			return new JsonResponse(['message' => 'Aucune commande à facturer pour ce client.'], JsonResponse::HTTP_OK);
+		}
+
+		// Mettre à jour le statut de chaque commande
+		foreach ($commandesClient as $commande) {
+			$commande->setFactured(1);
+		}
+
+		// Enregistrer les changements
+		$entityManager->flush();
+
+		return new JsonResponse(['message' => 'Commandes facturées avec succès.'], JsonResponse::HTTP_OK);
 	}
 
 

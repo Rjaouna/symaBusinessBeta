@@ -1,87 +1,228 @@
+<!-- Styles pour le menu -->
+<style>
+    .menu .btn {
+        font-size: 0.8rem;
+        padding: 0rem 0;
+        text-decoration: none !important; /* Retirer le soulignement */
+    }
+
+    .menu hr {
+        margin: 0.5rem 0 !important;
+    }
+</style>
+
 <div class="mt-4 mb-3 px-2 py-3 rounded shadow-sm bg-light border">
+<div class="menu ">
+        <!-- Menu Accueil -->
+        <a  href="{{ path('app_syma_business') }}" 
+           class="btn btn-link w-100 text-start  mb-1 {{ app.request.attributes.get('_route') == 'app_syma_business' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-house-door me-2 "></i> Accueil
+        </a>
+    </div>
+    <hr>
     <div class="menu">
         <!-- Menu 1 -->
         <a href="{{ path('app_commande_index') }}" 
-           class="btn {{ app.request.attributes.get('_route') == 'app_commande_index' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
-            Commandes clients
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'app_commande_index' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-card-list me-2"></i> Commandes clients
         </a>
     </div>
+    <hr>
 
     <div class="menu">
         <!-- Menu 2 -->
         <a href="{{ path('users_with_orders') }}" 
-           class="btn {{ app.request.attributes.get('_route') == 'users_with_orders' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
-            Valider une commande
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'users_with_orders' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-check-square me-2"></i> Valider une commande
         </a>
     </div>
+    <hr>
 
     <div class="menu">
         <!-- Menu 3 -->
-        <button class="btn {{ app.request.attributes.get('_route') in ['app_quota_index', 'app_quota_new'] ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1" 
-                data-bs-toggle="collapse" data-bs-target="#submenu3">
-            Gestion des quotas
-        </button>
-        <div id="submenu3" class="collapse {{ app.request.attributes.get('_route') in ['app_quota_index', 'app_quota_new'] ? 'show' : '' }}">
-            <a href="{{ path('app_quota_index') }}" 
-               class="btn {{ app.request.attributes.get('_route') == 'app_quota_index' ? '' : 'btn-link' }} text-start w-100 ps-4">
-                Liste des quotas
-            </a>
-            <a href="{{ path('app_quota_new') }}" 
-               class="btn {{ app.request.attributes.get('_route') == 'app_quota_new' ? '' : 'btn-link' }} text-start w-100 ps-4">
-                Ajouter un quota
-            </a>
-        </div>
+        <a href="{{ path('select_client') }}" 
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'select_client' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-bag-check me-2"></i> Vente directe (comptoir)
+        </a>
     </div>
+    <hr>
 
     <div class="menu">
         <!-- Menu 4 -->
-        <button class="btn {{ app.request.attributes.get('_route') in ['app_bonus_index', 'app_bonus_new'] ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1" 
-                data-bs-toggle="collapse" data-bs-target="#submenu4">
-            Gestion des bonus
-        </button>
-        <div id="submenu4" class="collapse {{ app.request.attributes.get('_route') in ['app_bonus_index', 'app_bonus_new'] ? 'show' : '' }}">
-            <a href="{{ path('app_bonus_index') }}" 
-               class="btn {{ app.request.attributes.get('_route') == 'app_bonus_index' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
-                Liste des bonus
-            </a>
-            <a href="{{ path('app_bonus_new') }}" 
-               class="btn {{ app.request.attributes.get('_route') == 'app_bonus_new' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
-                Attribuer un bonus
-            </a>
-        </div>
+        <a href="{{ path('select_advinced_client') }}" 
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'select_advinced_client' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-bag-check-fill me-2"></i> Vente Terrain (Limitations)
+        </a>
     </div>
+    <hr>
 
     <div class="menu">
         <!-- Menu 5 -->
-        <a href="{{ path('app_user_index') }}" 
-           class="btn {{ app.request.attributes.get('_route') == 'app_user_index' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
-            Liste des revendeurs
-        </a>
-    </div>
-
-    <div class="menu">
-        <!-- Menu 6 -->
-        <button class="btn {{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1" 
-                data-bs-toggle="collapse" data-bs-target="#submenu6">
-            Base de données
+        <button class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') in ['app_quota_index', 'app_bonus_index', 'app_limitation_index', 'app_banner_index', 'management_import_carte_sim'] ? 'text-primary' : 'text-secondary' }}" 
+                data-bs-toggle="collapse" data-bs-target="#submenu3" aria-expanded="{{ app.request.attributes.get('_route') in ['app_quota_index', 'app_bonus_index', 'app_limitation_index', 'app_banner_index', 'management_import_carte_sim'] ? 'true' : 'false' }}" aria-controls="submenu3">
+            <i class="bi bi-sliders me-2"></i> Gestion & Programmation <i class="bi bi-chevron-down" id="submenu3Icon"></i>
         </button>
-        <div id="submenu6" class="collapse {{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'show' : '' }}">
-            <a href="{{ path('app_carte_sim_types_block_index') }}" 
-               class="btn {{ app.request.attributes.get('_route') == 'app_carte_sim_types_block_index' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
-                Base de production
+        <div id="submenu3" class="collapse {{ app.request.attributes.get('_route') in ['app_quota_index', 'app_bonus_index', 'app_limitation_index', 'app_banner_index', 'management_import_carte_sim'] ? 'show' : '' }}">
+            <hr>
+            <a href="{{ path('app_quota_index') }}" 
+               class="btn btn-link text-start w-100 ps-4 mb-1 {{ app.request.attributes.get('_route') == 'app_quota_index' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-speedometer2 me-2"></i> Gestion des Quotas
             </a>
-            <a href="{{ path('app_pending_sim_cards_index') }}" 
-               class="btn {{ app.request.attributes.get('_route') == 'app_pending_sim_cards_index' ? 'btn-primary' : 'btn-link' }} text-start w-100 ps-4">
-                Base préproduction
+    <hr>
+
+            <a href="{{ path('app_bonus_index') }}" 
+               class="btn btn-link text-start w-100 ps-4 mb-1 {{ app.request.attributes.get('_route') == 'app_bonus_index' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-gift me-2"></i> Gestion des Bonus
+            </a>
+    <hr>
+
+            <a href="{{ path('app_limitation_index') }}" 
+               class="btn btn-link text-start w-100 ps-4 mb-1 {{ app.request.attributes.get('_route') == 'app_limitation_index' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-exclamation-triangle me-2"></i> Gestion des Limitations
+            </a>
+    <hr>
+
+            <a href="{{ path('app_banner_index') }}" 
+               class="btn btn-link text-start w-100 ps-4 mb-1 {{ app.request.attributes.get('_route') == 'app_banner_index' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-image me-2"></i> Gestion des Bannières
+            </a>
+    <hr>
+
+            <a href="{{ path('management_import_carte_sim') }}" 
+               class="btn btn-link text-start w-100 ps-4 {{ app.request.attributes.get('_route') == 'management_import_carte_sim' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-cloud-upload me-2"></i> Importation des stocks
+            </a>
+    <hr>
+
+            <a href="{{ path('scan_chapelet') }}" 
+               class="btn btn-link text-start w-100 ps-4 {{ app.request.attributes.get('_route') == 'scan_chapelet' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-upc-scan me-2"></i> Scanner un chapelet (Stock)
             </a>
         </div>
     </div>
+    <hr>
+
+    <div class="menu">
+        <!-- Menu 6 -->
+        <a href="{{ path('app_user_index') }}" 
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'app_user_index' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-people me-2"></i> Liste des revendeurs
+        </a>
+    </div>
+    <hr>
 
     <div class="menu">
         <!-- Menu 7 -->
+        <button class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'text-primary' : 'text-secondary' }}" 
+                data-bs-toggle="collapse" data-bs-target="#submenu5" aria-expanded="{{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'true' : 'false' }}" aria-controls="submenu5">
+            <i class="bi bi-hdd-stack me-2"></i> Base de données <i class="bi bi-chevron-down" id="submenu5Icon"></i>
+        </button>
+        <div id="submenu5" class="collapse {{ app.request.attributes.get('_route') in ['app_carte_sim_types_block_index', 'app_pending_sim_cards_index'] ? 'show' : '' }}">
+           <hr>
+            <a href="{{ path('app_carte_sim_types_block_index') }}" 
+               class="btn btn-link text-start w-100 ps-4 mb-1 {{ app.request.attributes.get('_route') == 'app_carte_sim_types_block_index' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-hdd-stack me-2"></i> Base de production
+            </a>
+           <hr>
+            <a href="{{ path('app_pending_sim_cards_index') }}" 
+               class="btn btn-link text-start w-100 ps-4 {{ app.request.attributes.get('_route') == 'app_pending_sim_cards_index' ? 'text-primary' : 'text-secondary' }}">
+                <i class="bi bi-hdd-network me-2"></i> Base préproduction
+            </a>
+        </div>
+    </div>
+    <hr>
+
+    <div class="menu">
+        <!-- Menu 8 -->
         <a href="{{ path('app_facture_list') }}" 
-           class="btn {{ app.request.attributes.get('_route') == 'app_facture_list' ? 'btn-primary' : 'btn-secondary' }} w-100 text-start mb-1">
-            Gestion des factures
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'app_facture_list' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-receipt me-2"></i> Gestion des factures
+        </a>
+    </div>
+    <hr>
+<div class="menu">
+        <!-- Menu 8 -->
+        <a href="{{ path('reset_consommation') }}" 
+           class="btn btn-link w-100 text-start mb-1 {{ app.request.attributes.get('_route') == 'reset_consommation' ? 'text-primary' : 'text-secondary' }}">
+            <i class="bi bi-arrow-clockwise me-2"></i> Réinitialiser l'usage (Beta)
+        </a>
+    </div>
+    <hr>
+    <div class="menu">
+        <!-- Menu 9 -->
+        <a href="#" class="btn btn-link w-100 text-start mb-1 text-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+            <i class="bi bi-arrow-clockwise me-2"></i> Réinitialiser l'usage mensuel
         </a>
     </div>
 </div>
+
+<!-- Modal pour la réinitialisation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <!-- Contenu du modal -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmer la réinitialisation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir réinitialiser les usages mensuels de tous les utilisateurs ? Cette action est irréversible.</p>
+                <form action="{{ path('reset_user_properties') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Entrez le mot de passe pour réinitialiser les usages :</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe secret" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 my-1">Confirmer la réinitialisation pour tous les utilisateurs</button>
+                    <button type="button" class="btn btn-secondary w-100 my-1" data-bs-dismiss="modal">Annuler</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var submenu3 = document.getElementById('submenu3');
+        var submenu3Icon = document.getElementById('submenu3Icon');
+
+        // Initialiser l'icône en fonction de l'état initial du menu
+        if (submenu3.classList.contains('show')) {
+            submenu3Icon.classList.add('bi', 'bi-chevron-up');
+        } else {
+            submenu3Icon.classList.add('bi', 'bi-chevron-down');
+        }
+
+        // Ajouter un écouteur d'événement pour changer l'icône lors du clic
+        submenu3.addEventListener('shown.bs.collapse', function () {
+            submenu3Icon.classList.remove('bi-chevron-down');
+            submenu3Icon.classList.add('bi-chevron-up');
+        });
+
+        submenu3.addEventListener('hidden.bs.collapse', function () {
+            submenu3Icon.classList.remove('bi-chevron-up');
+            submenu3Icon.classList.add('bi-chevron-down');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var submenu5 = document.getElementById('submenu5');
+        var submenu3Icon = document.getElementById('submenu5Icon');
+
+        // Initialiser l'icône en fonction de l'état initial du menu
+        if (submenu5.classList.contains('show')) {
+            submenu5Icon.classList.add('bi', 'bi-chevron-up');
+        } else {
+            submenu5Icon.classList.add('bi', 'bi-chevron-down');
+        }
+
+        // Ajouter un écouteur d'événement pour changer l'icône lors du clic
+        submenu5.addEventListener('shown.bs.collapse', function () {
+            submenu5Icon.classList.remove('bi-chevron-down');
+            submenu5Icon.classList.add('bi-chevron-up');
+        });
+
+        submenu5.addEventListener('hidden.bs.collapse', function () {
+            submenu5Icon.classList.remove('bi-chevron-up');
+            submenu5Icon.classList.add('bi-chevron-down');
+        });
+    });
+</script>
