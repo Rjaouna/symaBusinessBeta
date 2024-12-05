@@ -46,7 +46,7 @@ class ResetUserPropertiesCommand extends Command
             $this->entityManager->persist($user);
             // Envoyer un e-mail de notification
             $email = (new TemplatedEmail())
-                ->from('admin@sym-boost.com')
+                ->from('contact@cartemenu.fr')
             ->to($user->getEmail())
             ->subject('Réinitialisation de vos usages de cartes SIM')
             ->htmlTemplate('emails/usages/usage_reset.html.twig')

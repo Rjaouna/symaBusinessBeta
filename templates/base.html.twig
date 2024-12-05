@@ -30,7 +30,7 @@
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <!-- Import d'Axios depuis un CDN -->
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-            {# API User information pour le left widget #}
+            {# API User information pour le left wideget #}
             <script type="module" src="{{ asset('assets/js/api/commandeInformations.js') }}"></script>
             {# Initialisation de dataTable #}
             <script type="module" src="{{ asset('assets/js/dataTableInit.js') }}" defer></script>
@@ -55,9 +55,8 @@
 
         <div class="container-fluid">
             <div class="row">
-                
-                {# Sidebar gauche, affichée seulement si l'utilisateur a le rôle actif ROLE_ADMIN #}
-                {% if app.user and app.user.activeRole == 'ROLE_ADMIN' %}
+                {% if app.user %}
+                    
                     <div class="col-md-2 left-align">
                         {% block left_sidebar %}
                             {{ include('_Sidebars/_left/userInformations.html.twig') }}
@@ -65,15 +64,14 @@
                                 {{ include('_Sidebars/_left/formCommandes.html.twig') }}
                                 {{ include('_Sidebars/_left/quotaInformations.html.twig') }}
                             {% endif %}
+                            {# {{ include('_Sidebars/_left/_user_informations.html.twig') }} #}
                         {% endblock %}
                     </div>
                 {% endif %}
-                
-                {# Déterminer la largeur du contenu principal en fonction de la présence des sidebars #}
-                {% set hasSidebars = app.user and app.user.activeRole == 'ROLE_ADMIN' %}
-                <div class="{% if hasSidebars %}col-md-7{% else %}col-md-12{% endif %} left-align mt-3">
-                    
-                    {% if app.user %}
+
+                <!-- Contenu principal -->
+                {% if app.user %}
+                    <div class="col-md-7 left-align mt-3">
                         <!-- Affichage des messages flash -->
                         {% for label, messages in app.flashes %}
                             <div class="alert alert-{{ label }} px-2 rounded shadow-sm mx-2">
@@ -82,31 +80,29 @@
                                 {% endfor %}
                             </div>
                         {% endfor %}
-                        
+                {% else %}
+                    <div class="col-md-12 left-align">
+                {% endif %}
+                    
+                    <!-- Section pour le contenu du corps -->
+                    {% if app.user %}
                         <div class="mt-2 mb-2 px-1 py-3 px-3 rounded shadow-sm bg-white">
                     {% endif %}
-                    
-                        <!-- Section pour le contenu du corps -->
                         {% block body %}{% endblock %}
-                    
                     {% if app.user %}
                         </div>
-                        {# Inclusion de _Sidebars/_banner/_header.html.twig uniquement pour les administrateurs #}
-                        {% if app.user.activeRole == 'ROLE_ADMIN' %}
-                            {{ include('_Sidebars/_banner/_header.html.twig') }}
-                        {% endif %}
                     {% endif %}
                     
+                    {% if app.user %}
+                        {{ include('_Sidebars/_banner/_header.html.twig') }}
+                    {% endif %}
                 </div>
                 
-                {# Sidebar droite, affichée seulement si l'utilisateur a le rôle actif ROLE_ADMIN #}
-                {% if hasSidebars %}
                     <div class="col-md-3 left-align">
                         {% block right_sidebar %}
                             {{ include('_Sidebars/right/statistics.html.twig') }}
                         {% endblock %}
                     </div>
-                {% endif %}
             </div>
         </div>
         
@@ -116,7 +112,6 @@
         </footer>
         <style>
             .footer-fixed {
-                position: fixed;
                 bottom: 0;
                 left: 0;
                 width: 100%;

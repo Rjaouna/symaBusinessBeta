@@ -39,13 +39,18 @@
             <div class="card bg-light mb-3">
                 <div class="card-header">Informations Personnelles</div>
                 <div class="card-body">
+                    {% if is_granted('ROLE_ADMIN') %}
                     {{ form_row(form.codeClient) }}
+                    {{ form_row(form.roles) }}
+
+                    {% endif %}
                     {{ form_row(form.nomResponsable) }}
                     {{ form_row(form.email) }}
                     {{ form_row(form.telephoneMobile) }}
                 </div>
             </div>
         </div>
+
 
         <div class="col-md-6">
             <!-- Section pour les informations de la société -->

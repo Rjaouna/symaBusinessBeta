@@ -1,4 +1,5 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-secondary btn-sm" href="{{ path('app_sim_type_index') }}">Annuler</a>
+    <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

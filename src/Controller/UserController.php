@@ -33,7 +33,7 @@ final class UserController extends AbstractController
 
         // Filtrer les utilisateurs pour exclure ceux ayant le rôle 'ROLE_ADMIN'
         $filteredUsers = array_filter($users, function ($user) {
-            return in_array('ROLE_USER', $user->getRoles()) && !in_array('ROLE_ADMIN', $user->getRoles());
+            return in_array('ROLE_USER', $user->getRoles()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles());
         });
 
         return $this->render('user/index.html.twig', [

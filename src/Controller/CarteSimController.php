@@ -99,6 +99,22 @@ final class CarteSimController extends AbstractController
         ]);
     }
 
+    #[Route('/cartesofferts', name: 'app_cartesofferts', methods: ['GET'])]
+    public function cartesofferts(CarteSimRepository $carteSimRepository): Response
+    {
+        $this->serialNumberComparator->compareSerialNumbers();
+
+        return $this->render('carte_sim/cartesofferts.html.twig', [
+            'carte_sims' => $carteSimRepository->findBy(
+                ['type' => 5],               // Condition WHERE
+                [
+                    'updatedAt' => 'DESC'
+                ]      // Ensuite tri par updatedAt en ordre décroissant
+            ),
+            'hasMissingSerialNumbers' =>  $this->serialNumberComparator->compareSerialNumbers()
+        ]);
+    }
+
     #[Route('/new', name: 'app_carte_sim_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

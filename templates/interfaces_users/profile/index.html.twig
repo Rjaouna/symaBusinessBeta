@@ -39,6 +39,11 @@
                 <h6 class="mb-0">Informations Personnelles</h6>
             </div>
             <div class="card-body">
+          {% if is_granted('ROLE_ADMIN') %}
+            <p>{% for role in user.roles %}
+    <span class="badge bg-primary">{{ role }}</span>
+{% endfor %}</p>
+{% endif %}
                 <p><strong>Email :</strong> {{ user.email }}</p>
                 <p><strong>Nom de résponsable :</strong> {{ user.nomResponsable }}</p>
                 <p><strong>Téléphone Mobile :</strong> {{ user.telephoneMobile }}</p>

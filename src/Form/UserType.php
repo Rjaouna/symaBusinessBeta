@@ -9,9 +9,10 @@ use App\Entity\Usage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserType extends AbstractType
 {
@@ -20,8 +21,7 @@ class UserType extends AbstractType
         $builder
             ->add('codeClient', TextType::class, [
                 'label' => 'Code Client',
-                'attr' => [
-                    'readonly' => true,
+            'attr' => [
                 'class' => 'form-control-lg',
                 'placeholder' => 'Ex : C41027544',
             ],
@@ -31,6 +31,19 @@ class UserType extends AbstractType
                     'message' => 'Le code client doit commencer par une lettre suivie de 8 chiffres. Ex : C41027544',
                 ]),
                 ],
+            ])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Rôle',
+                'choices'  => [
+                    'Administrateur' => 'ROLE_ADMIN',
+                    'Utilisateur' => 'ROLE_USER',
+                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
+                    'Commercial' => 'ROLE_COMMERCIAL',
+                ],
+                'expanded' => true, // Affiche des cases à cocher
+                'multiple' => true, // Permet de sélectionner plusieurs rôles
+                'required' => true,
+                
             ])
             ->add('nomResponsable', TextType::class, [
                 'label' => 'Nom resposable',

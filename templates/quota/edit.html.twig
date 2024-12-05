@@ -30,4 +30,8 @@
     </nav>
 </div>
     {{ include('quota/_form.html.twig', {'button_label': 'Mise à jour'}) }}
+          {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {{ include('quota/_delete_form.html.twig') }}
+    {% endif %}
+
 {% endblock %}

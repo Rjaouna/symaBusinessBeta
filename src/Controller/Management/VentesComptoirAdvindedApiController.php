@@ -60,7 +60,7 @@ class VentesComptoirAdvindedApiController extends AbstractController
 		]);
 	}
 
-	#[Route('/management/advinced/list/commande/comptoir/{clientId}', name: 'advinced_biper_commande_comptoir')]
+	#[Route('/management/advinced/list/commande/comptoir/s45{clientId}214', name: 'advinced_biper_commande_comptoir')]
 	public function showBiperCommande(string $clientId, UserRepository $userRepo, CommandeRepository $commandeRepository): Response
 	{
 		$client = $userRepo->find($clientId);
