@@ -70,6 +70,9 @@ class CarteSim
     #[ORM\OneToMany(targetEntity: LigneFacture::class, mappedBy: 'produit')]
     private Collection $ligneFactures;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $soldBy = null;
+
     public function __construct()
     {
         $this->ligneFactures = new ArrayCollection();
@@ -249,6 +252,18 @@ class CarteSim
                 $ligneFacture->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSoldBy(): ?string
+    {
+        return $this->soldBy;
+    }
+
+    public function setSoldBy(?string $soldBy): static
+    {
+        $this->soldBy = $soldBy;
 
         return $this;
     }

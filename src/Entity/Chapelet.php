@@ -44,6 +44,9 @@ class Chapelet
     #[ORM\JoinColumn(nullable: false)]
     private ?SimType $typeCartes = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $soldBy = null;
+
     public function __construct()
     {
         $this->cartesSims = new ArrayCollection();
@@ -189,6 +192,18 @@ class Chapelet
     public function setTypeCartes(?SimType $typeCartes): static
     {
         $this->typeCartes = $typeCartes;
+
+        return $this;
+    }
+
+    public function getSoldBy(): ?string
+    {
+        return $this->soldBy;
+    }
+
+    public function setSoldBy(?string $soldBy): static
+    {
+        $this->soldBy = $soldBy;
 
         return $this;
     }

@@ -132,6 +132,14 @@ class VentesComptoirAdvindedApiController extends AbstractController
 			'user' => $client,
 			'type' => $chapelet->getTypeCartes(),
 		]);
+		// Vérification pour le type "carteoffert"
+		if ($chapelet->getTypeCartes()->getCode() === 'carteoffert') {
+			// Si l'utilisateur a déjà utilisé une carte offerte
+			if ($usage && $usage->getConsomation() >= 5) {
+				return $this->json(['error' => 'Vous avez le droit qu\'un chapelet de 5 cartes gratuites.'], 400);
+			}
+		}
+
 
 		$currentUsage = $usage ? $usage->getConsomation() : 0;
 		$additionalUsage = count($cartesSim); // Nombre de cartes SIM achetées
@@ -167,6 +175,8 @@ class VentesComptoirAdvindedApiController extends AbstractController
 		$commande->setTotal($totalPrice); // Utiliser le prix total calculé
 		$commande->setMontantHt($totalPrice); // Vous pouvez ajuster en fonction de la TVA
 		$commande->setStatus('validee');
+		$soldByUser = $this->getUser();
+		$commande->setSoldBy($soldByUser->getNomResponsable());
 		$commande->setCreatedAt(new \DateTimeImmutable());
 		$commande->setUser($client);
 
@@ -191,6 +201,8 @@ class VentesComptoirAdvindedApiController extends AbstractController
 
 		// Marquer le chapelet comme réservé
 		$chapelet->setReserved(true);
+		$soldByUser = $this->getUser();
+		$chapelet->setSoldBy($soldByUser->getNomResponsable());
 		$entityManager->persist($chapelet);
 
 		// Enregistrer les modifications dans la base de données
@@ -258,6 +270,8 @@ class VentesComptoirAdvindedApiController extends AbstractController
 		$carteSim->setPurchasedBy($client); // Associer la carte SIM au client
 		$carteSim->setUser($client); // Associer le client à la carte SIM
 		$carteSim->setCanalVente('Vente Comptoir');
+		$soldByUser = $this->getUser();
+		$carteSim->setSoldBy($soldByUser->getNomResponsable());
 
 		$entityManager->persist($ligneCommande);
 		$entityManager->persist($carteSim);

@@ -11,10 +11,32 @@
 
 
 
+    <h4 class="mb-0 text-secondary" style=" font-weight: 100;letter-spacing: -0.5px;">Ventes récentes par commerçant </h4>
+  </div>
+    <canvas id="topVendeursChart" width="400" height="200"></canvas>
+
+</div>
+
+<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+  <div class="d-flex align-items-center px-2">
+   <div class="title-icon bg-light rounded shadow-sm" 
+     style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; 
+            background-image: url('{{ asset('assets/img/boost@4x.webp') }}'); 
+            background-size: calc(100% - 4px); 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            padding: 2px;">
+</div>
+
+
+
     <h4 class="mb-0 text-secondary" style=" font-weight: 100;letter-spacing: -0.5px;">Stat quotas attribués </h4>
   </div>
   <canvas id="quotaChart" width="400" height="200"></canvas>
 </div>
+
+
+
 
 <script>
     let quotaChart;
@@ -107,4 +129,88 @@
 
     // Appeler la fonction pour récupérer les données
     fetchUserStats();
+
+const updateTopVendeursChart = async () => {
+  try {
+    // Requête pour obtenir les commandes
+    const response = await axios.get("/api/commande");
+    const commandes = response.data;
+
+    // Créer un objet pour compter les commandes par vendeur
+    const vendeurCounts = {};
+
+    commandes.forEach(commande => {
+      // Assurez-vous que 'soldBy' est une chaîne de caractères
+      const vendeur = commande.soldBy; // ou commande.soldBy.nomResponsable si 'soldBy' est un objet
+      if (vendeur) {
+        if (vendeur in vendeurCounts) {
+          vendeurCounts[vendeur]++;
+        } else {
+          vendeurCounts[vendeur] = 1;
+        }
+      }
+    });
+
+    // Convertir l'objet en tableau et trier par nombre de commandes décroissant
+    const sortedVendeurs = Object.entries(vendeurCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5); // Sélectionner les 5 meilleurs vendeurs
+
+    // Préparer les labels et les données pour le graphique
+    const labels = sortedVendeurs.map(entry => entry[0]);
+    const data = sortedVendeurs.map(entry => entry[1]);
+
+    // Créer le graphique
+    const ctx = document.getElementById('topVendeursChart').getContext('2d');
+    const topVendeursChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Nombre de ventes',
+          data: data,
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.2)', // Bleu
+            'rgba(255, 99, 132, 0.2)', // Rouge
+            'rgba(255, 206, 86, 0.2)', // Jaune
+            'rgba(75, 192, 192, 0.2)', // Vert
+            'rgba(153, 102, 255, 0.2)' // Violet
+          ],
+          borderColor: [
+            'rgba(54, 162, 235, 1)', // Bleu
+            'rgba(255, 99, 132, 1)', // Rouge
+            'rgba(255, 206, 86, 1)', // Jaune
+            'rgba(75, 192, 192, 1)', // Vert
+            'rgba(153, 102, 255, 1)'  // Violet
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Top 5 Vendeurs par Nombre de ventes'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            precision: 0
+          }
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error("Erreur lors de la récupération des commandes:", error);
+  }
+};
+
+// Appeler la fonction pour mettre à jour le graphique
+updateTopVendeursChart();
 </script>

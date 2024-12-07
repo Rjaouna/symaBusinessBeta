@@ -79,6 +79,10 @@ class Commande
     #[ORM\Column]
     private ?float $montantHt = null;
 
+    #[Groups('user_info')]
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $soldBy = null;
+
     public function __construct()
     {
         $this->lignesCommandes = new ArrayCollection();
@@ -309,6 +313,18 @@ class Commande
     public function setMontantHt(float $montantHt): static
     {
         $this->montantHt = $montantHt;
+
+        return $this;
+    }
+
+    public function getSoldBy(): ?string
+    {
+        return $this->soldBy;
+    }
+
+    public function setSoldBy(?string $soldBy): static
+    {
+        $this->soldBy = $soldBy;
 
         return $this;
     }
