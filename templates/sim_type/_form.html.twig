@@ -1,5 +1,55 @@
+{# templates/sim_type/new.html.twig #}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_sim_type_index') }}">Annuler</a>
-    <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Champ Nom de la Carte avec Floating Label -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.nom, {
+                    'attr': {
+                        'placeholder': 'Nom de la carte'
+                    }
+                }) }}
+                <label for="{{ form.nom.vars.id }}">Nom de la carte</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Code de la Carte avec Floating Label -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.code, {
+                    'attr': {
+                        'placeholder': 'Code de la carte (le nom sans espaces)'
+                    }
+                }) }}
+                <label for="{{ form.code.vars.id }}">Code de la carte (le nom sans espaces)</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Prix de la Carte avec Floating Label -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.prix, {
+                    'attr': {
+                        'placeholder': 'Prix de la carte'
+                    }
+                }) }}
+                <label for="{{ form.prix.vars.id }}">Prix de la carte</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Quota SIM Offertes avec Floating Label -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.quotaSimOffertes, {
+                    'attr': {
+                        'placeholder': 'Nombre maximum de chapelets offerts'
+                    }
+                }) }}
+                <label for="{{ form.quotaSimOffertes.vars.id }}">* Cartes offertes ? veuillez rensigner la qté maximum à offrir.</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-secondary btn-sm me-2" href="{{ path('app_sim_type_index') }}">Annuler</a>
+        <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+    </div>
 {{ form_end(form) }}

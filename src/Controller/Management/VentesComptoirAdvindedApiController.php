@@ -135,8 +135,8 @@ class VentesComptoirAdvindedApiController extends AbstractController
 		// Vérification pour le type "carteoffert"
 		if ($chapelet->getTypeCartes()->getCode() === 'carteoffert') {
 			// Si l'utilisateur a déjà utilisé une carte offerte
-			if ($usage && $usage->getConsomation() >= 5) {
-				return $this->json(['error' => 'Vous avez le droit qu\'un chapelet de 5 cartes gratuites.'], 400);
+			if ($usage && $usage->getConsomation() >= ($chapelet->getTypeCartes()->getQuotaSimOffertes()) * 5) {
+				return $this->json(['error' => 'Vous avez le droit de ' . $chapelet->getTypeCartes()->getQuotaSimOffertes() . ' chapelets gratuits.'], 400);
 			}
 		}
 

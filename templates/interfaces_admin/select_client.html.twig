@@ -30,10 +30,39 @@
 </div>
 <div class="container-fluid">
 
-    {{ form_start(form) }}
-        {{ form_row(form.client) }}
-        <button class="btn btn-primary btn-sm">Choisir ce client</button>
-    {{ form_end(form) }}
+  <!-- Formulaire de Sélection de Client -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Champ Client avec Floating Label -->
+                        <div class="form-floating mb-4">
+                            {{ form_widget(form.client, {
+                                'attr': {
+                                    'class': 'form-select',
+                                    'id': form.client.vars.id,
+                                    'placeholder': 'Sélectionnez un client'
+                                }
+                            }) }}
+                            <label for="{{ form.client.vars.id }}">Client</label>
+                            {{ form_errors(form.client) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="d-flex justify-content-end">
+                    <a href="{{ path('app_syma_business_config_index') }}" class="btn btn-secondary me-2">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Quitter
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-check-circle me-1"></i> Choisir ce client
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
 </div>
 
 {% endblock %}

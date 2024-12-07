@@ -61,6 +61,9 @@ class SimType
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'TypeSim')]
     private Collection $commandes;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $quotaSimOffertes = null;
+
     public function __construct()
     {
         $this->carteSims = new ArrayCollection();
@@ -297,6 +300,18 @@ class SimType
                 $commande->setTypeSim(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuotaSimOffertes(): ?int
+    {
+        return $this->quotaSimOffertes;
+    }
+
+    public function setQuotaSimOffertes(?int $quotaSimOffertes): static
+    {
+        $this->quotaSimOffertes = $quotaSimOffertes;
 
         return $this;
     }

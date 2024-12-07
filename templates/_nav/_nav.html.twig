@@ -13,6 +13,13 @@
           
           {# Liens spécifiques aux administrateurs #}
           {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item d-none" id="newUserWithoutCode">
+              <a class="nav-link active" href="{{ path('app_logout') }}">
+                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
+                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i><span id="UserWithoutCode"></span></span>
+              </a>
+            </li>
+
             <li class="nav-item">
               <a class="nav-link active" href="{{ path('users_with_orders') }}">
                 <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-upc-scan fs-5"></i></span> 

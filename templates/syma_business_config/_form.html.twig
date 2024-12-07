@@ -1,4 +1,87 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary btn-sm">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Nom du Responsable -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.nomDuResponsable) }}
+                    <label for="{{ form.nomDuResponsable.vars.id }}">Nom du responsable</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Adresse e-mail -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.email) }}
+                    <label for="{{ form.email.vars.id }}">Adresse e-mail</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Numéro de téléphone -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.numeroDeTelephone) }}
+                    <label for="{{ form.numeroDeTelephone.vars.id }}">Numéro de téléphone</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Numéro de fixe -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.numeroDeFixe) }}
+                    <label for="{{ form.numeroDeFixe.vars.id }}">Numéro de fixe</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Raison sociale -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.raisonSociale) }}
+                    <label for="{{ form.raisonSociale.vars.id }}">Raison sociale</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Numéro de registre -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.numeroDeRegistre) }}
+                    <label for="{{ form.numeroDeRegistre.vars.id }}">Numéro de registre</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Forme juridique -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.formeJuridique) }}
+                    <label for="{{ form.formeJuridique.vars.id }}">Forme juridique</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Code APE/NAF -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.codeApeNaf) }}
+                    <label for="{{ form.codeApeNaf.vars.id }}">Code APE/NAF</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Capital social -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.capitalSocial) }}
+                    <label for="{{ form.capitalSocial.vars.id }}">Capital social</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Numéro de TVA intracommunautaire -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.numeroDeTvaIntracommunautaire) }}
+                    <label for="{{ form.numeroDeTvaIntracommunautaire.vars.id }}">Numéro de TVA intracommunautaire</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Numéro SIRET -->
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.numeroSiret) }}
+                    <label for="{{ form.numeroSiret.vars.id }}">Numéro SIRET</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Boutons de Soumission et d'Annulation -->
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-secondary btn-sm me-2" href="{{ path('app_syma_business_config_index') }}">Annuler</a>
+            <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+    {{ form_end(form) }}

@@ -73,16 +73,20 @@
                 <label for="chapeletCode">Code Chapelet</label>
             </div>
 
+            <div class="row">
+            <div class="col-md-4">
             <div class="mb-3 card p-2">
                 <label class="form-label"><h5 class=" fw-bold">Type de Carte</h5></label>
                 {% for simType in simTypes %}
-                    <div class="form-check ">
+                    <div class="form-check border form-switch px-5 py-2 rounded">
                         <input class="form-check-input" type="radio" name="typeCarteId" id="typeCarte{{ simType.id }}" value="{{ simType.id }}" {% if loop.first %}checked{% endif %}>
 					    <label class="form-check-label " for="typeCarte{{ simType.id }}">
                             {{ simType.nom }}
                         </label>
                     </div>
                 {% endfor %}
+            </div>
+            </div>
             </div>
 
         </form>
@@ -138,8 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+// Sélectionner tous les boutons radio avec le nom "typeCarteId"
+    const typeCarteRadios = document.querySelectorAll('input[name="typeCarteId"]');
+    
+    // Parcourir chaque bouton radio et ajouter un écouteur d'événement "change"
+    typeCarteRadios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            // Déplacer le focus vers le champ de saisie "chapeletCode"
+            chapeletCodeInput.focus();
+        });
+    });
 });
-
 </script>
     </body>
 </html>

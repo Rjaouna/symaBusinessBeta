@@ -1,3 +1,5 @@
+{# templates/syma_business_config/edit.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Configuration de l'entité{% endblock %}
@@ -5,7 +7,7 @@
 {% block body %}
     <!-- Titre principal avec icône -->
     <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark  fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
             <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
         </h1>
     </div>
@@ -29,50 +31,102 @@
         </ol>
     </nav>
 
-{{ form_start(form, {'action': path('app_syma_business_config_edit', {'id': syma_business_config.id})}) }}
+    {{ form_start(form, {'action': path('app_syma_business_config_edit', {'id': syma_business_config.id})}) }}
 
-    <div class="row">
-        <div class="col-md-6">
-            <!-- Section pour les informations personnelles -->
-            <div class="card bg-light mb-3">
-                <div class="card-header">Informations Personnelles</div>
-                <div class="card-body">
-                    {{ form_row(form.nomDuResponsable) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.numeroDeTelephone) }}
-                    {{ form_row(form.numeroDeFixe) }}
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Section pour les informations personnelles -->
+                <div class="card bg-light mb-3">
+                    <div class="card-header">Informations Personnelles</div>
+                    <div class="card-body">
+                        <!-- Nom du Responsable -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.nomDuResponsable) }}
+                            <label for="{{ form.nomDuResponsable.vars.id }}">Nom du responsable</label>
+                        </div>
+
+                        <!-- Adresse e-mail -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.email) }}
+                            <label for="{{ form.email.vars.id }}">Adresse e-mail</label>
+                        </div>
+
+                        <!-- Numéro de téléphone -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.numeroDeTelephone) }}
+                            <label for="{{ form.numeroDeTelephone.vars.id }}">Numéro de téléphone</label>
+                        </div>
+
+                        <!-- Numéro de fixe -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.numeroDeFixe) }}
+                            <label for="{{ form.numeroDeFixe.vars.id }}">Numéro de fixe</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Section pour les informations de la société -->
+                <div class="card bg-light mb-3">
+                    <div class="card-header">Informations Société</div>
+                    <div class="card-body">
+                        <!-- Raison sociale -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.raisonSociale) }}
+                            <label for="{{ form.raisonSociale.vars.id }}">Raison sociale</label>
+                        </div>
+
+                        <!-- Numéro de registre -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.numeroDeRegistre) }}
+                            <label for="{{ form.numeroDeRegistre.vars.id }}">Numéro de registre</label>
+                        </div>
+
+                        <!-- Forme juridique -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.formeJuridique) }}
+                            <label for="{{ form.formeJuridique.vars.id }}">Forme juridique</label>
+                        </div>
+
+                        <!-- Code APE/NAF -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.codeApeNaf) }}
+                            <label for="{{ form.codeApeNaf.vars.id }}">Code APE/NAF</label>
+                        </div>
+
+                        <!-- Capital social -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.capitalSocial) }}
+                            <label for="{{ form.capitalSocial.vars.id }}">Capital social</label>
+                        </div>
+
+                        <!-- Numéro de TVA intracommunautaire -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.numeroDeTvaIntracommunautaire) }}
+                            <label for="{{ form.numeroDeTvaIntracommunautaire.vars.id }}">Numéro de TVA intracommunautaire</label>
+                        </div>
+
+                        <!-- Numéro SIRET -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.numeroSiret) }}
+                            <label for="{{ form.numeroSiret.vars.id }}">Numéro SIRET</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <!-- Section pour les informations de la société -->
-            <div class="card bg-light mb-3">
-                <div class="card-header">Informations Société</div>
-                <div class="card-body">
-                    {{ form_row(form.raisonSociale) }}
-                    {{ form_row(form.numeroDeRegistre) }}
-                    {{ form_row(form.formeJuridique) }}
-                    {{ form_row(form.codeApeNaf) }}
-                    {{ form_row(form.capitalSocial) }}
-                    {{ form_row(form.numeroDeTvaIntracommunautaire) }}
-                    {{ form_row(form.numeroSiret) }}
-                </div>
-            </div>
+        <!-- Section pour les boutons -->
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('app_syma_business_config_index') }}" class="btn btn-secondary">
+                Annuler
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+                {{ button_label|default('Mise à jour') }}
+            </button>
         </div>
-    </div>
 
-    <!-- Section pour les boutons -->
-    <div class="d-flex justify-content-between">
-        <a href="{{ path('app_syma_business_config_index') }}" class="btn btn-secondary">
-            Annuler
-        </a>
-
-        <button type="submit" class="btn btn-primary">
-            {{ button_label|default('Mise à jour') }}
-        </button>
-    </div>
-
-{{ form_end(form) }}
-
+    {{ form_end(form) }}
 {% endblock %}

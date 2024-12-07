@@ -31,20 +31,8 @@ class UserType extends AbstractType
                     'message' => 'Le code client doit commencer par une lettre suivie de 8 chiffres. Ex : C41027544',
                 ]),
                 ],
-            ])
-            ->add('roles', ChoiceType::class, [
-                'label' => 'Rôle',
-                'choices'  => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Utilisateur' => 'ROLE_USER',
-                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
-                    'Commercial' => 'ROLE_COMMERCIAL',
-                ],
-                'expanded' => true, // Affiche des cases à cocher
-                'multiple' => true, // Permet de sélectionner plusieurs rôles
-                'required' => true,
-                
-            ])
+        ])
+            
             ->add('nomResponsable', TextType::class, [
                 'label' => 'Nom resposable',
                 'attr' => [
@@ -104,6 +92,19 @@ class UserType extends AbstractType
             'attr' => [
                 'class' => 'form-control-lg',
             ],
+            ])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Rôle',
+                'choices'  => [
+                    'Administrateur' => 'ROLE_ADMIN',
+                    'Utilisateur' => 'ROLE_USER',
+                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
+                    'Commercial' => 'ROLE_COMMERCIAL',
+                ],
+                'expanded' => true, // Affiche des cases à cocher
+                'multiple' => true, // Permet de sélectionner plusieurs rôles
+                'required' => true,
+
             ])
 
         ;
