@@ -1,4 +1,179 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Section pour les Informations Personnelles -->
+                    <div class="card bg-light mb-3">
+                        <div class="card-header bg-secondary text-white">
+                            Informations Personnelles
+                        </div>
+                        <div class="card-body">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <!-- Champ Code Client -->
+                                <div class="form-floating mb-4">
+                                    {{ form_widget(form.codeClient, {
+                                        'attr': {
+                                            'class': 'form-control',
+                                            'placeholder': 'Code Client'
+                                        }
+                                    }) }}
+                                    <label for="{{ form.codeClient.vars.id }}">Code Client</label>
+                                    {{ form_errors(form.codeClient) }}
+                                </div>
+                                
+                                <!-- Champ Roles -->
+                                <div class="mb-4">
+                                    <label class="form-label d-block">Rôles</label>
+                                    {{ form_widget(form.roles) }}
+                                    {{ form_errors(form.roles) }}
+                                </div>
+                            {% endif %}
+                            
+                            <!-- Champ Nom Responsable -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.nomResponsable, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Nom du Responsable'
+                                    }
+                                }) }}
+                                <label for="{{ form.nomResponsable.vars.id }}">Nom du Responsable</label>
+                                {{ form_errors(form.nomResponsable) }}
+                            </div>
+
+                            <!-- Champ Email -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.email, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Adresse e-mail'
+                                    }
+                                }) }}
+                                <label for="{{ form.email.vars.id }}">Adresse e-mail</label>
+                                {{ form_errors(form.email) }}
+                            </div>
+
+                            <!-- Champ Téléphone Mobile -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.telephoneMobile, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Numéro de Téléphone Mobile'
+                                    }
+                                }) }}
+                                <label for="{{ form.telephoneMobile.vars.id }}">Numéro de Téléphone Mobile</label>
+                                {{ form_errors(form.telephoneMobile) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <!-- Section pour les Informations de la Société -->
+                    <div class="card bg-light mb-3">
+                        <div class="card-header bg-secondary text-white">
+                            Informations Société
+                        </div>
+                        <div class="card-body">
+                            <!-- Champ Nom Société -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.nomSociete, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Nom de la Société'
+                                    }
+                                }) }}
+                                <label for="{{ form.nomSociete.vars.id }}">Nom de la Société</label>
+                                {{ form_errors(form.nomSociete) }}
+                            </div>
+
+                            <!-- Champ Numéro SIRET -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.numeroSiret, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Numéro SIRET'
+                                    }
+                                }) }}
+                                <label for="{{ form.numeroSiret.vars.id }}">Numéro SIRET</label>
+                                {{ form_errors(form.numeroSiret) }}
+                            </div>
+
+                            <!-- Champ Adresse -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.adresse, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Adresse'
+                                    }
+                                }) }}
+                                <label for="{{ form.adresse.vars.id }}">Adresse</label>
+                                {{ form_errors(form.adresse) }}
+                            </div>
+
+                            <!-- Champ Pays -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.pays, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Pays'
+                                    }
+                                }) }}
+                                <label for="{{ form.pays.vars.id }}">Pays</label>
+                                {{ form_errors(form.pays) }}
+                            </div>
+
+                            <!-- Champ Ville -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.ville, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Ville'
+                                    }
+                                }) }}
+                                <label for="{{ form.ville.vars.id }}">Ville</label>
+                                {{ form_errors(form.ville) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section pour les Quotas -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card bg-light shadow-sm">
+                        <div class="card-header bg-secondary text-white">
+                            Quotas
+                        </div>
+                        <div class="card-body">
+                            <!-- Champ Quotas -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.quotas, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Quotas'
+                                    }
+                                }) }}
+                                <label for="{{ form.quotas.vars.id }}">Quotas</label>
+                                {{ form_errors(form.quotas) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section pour les Boutons -->
+            <div class="d-flex justify-content-between">
+                <a href="{{ path('app_user_index') }}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+                </a>
+
+                <div>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Créer') }}
+                    </button>
+                </div>
+            </div>
+        {{ form_end(form) }}
+

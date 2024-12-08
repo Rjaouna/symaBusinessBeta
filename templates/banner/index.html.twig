@@ -31,37 +31,37 @@
     </nav>
 </div>
      <div class="container-fluid d-flex justify-content-end">
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_banner_new') }}">Ajouter une nouvelle pub !</a>
+    <a class="btn btn-secondary btn-s mb-2" href="{{ path('app_banner_new') }}">Ajouter une nouvelle pub !</a>
 </div>
 <div class="container-fluid">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom de la bannière</th>
-                <th>Bannière</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for banner in banners %}
-            <tr>
-                <td><strong>{{ banner.nom }}</strong></td>
-                <td><img class="rounded border shadow-sm" src="{{ asset('uploads/banners/' ~ banner.image) }}" alt="Bannière" style="width: 50px; height: auto;"></td>
-                <td class="text-end">
-                  <div class="d-flex justify-content-end">
-    <a class="btn btn-secondary btn-sm mx-2" href="{{ path('app_banner_edit', {'id': banner.id}) }}">Modifier</a>
-    {{ include('banner/_delete_form.html.twig') }}
-</div>
-
-
-                </td>
-            </tr>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <!-- Image de la Bannière -->
+                    <img src="{{ asset('uploads/banners/' ~ banner.image) }}" class="card-img-top img-fluid" alt="{{ banner.nom }}" style="height: 150px; object-fit: cover;">
+                    
+                    <div class="card-body d-flex flex-column">
+                        <!-- Nom de la Bannière -->
+                        <h5 class="card-title">{{ banner.nom }}</h5>
+                        
+                        <!-- Boutons d'Action -->
+                        <div class="d-flex mt-auto">
+                            <a href="{{ path('app_banner_edit', {'id': banner.id}) }}" class="btn btn-secondary btn-sm me-2">
+                                <i class="bi bi-pencil-square me-1"></i> Modifier
+                            </a>
+                            {{ include('banner/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% else %}
-            <tr>
-                <td colspan="4">Aucune pub créée !</td>
-            </tr>
+            <div class="col-12">
+                <div class="alert alert-info text-center" role="alert">
+                    Aucune bannière créée !
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
+    </div>
     </div>
 {% endblock %}

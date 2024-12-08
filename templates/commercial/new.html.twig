@@ -1,0 +1,127 @@
+{# templates/user/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Nouvel Utilisateur{% endblock %}
+
+{% block body %}
+<div class="container-fluid my-5">
+    <!-- Titre Principal avec Icône et Bouton de Retour -->
+    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom rounded">
+        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
+            <i class="bi bi-plus-circle me-2"></i> Créer un Nouveau commercial
+        </h1>
+        <a href="{{ path('app_user_index') }}" class="btn btn-secondary btn-sm">
+            <i class="bi bi-arrow-left-circle me-1"></i> Retour à la Liste
+        </a>
+    </div>
+
+    <!-- Fil d'Ariane Stylisé -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-4 bg-white rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill me-1"></i> Accueil
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_user_index') }}" class="text-decoration-none text-primary">
+                    Utilisateurs
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">
+                Créer un Nouveau commercial
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Formulaire de Création d'Utilisateur -->
+    {# templates/user/_form.html.twig #}
+<div class="card shadow-sm">
+    <div class="card-body">
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Champ Nom du Responsable -->
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.nomResponsable, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Nom du Responsable'
+                            }
+                        }) }}
+                        <label for="{{ form.nomResponsable.vars.id }}">Nom du Responsable</label>
+                        {{ form_errors(form.nomResponsable) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Champ Adresse E-mail -->
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.email, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Adresse e-mail'
+                            }
+                        }) }}
+                        <label for="{{ form.email.vars.id }}">Adresse E-mail</label>
+                        {{ form_errors(form.email) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Champ Numéro de Téléphone -->
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.telephoneMobile, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Numéro de Téléphone Mobile'
+                            }
+                        }) }}
+                        <label for="{{ form.telephoneMobile.vars.id }}">Numéro de Téléphone Mobile</label>
+                        {{ form_errors(form.telephoneMobile) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+
+            <!-- Boutons de Soumission -->
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('app_user_index') }}" class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Créer') }}
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<!-- Script JavaScript pour Validation Bootstrap -->
+<script>
+    // Activer la validation Bootstrap
+    (function () {
+        'use strict'
+
+        var forms = document.querySelectorAll('.needs-validation')
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+</div>
+
+
+{% endblock %}

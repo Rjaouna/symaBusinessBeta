@@ -1,4 +1,42 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-secondary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+{# templates/banner/_form.html.twig #}
+
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Champ Nom -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.nom, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.nom.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le nom'
+                    }
+                }) }}
+                <label for="{{ form.nom.vars.id }}">Nom</label>
+                {{ form_errors(form.nom) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Image -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.image, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.image.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez l\'URL de l\'image'
+                    }
+                }) }}
+                <label for="{{ form.image.vars.id }}">Image (URL)</label>
+                {{ form_errors(form.image) }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Boutons de Soumission -->
+    <div class="d-flex justify-content-end mt-4">
+        <a href="{{ path('app_banner_index') }}" class="btn btn-secondary me-2">
+            <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
 {{ form_end(form) }}

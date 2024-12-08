@@ -1,0 +1,21 @@
+{# templates/emails/welcome.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenue chez [Votre Entreprise]</title>
+</head>
+<body>
+    <h1>Bienvenue, {{ user.nomResponsable }} !</h1>
+    <p>Nous sommes ravis de vous compter parmi nous en tant que commercial.</p>
+    <p>Voici vos identifiants de connexion :</p>
+    <ul>
+        <li><strong>Email :</strong> {{ user.email }}</li>
+        <li><strong>Mot de passe :</strong> {{ password }}</li>
+    </ul>
+    <p><a href="{{ url('app_login') }}">Cliquez ici pour vous connecter</a></p>
+    <p>Cordialement,</p>
+    <p>L'équipe de Sym Boost</p>
+</body>
+</html>

@@ -1,6 +1,100 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_index') }}">Annuler</a>
-    <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+{# templates/quota/_form.html.twig #}
 
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Champ Nom -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.nom, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.nom.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le nom'
+                    }
+                }) }}
+                <label for="{{ form.nom.vars.id }}">Nom</label>
+                {{ form_errors(form.nom) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Code -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.code, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.code.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le code'
+                    }
+                }) }}
+                <label for="{{ form.code.vars.id }}">Code</label>
+                {{ form_errors(form.code) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Champ Sim 05 Quota -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.sim5Quota, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.sim5Quota.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le quota pour Sim 05'
+                    }
+                }) }}
+                <label for="{{ form.sim5Quota.vars.id }}">Quota pour Sim 05</label>
+                {{ form_errors(form.sim5Quota) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Sim 10 Quota -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.sim10Quota, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.sim10Quota.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le quota pour Sim 10'
+                    }
+                }) }}
+                <label for="{{ form.sim10Quota.vars.id }}">Quota pour Sim 10</label>
+                {{ form_errors(form.sim10Quota) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Champ Sim 15 Quota -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.sim15Quota, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.sim15Quota.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le quota pour Sim 15'
+                    }
+                }) }}
+                <label for="{{ form.sim15Quota.vars.id }}">Quota pour Sim 15</label>
+                {{ form_errors(form.sim15Quota) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Champ Sim 20 Quota -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.sim20Quota, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.sim20Quota.vars.errors|length > 0 ? ' is-invalid' : ''),
+                        'placeholder': 'Entrez le quota pour Sim 20'
+                    }
+                }) }}
+                <label for="{{ form.sim20Quota.vars.id }}">Quota pour Sim 20</label>
+                {{ form_errors(form.sim20Quota) }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Boutons de Soumission -->
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('app_quota_index') }}" class="btn btn-secondary me-2">
+            <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
 {{ form_end(form) }}

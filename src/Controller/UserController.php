@@ -4,14 +4,19 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\CommercialType;
+use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
+use App\Repository\QuotaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 #[IsGranted('ROLE_ADMIN')]
@@ -91,23 +96,92 @@ final class UserController extends AbstractController
     }
 
     #[Route('/nouveau/commercial', name: 'app_user_new_commercial', methods: ['GET', 'POST'])]
-    public function newcommercial(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function newcommercial(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
+        MailerInterface $mailer,
+        QuotaRepository $quota
+    ): Response {
+        // Créer une nouvelle instance de User
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $quota = $quota->find(1);
+
+        // Créer le formulaire CommercialType
+        $form = $this->createForm(CommercialType::class, $user);
         $form->handleRequest($request);
 
+        // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
+            // Générer un mot de passe aléatoire
+            $plainPassword = $this->generateRandomPassword();
+
+            // Encoder le mot de passe
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plainPassword
+            );
+            $user->setPassword($hashedPassword);
+
+            // Assigner le rôle "ROLE_COMMERCIAL" à l'utilisateur
+            $user->setRoles(['ROLE_COMMERCIAL']);
+            $user->setTotalBonus(10); // Assigner le bonus
+            $user->setSim5Usage(0); // Assigner le bonus
+            $user->setSim10Usage(0); // Assigner le bonus
+            $user->setSim15Usage(0); // Assigner le bonus
+            $user->setSim20Usage(0); // Assigner le bonus
+            if ($quota) {
+                $user->setQuotas($quota); // Assigner le quota récupéré
+            } else {
+                // Gérer le cas où le quota avec l'ID 1 n'existe pas (optionnel)
+                $this->addFlash('error', 'Le quota demandé n\'existe pas.');
+            }
+
+            // Enregistrer l'utilisateur en base de données
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            // Envoyer le mot de passe par e-mail
+            $this->sendPasswordEmail($mailer, $user, $plainPassword);
+
+            // Ajouter un message flash de succès
+            $this->addFlash('success', 'Commercial créé avec succès. Le mot de passe a été envoyé par e-mail.');
+
+            // Rediriger vers la liste des utilisateurs
+            return $this->redirectToRoute('app_user_index');
         }
 
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
+        // Rendre le formulaire dans le template
+        return $this->render('commercial/new.html.twig', [
+            'form' => $form->createView(),
         ]);
+    }
+
+    // Fonction pour générer un mot de passe aléatoire
+    private function generateRandomPassword(int $length = 12): string
+    {
+        // Génère un mot de passe aléatoire sécurisé
+        return bin2hex(random_bytes($length / 2));
+    }
+
+    // Fonction pour envoyer l'e-mail avec le mot de passe
+    private function sendPasswordEmail(MailerInterface $mailer, User $user, string $plainPassword): void
+    {
+        try {
+            $email = (new Email())
+                ->from('contact@cartemenu.fr')
+                ->to($user->getEmail())
+                ->subject('Bienvenue chez Sym Boost')
+                ->html($this->renderView('commercial/emails/welcome.html.twig', [
+                    'user' => $user,
+                'password' => $plainPassword,
+            ]));
+
+            $mailer->send($email);
+        } catch (\Exception $e) {
+            // Log l'erreur ou prendre une autre action appropriée
+            $this->addFlash('warning', 'Utilisateur créé, mais l\'envoi de l\'e-mail a échoué.');
+        }
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
