@@ -70,14 +70,14 @@ async function updateCommandesParClientChart() {
     const commandes = response.data;
 
     // Log pour vérifier les données récupérées
-    console.log("Commandes récupérées :", commandes);
+    // console.log("Commandes récupérées :", commandes);
 
     // Filtrer les commandes validées uniquement
     const commandesValidees = commandes.filter(commande => commande.status === 'validee');
 
     // Vérifier si des commandes validées existent
     if (commandesValidees.length === 0) {
-      console.log("Aucune commande validée trouvée.");
+      // console.log("Aucune commande validée trouvée.");
       return;
     }
 
@@ -93,11 +93,11 @@ async function updateCommandesParClientChart() {
     }, {});
 
     // Log pour vérifier les données regroupées
-    console.log("Quantités par type de carte SIM :", carteSimCounts);
+    // console.log("Quantités par type de carte SIM :", carteSimCounts);
 
     // Vérifier s'il y a des données à afficher
     if (Object.keys(carteSimCounts).length === 0) {
-      console.log("Aucune donnée de carte SIM à afficher.");
+      // console.log("Aucune donnée de carte SIM à afficher.");
       return;
     }
 

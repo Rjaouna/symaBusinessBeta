@@ -56,6 +56,9 @@
        <i class="bi bi-arrow-left-short"></i> Retour à la liste des commandes
     </a>
 </div>
+<p class="py-3 fw-bold rounded shadow-lg px-4" id="responseMessage" style="background-color: #f8f9fa; color: #333; font-size: 1rem; border-left: 5px solid #d9230f;">
+    <!-- Message contenu ici -->
+</p>
                 <form id="biperForm">
                     <div class="form-floating mb-3 position-relative">
                         <input 
@@ -72,7 +75,7 @@
                     <input type="hidden" readonly id="clientId" value="{{ clientId }}">
                 </form>
 
-                <h6 class="py-2 font-weight-bold" id="responseMessage"></h6>
+               
                 <span class="fw-bold">Client : </span><span class="badge bg-primary" id="clientEnCours">Client non défini</span>
 
                 <h6 class="my-3 border-bottom border-secondary fw-bold text-uppercase">Liste des Commandes</h6>

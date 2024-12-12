@@ -156,34 +156,7 @@
     </a>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Confirmer la réinitialisation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir réinitialiser les usages mensuels de tous les utilisateurs ? Cette action est irréversible.</p>
-                <!-- Formulaire de mot de passe dans le modal -->
-                    <form action="{{ path('reset_user_properties') }}" method="POST">
-                        <div class="">
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Entrez le mot de passe pour réinitialiser les usages :</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe secret" required>
-                            </div>
-                        </div>
-                        <div class="">
-                            <button type="submit" class="btn btn-primary w-100 my-1">Confirmer la rénitialisation pour tous les utilisateurs</button>
-                            <button type="button" class="btn btn-secondary w-100 my-1" data-bs-dismiss="modal">Annuler</button>
-                        </div>
-                    </form>
 
-            </div>
-        </div>
-    </div>
-</div>
 
         </div>
 </div>
@@ -216,7 +189,7 @@
   const updateCommandesInterval = async () => {
     await updateCommandesData(); // Mettre à jour les données depuis l'API
     const commandesData = getCommandesFromLocalStorage(); // Récupérer les données mises à jour
-    console.log("Données de commandes :", commandesData); // Affichez les données
+    // console.log("Données de commandes :", commandesData); // Affichez les données
     updateTotalEnAttente(commandesData); // Mettre à jour le total en attente
   };
 
