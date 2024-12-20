@@ -43,13 +43,14 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        
         // Récupérer l'utilisateur authentifié
         $user = $token->getUser();
 
-        // Vérifier le rôle de l'utilisateur et rediriger en conséquence
-        if (in_array('ROLE_COMMERCIAL', $user->getRoles(), true)) {
-            return new RedirectResponse($this->urlGenerator->generate('select_advinced_client_for_commercial'));
-        }
+        // // Vérifier le rôle de l'utilisateur et rediriger en conséquence
+        // if (in_array('ROLE_COMMERCIAL', $user->getRoles(), true)) {
+        //     return new RedirectResponse($this->urlGenerator->generate('select_advinced_client_for_commercial'));
+        // }
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }

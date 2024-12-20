@@ -21,7 +21,7 @@ class CommandeBipApiController extends AbstractController
 	public function showBiperCommande(string $clientId): Response
 	{
 		return $this->render('interfaces_admin/commandes_validation_api.html.twig', [
-			'clientId' => $clientId, // Passer le client ID à la vue
+			'clientId' => $clientId,
 		]);
 	}
 
@@ -60,8 +60,9 @@ class CommandeBipApiController extends AbstractController
 	{
 		// Récupération des commandes avec le statut en_cours ou en_attente
 		$commandesClient = $commandeRepo->findBy([
-			'user' => $clientId,
-			'factured' => 0
+			'user' => $clientId,'factured' => 0,
+			'soldBy' => $this->getUser()->getNomResponsable(),
+
 		]);
 
 		// Transformation des données en format de réponse JSON
@@ -98,7 +99,9 @@ class CommandeBipApiController extends AbstractController
 		$commandesClient = $commandeRepo->createQueryBuilder('c')
 		->where('c.user = :clientId')
 		->andWhere('c.factured != :statutFacture')
+			->andWhere('c.soldBy = :commercial')
 		->setParameter('clientId', $clientId)
+			->setParameter('commercial', $this->getUser()->getNomResponsable())
 			->setParameter('statutFacture', 1)
 			->getQuery()
 			->getResult();

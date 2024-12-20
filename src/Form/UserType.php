@@ -25,6 +25,7 @@ class UserType extends AbstractType
                 'class' => 'form-control-lg',
                 'placeholder' => 'Ex : C41027544',
             ],
+            'required' => false,
             'constraints' => [
                 new Regex([
                     'pattern' => '/^[A-Za-z][0-9]{8}$/',
@@ -57,6 +58,7 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control-lg', // Remplacez par la classe CSS souhaitée
                 ],
+            'required' => false,
             ])
 
             ->add('numeroSiret', TextType::class, [
@@ -64,12 +66,14 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control-lg',
                 ],
+            'required' => false,
             ])
             ->add('adresse', TextType::class, [
                 'label' => 'Adresse postale',
                 'attr' => [
                     'class' => 'form-control-lg',
                 ],
+            'required' => false,
             ])
             ->add('pays', TextType::class, [
                 'attr' => [
@@ -84,6 +88,7 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control-lg',
                 ],
+            'required' => false,
             ])
             ->add('quotas', EntityType::class, [
             'label' => 'Quota',
@@ -92,6 +97,7 @@ class UserType extends AbstractType
             'attr' => [
                 'class' => 'form-control-lg',
             ],
+            'required' => false,
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôle',

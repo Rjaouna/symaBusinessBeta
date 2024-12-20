@@ -23,6 +23,6 @@ services:
         class: App\EventListener\UserQuotaListener
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
-
+    
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

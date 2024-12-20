@@ -1,0 +1,54 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Oups ! Page Introuvable</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Inclure Bootstrap pour le stylisme (optionnel) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding-top: 100px;
+            font-family: 'Arial', sans-serif;
+        }
+        .error-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .error-code {
+            font-size: 150px;
+            color: #dc3545;
+        }
+        .error-message {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .btn-home {
+            margin-top: 20px;
+        }
+        .funny-image {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container px-2">
+       <img class="rounded shadow-sm bg-white p-2" src="{{ asset('assets/img/logo-syma@4x.jpg') }}" alt="Logo Syma" style="width:330px">
+        <div class="error-code">404</div>
+        <div class="error-message">Oups ! Nous n'avons pas trouvé ce que vous cherchez.</div>
+        <p>Il semble que vous ayez pris un mauvais tournant ou que la page ait décidé de partir en vacances.</p>
+        <a href="{{path('app_login')}}" class="btn btn-secondary btn-home">Retourner à l'accueil</a>
+    </div>
+
+    <!-- Inclure les scripts Bootstrap (optionnel) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

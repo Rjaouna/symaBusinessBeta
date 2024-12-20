@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Scan Carte SIM{% endblock %}</title>
     
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     
-    <!-- Bootstrap & Icons -->
+    <!-- Bootstrap & Icons CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     
-    <!-- DataTable -->
+    <!-- DataTable CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     
     <!-- Custom Styles -->
@@ -23,102 +23,119 @@
     </style>
     
     {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- jQuery, Axios, DataTables, Bootstrap JS, Custom JS, Chart.js -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('assets/js/custom.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {% endblock %}
 </head>
 
 <body>
-    <div class="container-fluid my-3 rounded bg-white">
-        <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_syma_business') }}">
+                <img src="{{ asset('assets/img/logo-syma@4x.jpg') }}" alt="Logo Syma" style="width:120px;" />
+            </a>
+            
+               <button id="facturerCommandesBtn" class="btn btn-secondary btn-sm">
+                            Valider la livraison
+                        </button>
+            
+            
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container-fluid my-1 rounded bg-white">
+        
+        <!-- En-tête avec le nom du client -->
+        <div class="d-flex bg-light py-3 mb-4 border-bottom px-2">
             <h2 class="text-dark fw-bold text-uppercase mb-0">
                 <i class="bi bi-upc-scan me-2"></i>
-                Vente comptoir :
-                <span class="text-primary">{{ client.nomResponsable }}</span>
+                <span class="text-primary">{{ client.nomSociete }}</span>
             </h2>
         </div>
-        <!-- Bouton pour passer toutes les commandes à "facturé" -->
-
-
-<!-- Section des boutons -->
-<div class="d-flex  align-items-center action-buttons mb-3 p-2 bg-light rounded border">
-{% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_syma_business') }}" class="btn btn-secondary me-2">
-       <i class="bi bi-arrow-left-short"></i> Retour à la page d'accueil
-    </a>
-	{% else %}
-	<a href="{{ path('select_advinced_client_for_commercial') }}" class="btn btn-secondary me-2">
-       <i class="bi bi-arrow-left-short"></i> Retour à la page d'accueil
-    </a>
-{% endif %}
-
- 
-    <button id="facturerCommandesBtn" class="btn btn-success me-2">
-      <i class="bi bi-check2-all"></i> Valider la livraison
-    </button>
-   
-</div>
-
-        <p class="py-3 fw-bold rounded shadow-lg px-4" id="responseMessage" style="background-color: #f8f9fa; color: #333; font-size: 1.25rem; border-left: 5px solid #d9230f;">
-    <!-- Message contenu ici -->
-</p>
         
+        <h4 class="mt-4 mb-3 text-primary">
+    Livraison : 
+    <span class="fw-normal">
+        Nombre de chapelets à livrer : <strong>{{ qteALivrer }}</strong> chapelets
+    </span>
+</h4>
 
+                
+        <!-- Formulaire pour saisir le code chapelet -->
         <form id="biperForm">
             <div class="form-floating mb-3 position-relative">
                 <input 
-                    class="form-control form-control-lg ps-5" 
-                    type="text" 
-                    id="chapeletCode" 
-                    name="chapeletCode" 
-                    required 
-                    maxlength="14" 
-                    placeholder="SBL00000000000" 
-                    style="padding-left: 3rem;">
+                    class="form-control form-control-lg"
+                    type="text"
+                    id="chapeletCode"
+                    name="chapeletCode"
+                    required
+                    maxlength="14"
+                    inputmode="none"
+                    placeholder="SBL00000000000"
+                />
                 <label for="chapeletCode">Code Chapelet</label>
             </div>
             <input type="hidden" readonly id="clientId" value="{{ clientId }}">
         </form>
-
-        <!-- Div pour afficher le total des commandes -->
-        <div class="total-commandes my-3">
-            <p><strong>Total de toutes les commandes :</strong> <span class ="text-primary fw-bold" id="total-commandes-amount">0</span> €</p>
-        </div>
-
-
-
-        <!-- Div pour afficher les commandes -->
-        <div id="commandes-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-        </div>
-
         
-    </div> <!-- Fin de container-fluid -->
+        <!-- Message de réponse après le scan -->
+        <p class="py-1 my-2" id="responseMessage" style="color: #333; font-size: 0.8rem;"></p>
+
+        <!-- Affichage du total des commandes -->
+        <div class="total-commandes my-3">
+            <p>
+                Total de toutes les commandes : 
+                <span class="text-primary fw-bold" id="total-commandes-amount">0</span> €
+            </p>
+        </div>
+
+        <!-- Liste des commandes (affichage dynamique via JS) -->
+        <div id="commandes-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3"></div>
+    </div> <!-- Fin du container-fluid -->
 
     <script>
-        document.getElementById('chapeletCode').focus();
-        
-        document.getElementById('chapeletCode').addEventListener('input', function() {
+        const chapeletInput = document.getElementById('chapeletCode');
+        const clientId = document.getElementById('clientId').value; 
+        const url = `/advinced/api/commandes/${clientId}`;
+
+        // Focaliser le champ au chargement
+        chapeletInput.focus();
+
+        // Empêcher la perte du focus
+        chapeletInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                chapeletInput.focus();
+            }, 100);
+        });
+
+        // Événement sur l'entrée du code chapelet
+        chapeletInput.addEventListener('input', function() {
             const chapeletCode = this.value;
-            const clientId = document.getElementById('clientId').value;
 
             if (chapeletCode.length === 14) {
                 axios.post(`/advinced/api/comptoir/${clientId}`, { chapeletCode })
                     .then(response => {
                         document.getElementById('responseMessage').innerText = response.data.success || response.data.error;
+                        // Réinitialisation du champ
+                        chapeletInput.value = '';
+                        chapeletInput.focus();
                     })
                     .catch(error => {
                         const errorMsg = error.response ? error.response.data.error : 'Une erreur est survenue.';
                         document.getElementById('responseMessage').innerText = errorMsg;
+                        // Vider le champ même en cas d'erreur
+                        chapeletInput.value = '';
+                        chapeletInput.focus();
                     });
             }
         });
-
-        const clientId = document.getElementById('clientId').value; // Récupération de l'ID du client
-        const url = `/advinced/api/commandes/${clientId}`;
 
         // Fonction pour récupérer et afficher les commandes
         function fetchAndRenderCommandes() {
@@ -132,39 +149,34 @@
                 });
         }
 
-        // Fonction pour afficher les commandes sous forme de cartes
+        // Affichage des commandes sous forme de cartes
         function renderCommandes(commandes) {
             const commandesList = document.getElementById('commandes-list');
-            commandesList.innerHTML = ''; // Efface le contenu précédent
+            commandesList.innerHTML = ''; // Réinitialiser l'affichage
 
-            let totalAllCommandes = 0; // Variable pour accumuler le total
+            let totalAllCommandes = 0;
 
             if (commandes.length === 0) {
-                commandesList.innerHTML = '<div class="container-fluid col-12 text-center">Aucune commande trouvée pour ce client.</div>';
-                // Mettre à jour le total à zéro si aucune commande
+                commandesList.innerHTML = '<div class="container-fluid col-12 text-center"></div>';
                 document.getElementById('total-commandes-amount').innerText = '0';
             } else {
                 commandes.forEach(commande => {
-                    // Vérifier que 'commande.total' est un nombre
                     const commandeTotal = parseFloat(commande.total) || 0;
                     totalAllCommandes += commandeTotal;
 
-                    // Construire l'URL des détails de la commande
+                    // URL des détails de la commande
                     const detailsUrl = `/commandes/${encodeURIComponent(commande.numero)}/lignes`;
 
-                    // Créer une carte pour chaque commande
+                    // Création de la carte
                     const card = document.createElement('div');
                     card.classList.add('col', 'mb-3');
 
                     card.innerHTML = `
                         <div class="card">
                             <div class="card-body">
-                                <h6 class="card-title mb-2">
-                                    <!-- Vous pouvez ajouter du contenu ici si nécessaire -->
-                                </h6>
                                 <p class="card-text">
-                                    <strong>Date de la vente : </strong> ${commande.date} <br>
-                                    <strong>Type de cartes:</strong> ${commande.typeCarte} <br>
+                                    <strong>Date de la vente : </strong> ${commande.date}<br>
+                                    <strong>Type de cartes :</strong> ${commande.typeCarte}<br>
                                     <strong>Nombre de cartes :</strong> ${commande.qte}<br>
                                     <strong>Total :</strong> ${commande.total} €
                                 </p>
@@ -176,45 +188,38 @@
                     commandesList.appendChild(card);
                 });
 
-                // Après la boucle, mettre à jour le total des commandes
+                // Mise à jour du total
                 document.getElementById('total-commandes-amount').innerText = totalAllCommandes.toFixed(2);
             }
         }
 
-        // Appel initial pour charger les commandes
+        // Chargement initial des commandes
         fetchAndRenderCommandes();
 
-        // Mettre à jour les commandes toutes les secondes
+        // Mise à jour des commandes toutes les secondes
         setInterval(fetchAndRenderCommandes, 1000);
 
+        // Fonction pour facturer toutes les commandes
+        function facturerToutesCommandes() {
+            const urlFacturer = `/advinced/api/commandes/${clientId}/facturer`;
 
+            axios.post(urlFacturer)
+                .then(response => {
+                    alert('Toutes les commandes ont été facturées avec succès.');
+                    // Rafraîchir la liste des commandes après facturation
+                    fetchAndRenderCommandes();
+                })
+                .catch(error => {
+                    alert('Une erreur est survenue lors de la facturation des commandes.');
+                    console.error('Erreur lors de la facturation des commandes:', error);
+                });
+        }
 
-		// Fonction pour facturer toutes les commandes
-function facturerToutesCommandes() {
-    const clientId = document.getElementById('clientId').value;
-    const url = `/advinced/api/commandes/${clientId}/facturer`;
-
-    axios.post(url)
-        .then(response => {
-            // Afficher un message de succès
-            alert('Toutes les commandes ont été facturées avec succès.');
-
-            // Rafraîchir la liste des commandes
-            fetchAndRenderCommandes();
-        })
-        .catch(error => {
-            // Gérer les erreurs
-            alert('Une erreur est survenue lors de la facturation des commandes.');
-            console.error('Erreur lors de la facturation des commandes:', error);
+        // Écouteur sur le bouton de facturation
+        document.getElementById('facturerCommandesBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            facturerToutesCommandes();
         });
-}
-
-// Ajouter un écouteur d'événement sur le bouton
-document.getElementById('facturerCommandesBtn').addEventListener('click', function(e) {
-    e.preventDefault(); // Empêcher le comportement par défaut si nécessaire
-    facturerToutesCommandes();
-});
-
     </script>
 </body>
 </html>

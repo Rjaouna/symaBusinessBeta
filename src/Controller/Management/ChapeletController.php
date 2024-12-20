@@ -44,10 +44,14 @@ class ChapeletController extends AbstractController
 		if (!$codeChapelet) {
 			return new JsonResponse(['error' => 'Le code du chapelet est requis.'], JsonResponse::HTTP_BAD_REQUEST);
 		}
-		// Vérifier que le codeChapelet commence par 'SBL'
-		if (strpos($codeChapelet, 'SBL') !== 0) {
-			return new JsonResponse(['error' => 'Le code du chapelet doit commencer par "SBL".'], JsonResponse::HTTP_BAD_REQUEST);
+		// Vérifier que le codeChapelet commence par 'SBL' suivi de 11 chiffres
+		if (!preg_match('/^SBL\d{11}$/', $codeChapelet)) {
+			return new JsonResponse(
+				['error' => 'Le code du chapelet doit commencer par "SBL" suivi de 11 chiffres.'],
+				JsonResponse::HTTP_BAD_REQUEST
+			);
 		}
+
 
 		// Vérifier si le chapelet existe déjà
 		$existingChapelet = $chapeletRepository->findOneBy(['codeChapelet' => $codeChapelet]);

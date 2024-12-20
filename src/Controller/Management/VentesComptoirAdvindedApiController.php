@@ -2,6 +2,10 @@
 
 namespace App\Controller\Management;
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+
 use App\Entity\User;
 use App\Entity\Usage;
 use App\Entity\CarteSim;
@@ -16,6 +20,7 @@ use App\Repository\ChapeletRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\LignesCommandeRepository;
 use App\Repository\LimitationRepository;
+use App\Repository\SimTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,14 +28,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted("ROLE_ADMIN or ROLE_COMMERCIAL")]
+#[IsGranted('ROLE_COMMERCIAL')]
 class VentesComptoirAdvindedApiController extends AbstractController
 {
+
+
 	#[Route('/advinced/select-client', name: 'select_advinced_client')]
 	public function selectClient(Request $request, Security $security): Response
 	{
+
+
+
 		$form = $this->createForm(ClientSelectAdvincedType::class);
 		$form->handleRequest($request);
 
@@ -61,20 +72,26 @@ class VentesComptoirAdvindedApiController extends AbstractController
 	}
 
 	#[Route('/management/advinced/list/commande/comptoir/s45{clientId}214', name: 'advinced_biper_commande_comptoir')]
-	public function showBiperCommande(string $clientId, UserRepository $userRepo, CommandeRepository $commandeRepository): Response
+	public function showBiperCommande(string $clientId, UserRepository $userRepo, CommandeRepository $commandeRepository, Request $request, SimTypeRepository $SimTypeRepository): Response
 	{
+
+
 		$client = $userRepo->find($clientId);
 
 		if (!$client) {
 			throw $this->createNotFoundException('Client introuvable.');
 		}
 		// Récupérer les commandes du client
+		$simOfferte = $SimTypeRepository->findBy(['code' => 'carteoffert']);
+		$qteALivrer = $simOfferte[0]->getQuotaSimOffertes();
+		// Récupérer les commandes du client
 		$commandes = $commandeRepository->findBy(['user' => $client], ['createdAt' => 'DESC']);
 
 		return $this->render('interfaces_admin/advinced/ventes_comptoir.html.twig', [
 			'clientId' => $clientId,
 			'client' => $client,
-			'commandes' => $commandes
+			'commandes' => $commandes,
+			'qteALivrer' => $qteALivrer,
 		]);
 	}
 
@@ -88,7 +105,9 @@ class VentesComptoirAdvindedApiController extends AbstractController
 		EntityManagerInterface $entityManager,
 		UserRepository $userRepo,
 		UsageRepository $usageRepository,
-		LimitationRepository $limitationRepository
+		LimitationRepository $limitationRepository,
+		MailerInterface $mailer,
+		LoggerInterface $logger
 	): JsonResponse {
 		$data = json_decode($request->getContent(), true);
 		$chapeletCode = $data['chapeletCode'] ?? null;
@@ -136,7 +155,51 @@ class VentesComptoirAdvindedApiController extends AbstractController
 		if ($chapelet->getTypeCartes()->getCode() === 'carteoffert') {
 			// Si l'utilisateur a déjà utilisé une carte offerte
 			if ($usage && $usage->getConsomation() >= ($chapelet->getTypeCartes()->getQuotaSimOffertes()) * 5) {
-				return $this->json(['error' => 'Vous avez le droit de ' . $chapelet->getTypeCartes()->getQuotaSimOffertes() . ' chapelets gratuits.'], 400);
+				return $this->json(['error' => 'Vous avez atteint le quota autorisé de ' . $chapelet->getTypeCartes()->getQuotaSimOffertes() . ' chapelets gratuits.'], 400);
+			}
+			if ($usage && $usage->getConsomation() == ((($chapelet->getTypeCartes()->getQuotaSimOffertes()) - 1)) * 5) {
+				// Récupérer les informations supplémentaires
+				$dateLivraison = (new \DateTimeImmutable())->format('d/m/Y'); // Date actuelle
+				$nomClient = $client->getNomResponsable(); // Assurez-vous que la méthode getNom() existe
+				$nomCommercial = ($this->getUser()->getNomResponsable()); // Nom du commercial
+				$nombreCartesLivrees = ($chapelet->getTypeCartes()->getQuotaSimOffertes()); // Nombre de cartes livrées
+
+				// Composer l'email
+				$email = (new Email())
+				->from('contact@cartemenu.fr') // Remplacez par l'adresse de l'expéditeur
+					->to('promobile59810@gmail.com') // Remplacez par l'adresse du destinataire
+					->subject('Quota de Chapelets Atteint')
+					->text(sprintf(
+						"Le commercial %s a efféctué la livraison de %d chapelets offerts.\n\nDétails de la Livraison:\n- Date de Livraison: %s\n- Client Livré: %s\n- Nombre de Cartes Livrées: %d",
+						$nomCommercial,
+						$chapelet->getTypeCartes()->getQuotaSimOffertes(),
+						$dateLivraison,
+						$nomClient,
+						$nombreCartesLivrees
+					))
+					->html(sprintf(
+						'<p>Le commercial <strong>%s</strong> a efféctué la livraison de <strong>%d</strong> chapelets offerts.</p>
+                    <h3>Détails de la Livraison:</h3>
+                    <ul>
+                        <li><strong>Date de Livraison:</strong> %s</li>
+                        <li><strong>Client Livré:</strong> %s</li>
+                        <li><strong>Nombre de chapelet Livré:</strong> %d</li>
+                    </ul>',
+						$nomCommercial,
+						$chapelet->getTypeCartes()->getQuotaSimOffertes(),
+						$dateLivraison,
+						$nomClient,
+						$nombreCartesLivrees
+					));
+
+				// Envoyer l'email
+				try {
+					$mailer->send($email);
+				} catch (TransportExceptionInterface $e) {
+					// Gérer l'exception (par exemple, enregistrer l'erreur dans les logs)
+					// Vous pouvez également décider de ne pas bloquer l'utilisateur en cas d'échec de l'envoi de l'email
+					$logger->error('Erreur lors de l\'envoi de l\'email: ' . $e->getMessage());
+				}
 			}
 		}
 

@@ -3,7 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Lien vers le manifest -->
+        <link rel="manifest" href="{{ asset('manifest.json') }}">
+
         <script src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'></script>
 
         <!-- Icône de la page -->
@@ -133,7 +137,7 @@
         
         <!-- Footer -->
         <footer class="bg-secondary text-center py-3 footer-fixed mt-5">
-            <p class="mb-0">© 2005-2024 Sym boost, Tous droits réservés.</p>
+            <p class="mb-0">© 2005-2024 Sym boost, Tous droits réservés..</p>
         </footer>
         <style>
             .footer-fixed {
@@ -143,6 +147,59 @@
                 z-index: 1000;
             }
         </style>
+         <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(function(registration) {
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        }, function(err) {
+                            console.log('ServiceWorker registration failed: ', err);
+                        });
+                });
+            }
+        </script>
+        <!-- Bouton d'installation PWA -->
+
+    <!-- Script pour gérer l'installation PWA -->
+    <script>
+        let deferredPrompt;
+        const installButton = document.getElementById('install-button');
+
+        // Écouter l'événement beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Empêcher l'invite d'installation par défaut
+            e.preventDefault();
+            // Stocker l'événement pour une utilisation ultérieure
+            deferredPrompt = e;
+            // Afficher le bouton d'installation
+            installButton.style.display = 'block';
+        });
+
+        // Gérer le clic sur le bouton d'installation
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Afficher l'invite d'installation
+                deferredPrompt.prompt();
+                // Attendre la réponse de l'utilisateur
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Installation acceptée');
+                } else {
+                    console.log('Installation refusée');
+                }
+                // Réinitialiser l'événement
+                deferredPrompt = null;
+                // Masquer le bouton d'installation
+                installButton.style.display = 'none';
+            }
+        });
+
+        // Optionnel : écouter l'événement d'installation réussie
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA installée avec succès');
+        });
+    </script>
     </body>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -157,5 +214,7 @@
         });
     });
 </script>
+
+
 
 </html>

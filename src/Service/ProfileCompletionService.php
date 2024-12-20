@@ -15,19 +15,6 @@ class ProfileCompletionService
 		if (empty($user->getNomSociete())) {
 			$missingProperties[] = 'nomSociete';
 		}
-		
-		if (empty($user->getAdresse())) {
-			$missingProperties[] = 'adresse';
-		}
-		if (empty($user->getPays())) {
-			$missingProperties[] = 'pays';
-		}
-		
-		if (empty($user->getVille())) {
-			$missingProperties[] = 'ville';
-		}
-		
-
 		return $missingProperties;
 	}
 }

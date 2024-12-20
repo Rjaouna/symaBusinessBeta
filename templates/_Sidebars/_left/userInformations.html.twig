@@ -13,11 +13,11 @@
             {{ app.user.email }}
         </h6>
     </div>
-   
 
+    {% if not is_granted('ROLE_COMMERCIAL') %}
     <!-- Quota Information: Two Columns Layout -->
     <div class="row mb-3">
-        <div class="col-md-6   p-2 d-flex flex-column justify-content-center shadow-sm">
+        <div class="col-md-6 p-2 d-flex flex-column justify-content-center shadow-sm">
             <p class="text-secondary mb-0"><strong>Quota actuel</strong></p>
             {% if app.user.quotas is not null %}
                 <p class="user-quota">{{ app.user.quotas.nom }}</p>
@@ -30,94 +30,33 @@
         <div class="col-md-6 shadow-sm p-2 d-flex flex-column justify-content-center text-end">
             <a class="text-decoration-none link-primary" href="#">En savoir plus</a>
         </div>
+
         <!-- "En savoir plus" content -->
-
-         <div id="contentDiffQuotaActuel" class="row mb-3 d-none pt-3">
-    <div class="col-12">
-    <p><strong>Le quota d'un point de vente</strong> est calculé automatiquement chaque début de mois par notre <strong>application de gestion</strong>.</p>
-    <p>Le quota est déterminé en fonction du taux (%) de <strong>transformation en passes ou forfaits des cartes SIM vendues et activées</strong> par chaque point de vente.</p>
-    <p>Le <strong>taux moyen calculé</strong> est basé sur les trois derniers mois. Chaque début de mois, un <strong>email automatique</strong> sera envoyé à chaque point de vente, lui notifiant son <strong>nouveau quota pour le mois</strong>.</p>
-</div>
-
-</div>
+        <div id="contentDiffQuotaActuel" class="row mb-3 d-none pt-3">
+            <div class="col-12">
+                <p><strong>Le quota d'un point de vente</strong> est calculé automatiquement chaque début de mois par notre <strong>application de gestion</strong>.</p>
+                <p>Le quota est déterminé en fonction du taux (%) de <strong>transformation en passes ou forfaits des cartes SIM vendues et activées</strong> par chaque point de vente.</p>
+                <p>Le <strong>taux moyen calculé</strong> est basé sur les trois derniers mois. Chaque début de mois, un <strong>email automatique</strong> sera envoyé à chaque point de vente, lui notifiant son <strong>nouveau quota pour le mois</strong>.</p>
+            </div>
+        </div>
 
         <!-- Bonus Information -->
-        <div class="shadow-sm p-2  justify-content-center ">
-    <p class="mb-0 text-dark">
-        <i class="bi bi-wallet2 fs-4 me-2"></i>
-        Vous avez un bonus de 
-        <strong class="user-bonus text-success">{{ app.user.totalBonus }} points</strong>.
-        <a class="text-decoration-none link-primary ms-2" 
-           href="{{ path('app_user_Bonus_Controller') }}">
-            Gérer mon bonus
-        </a>
-    </p>
+        <div class="shadow-sm p-2 justify-content-center">
+            <p class="mb-0 text-dark">
+                <i class="bi bi-wallet2 fs-4 me-2"></i>
+                Vous avez un bonus de 
+                <strong class="user-bonus text-success">{{ app.user.totalBonus }} points</strong>.
+                <a class="text-decoration-none link-primary ms-2" 
+                   href="{{ path('app_user_Bonus_Controller') }}">
+                    Gérer mon bonus
+                </a>
+            </p>
+        </div>
     </div>
-    </div>
+    {% endif %}
 
 </div>
 
 {% if is_granted('ROLE_ADMIN') %}
-
-        {{ include('_nav/_nav_laterale.html.twig') }}
-    
-{% endif %}
-
-<!-- JavaScript to Fetch and Display User Data -->
-<script>
-async function fetchUserInformation() {
-    try {
-        const response = await axios.get("/api/user");
-        // Store user data in localStorage
-        localStorage.setItem('userData', JSON.stringify(response.data));
-        displayUserInformation(); // Call to display the user information
-    } catch (error) {
-        console.error('Error fetching user information:', error);
-    }
-}
-
-function displayUserInformation() {
-    const userData = JSON.parse(localStorage.getItem('userData')); // Retrieve user data
-    // console.log(userData);
-
-    if (userData) {
-        document.querySelector('.user-name').textContent = userData.nomResponsable || 'Utilisateur';
-
-        // Access the correct property for quotas
-        const quotaName = userData.quotas ? userData.quotas.nom : 'inconnu';
-        document.querySelector('.user-quota').textContent = quotaName;
-
-        document.querySelector('.user-bonus').textContent = `${userData.totalBonus} points`;
-    }
-}
-
-// Fetch user information when the script loads
-fetchUserInformation();
-
-// Set interval to fetch user information every 5 seconds (5000 milliseconds)
-setInterval(fetchUserInformation, 3000);
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Récupérer l'élément "En savoir plus"
-        const enSavoirPlus = document.querySelector('a[href="#"]');
-        
-        // Récupérer la div à afficher
-        const contentDiffQuotaActuel = document.getElementById('contentDiffQuotaActuel');
-
-        // Ajouter un événement de clic sur le lien "En savoir plus"
-        enSavoirPlus.addEventListener('click', function(event) {
-            event.preventDefault(); // Empêche le lien de rediriger
-
-            // Si la div est cachée, l'afficher, sinon la cacher
-            if (contentDiffQuotaActuel.classList.contains('d-none')) {
-                contentDiffQuotaActuel.classList.remove('d-none'); // Retirer la classe d-none pour afficher
-                enSavoirPlus.textContent = "Fermer"; // Modifier le texte du lien en "Cacher"
-            } else {
-                contentDiffQuotaActuel.classList.add('d-none'); // Ajouter la classe d-none pour cacher
-                enSavoirPlus.textContent = "En savoir plus"; // Remettre le texte du lien à "En savoir plus"
-            }
-        });
-    });
-</script>
-
+    {{ include('_nav/_nav_laterale.html.twig') }}
+{% endif %} 
