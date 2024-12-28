@@ -11,11 +11,12 @@
         button_link: path('tournee_index'),
         button_style: 'success'
     } %}
+    {% if is_granted('ROLE_ADMIN') %}
 {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn btn-primary">Créer</button>
 {{ form_end(form) }}
-
+{% endif %}
 
 
 {% endblock %}

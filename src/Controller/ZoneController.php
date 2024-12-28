@@ -13,7 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Service\CodeGenerator;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/zone')]
 class ZoneController extends AbstractController
 {
