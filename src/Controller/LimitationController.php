@@ -4,26 +4,45 @@ namespace App\Controller;
 
 use App\Entity\Limitation;
 use App\Form\LimitationType;
+use App\Repository\LimitationRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/limitation')]
 final class LimitationController extends AbstractController
 {
     #[Route(name: 'app_limitation_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, LimitationRepository $limitationRepository): Response
     {
+        // Récupérer toutes les limitations
+        $limitations = $limitationRepository->findAll();
+
+        // Regrouper les limitations par typeCarte (utiliser une propriété string)
+        $groupedLimitations = [];
+
+        foreach ($limitations as $limitation) {
+            // Supposons que SimType a une méthode getName()
+            $typeCarteName = $limitation->getTypeCarte()->getNom();
+
+            if (!isset($groupedLimitations[$typeCarteName])) {
+                $groupedLimitations[$typeCarteName] = [];
+            }
+
+            $groupedLimitations[$typeCarteName][] = $limitation;
+        }
+
         $limitations = $entityManager
             ->getRepository(Limitation::class)
             ->findAll();
 
         return $this->render('limitation/index.html.twig', [
             'limitations' => $limitations,
+            'groupedLimitations' => $groupedLimitations,
         ]);
     }
 

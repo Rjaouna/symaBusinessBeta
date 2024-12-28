@@ -3,35 +3,20 @@
 {% block title %}SimType index{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark  fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
-        </h1>
-    </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Gestion de types cartes SIM',
+        button_text: 'Ajouter un nouveau type',
+        button_link: path('app_sim_type_new'),
+        button_style :'success'
 
-    <!-- Fil d'Ariane stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb  mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    Dashboard
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Gestion de types cartes SIM
-        </ol>
-    </nav>
-</div>
-<div class="d-flex justify-content-end">
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_sim_type_new') }}">Ajouter un nouveau type</a>
-</div>
+    } %}
+{# Alerte d'avertissement #}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Attention :</strong> Il est important d'éviter de changer les types de cartes une fois la configuration effectuée et que des ventes ont été réalisées.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+        </div>
     <table class="table">
         <thead>
             <tr>
@@ -48,12 +33,17 @@
             <tr>
                 <td>{{ sim_type.nom }}</td>
                 <td>{{ sim_type.code }}</td>
-                <td>{{ sim_type.prix }}</td>
+                <td>{{ sim_type.prix|number_format(2, ',', ' ') }} €</td>
                 <td>{{ sim_type.createdAt ? sim_type.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ sim_type.updatedAt ? sim_type.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a class="btn btn-secondary btn-sm" href="{{ path('app_sim_type_edit', {'id': sim_type.id}) }}">Modifier</a>
+                    <a class="btn btn-primary" href="{{ path('app_sim_type_edit', {'id': sim_type.id}) }}">Modifier</a>
                 </td>
+                <td>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    {{ include('sim_type/_delete_form.html.twig') }}
+                                {% endif %}
+                                </td>
             </tr>
         {% else %}
             <tr>

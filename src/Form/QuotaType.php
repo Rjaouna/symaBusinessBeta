@@ -39,12 +39,11 @@ class QuotaType extends AbstractType
             [
                 'label' => false, // Retire le label
                 'attr' => [
-                    'placeholder' => 'Entrez le code'
+                    'placeholder' => 'Entrez le code',
+                    'readonly' => true,
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Le code est obligatoire.',
-                    ]),
+                    
                     new Regex([
                         'pattern' => '/^[a-zA-Z\s\-]+$/u',
                         'message' => 'Le nom ne peut contenir que des lettres, des espaces ou des traits d’union.',

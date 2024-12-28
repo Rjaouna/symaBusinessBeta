@@ -4,35 +4,15 @@
 {% block title %}Configuration de l'entité{% endblock %}
 
 {% block body %}
-    <div class="container my-2">
-        <!-- Titre Principal -->
-        <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom rounded">
-            <h3 class="text-dark fw-bold text-uppercase mb-0">
-                <i class="bi bi-sliders"></i> {{ syma_business_config.raisonSociale }}
-            </h3>
-           
-        </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Gestion de types cartes SIM',
+        button_text: 'Aller à la page d\'accuei',
+        button_link: path('app_syma_business'),
+        button_style :'success'
 
-        <!-- Carte des Informations Personnelles -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-secondary text-dark">
-                Informations Personnelles
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <strong>Nom Du Responsable :</strong> {{ syma_business_config.nomDuResponsable }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Email :</strong> {{ syma_business_config.email }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Numéro De Téléphone :</strong> {{ syma_business_config.numeroDeTelephone }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Numéro De Fixe :</strong> {{ syma_business_config.numeroDeFixe }}
-                </li>
-            </ul>
-        </div>
+    } %}
 
         <!-- Carte des Informations Société -->
         <div class="card mb-4 shadow-sm">
@@ -66,11 +46,11 @@
 
         <!-- Boutons de Navigation -->
         <div class="d-flex">
-            <a href="{{ path('app_syma_business_config_index') }}" class="btn btn-secondary me-2">
-                <i class="bi bi-arrow-left-circle"></i> Quitter
+            <a href="{{ path('app_syma_business_config_index') }}" class="btn btn-primary me-2">
+                Quitter
             </a>
-            <a href="{{ path('app_syma_business_config_edit', {'id': syma_business_config.id}) }}" class="btn btn-secondary me-2">
-                    <i class="bi bi-pencil-square"></i> Modifier
+            <a href="{{ path('app_syma_business_config_edit', {'id': syma_business_config.id}) }}" class="btn btn-danger me-2">
+                    Modifier
                 </a>
           {% if is_granted('ROLE_SUPER_ADMIN') %}
             <div>

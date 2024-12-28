@@ -1,124 +1,160 @@
-<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
+<!-- Section Stat cartes Sim vendues -->
+<div class="mt-2 mb-2 px-4 py-3 rounded shadow-sm bg-white">
   <div class="d-flex align-items-center my-2">
-  <div class="title-icon bg-light rounded shadow-sm" 
-     style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; 
-            background-image: url('{{ asset('assets/img/boost@4x.webp') }}'); 
-            background-size: calc(100% - 4px); 
-            background-repeat: no-repeat; 
-            background-position: center; 
-            padding: 2px;">
-</div>
-    <h4 class="mb-0 text-secondary" style=" font-weight: 300;letter-spacing: -0.5px;">Stat cartes Sim vendues </h4>
+    <div class="title-icon bg-light rounded shadow-sm" 
+      style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; 
+             background-image: url('{{ asset('assets/img/boost@4x.webp') }}'); 
+             background-size: calc(100% - 4px); 
+             background-repeat: no-repeat; 
+             background-position: center; 
+             padding: 2px;">
+    </div>
+    <h4 class="mb-0 text-secondary" style="font-weight: 300; letter-spacing: -0.5px;">
+      Stats cartes Sim vendues 
+    </h4>
   </div>
   <canvas id="commandesParClientChart" width="400" height="200"></canvas>
 </div>
 
+<!-- Inclusion des Bibliothèques Nécessaires -->
+<!-- Assurez-vous que ces scripts sont inclus dans votre projet. Si ce n'est pas le cas, décommentez-les. -->
+<!-- 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+-->
+
 <script>
-let commandesParClientChart;
+  let commandesParClientChart;
 
-// Fonction pour initialiser le graphique avec des valeurs par défaut
-function initializeCommandesParClientChart() {
-  const ctx = document.getElementById('commandesParClientChart').getContext('2d');
-
-  // Données par défaut (graphique vide avec 0)
-  const defaultData = {
-    labels: ['Chargement...'],
-    datasets: [{
-      label: 'Cartes SIM vendues',
-      data: [0],
-      backgroundColor: '#ccc',
-    }]
+  // Mapping des types de SIM aux couleurs spécifiques
+  const simTypeColors = {
+    'Type A': 'rgba(54, 162, 235, 0.6)',   // Bleu
+    'Type B': 'rgba(255, 99, 132, 0.6)',   // Rouge
+    'Type C': 'rgba(255, 206, 86, 0.6)',   // Jaune
+    'Type D': 'rgba(75, 192, 192, 0.6)',   // Vert
+    'Type E': 'rgba(153, 102, 255, 0.6)',  // Violet
+    // Ajoutez d'autres types de SIM et leurs couleurs ici
   };
 
-  const defaultOptions = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-        }
-      },
-      x: {
-        title: {
-          display: true,
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: false
-      },
-      title: {
-        display: true,
-        text: 'Cartes SIM vendues'
-      }
-    }
-  };
-
-  // Initialiser le graphique avec les données par défaut
-  commandesParClientChart = new Chart(ctx, {
-    type: 'bar',
-    data: defaultData,
-    options: defaultOptions
-  });
-}
-
-async function updateCommandesParClientChart() {
-  try {
-    const response = await axios.get("/api/commande");
-    const commandes = response.data;
-
-    // Log pour vérifier les données récupérées
-    // console.log("Commandes récupérées :", commandes);
-
-    // Filtrer les commandes validées uniquement
-    const commandesValidees = commandes.filter(commande => commande.status === 'validee');
-
-    // Vérifier si des commandes validées existent
-    if (commandesValidees.length === 0) {
-      // console.log("Aucune commande validée trouvée.");
-      return;
-    }
-
-    // Créer un objet pour regrouper les quantités par type de carte SIM
-    const carteSimCounts = commandesValidees.reduce((acc, commande) => {
-      const typeCarteSim = commande.simType; // Utiliser le champ simType
-      const quantite = commande.qtevalidee || 0; // Utiliser 0 si qtevalidee est null
-
-      if (typeCarteSim) {
-        acc[typeCarteSim] = (acc[typeCarteSim] || 0) + quantite;
-      }
-      return acc;
-    }, {});
-
-    // Log pour vérifier les données regroupées
-    // console.log("Quantités par type de carte SIM :", carteSimCounts);
-
-    // Vérifier s'il y a des données à afficher
-    if (Object.keys(carteSimCounts).length === 0) {
-      // console.log("Aucune donnée de carte SIM à afficher.");
-      return;
-    }
-
-    // Préparer les données pour le graphique
-    const labels = Object.keys(carteSimCounts);
-    const data = Object.values(carteSimCounts);
-
-    // Mettre à jour le graphique avec les vraies données
-    commandesParClientChart.data.labels = labels;
-    commandesParClientChart.data.datasets[0].data = data;
-
-    // Mettre à jour le graphique
-    commandesParClientChart.update();
-  } catch (error) {
-    console.error("Erreur lors de la récupération des commandes :", error);
+  // Fonction pour obtenir la couleur d'un type de SIM
+  function getColorForSimType(simType) {
+    return simTypeColors[simType] || 'rgba(201, 203, 207, 0.6)'; // Gris par défaut pour les types non définis
   }
-}
 
-// Initialiser le graphique avec des valeurs par défaut
-initializeCommandesParClientChart();
+  // Fonction pour initialiser le graphique avec des valeurs par défaut
+  function initializeCommandesParClientChart() {
+    const ctx = document.getElementById('commandesParClientChart').getContext('2d');
 
-// Appeler la fonction pour récupérer les données et mettre à jour le graphique
-updateCommandesParClientChart();
+    // Données par défaut (graphique vide avec 0)
+    const defaultData = {
+      labels: ['Chargement...'],
+      datasets: [{
+        label: 'Cartes SIM vendues',
+        data: [0],
+        backgroundColor: ['#ccc'],
+      }]
+    };
+
+    const defaultOptions = {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Quantité Vendue'
+          }
+        },
+        x: {
+          title: {
+            display: false,
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: 'Cartes SIM vendues'
+        }
+      }
+    };
+
+    // Initialiser le graphique avec les données par défaut
+    commandesParClientChart = new Chart(ctx, {
+      type: 'bar',
+      data: defaultData,
+      options: defaultOptions
+    });
+  }
+
+  // Fonction pour récupérer et mettre à jour les données du graphique
+  async function updateCommandesParClientChart() {
+    try {
+      const response = await axios.get("/api/commande");
+      const commandes = response.data;
+
+      // Filtrer les commandes validées uniquement
+      const commandesValidees = commandes.filter(commande => commande.status === 'validee');
+
+      // Vérifier si des commandes validées existent
+      if (commandesValidees.length === 0) {
+        // Mettre à jour le graphique pour indiquer l'absence de données
+        commandesParClientChart.data.labels = ['Aucune donnée'];
+        commandesParClientChart.data.datasets[0].data = [0];
+        commandesParClientChart.data.datasets[0].backgroundColor = ['#ccc'];
+        commandesParClientChart.update();
+        return;
+      }
+
+      // Créer un objet pour regrouper les quantités par type de carte SIM
+      const carteSimCounts = commandesValidees.reduce((acc, commande) => {
+        const typeCarteSim = commande.simType; // Utiliser le champ simType
+        const quantite = commande.qtevalidee || 0; // Utiliser 0 si qtevalidee est null
+
+        if (typeCarteSim) {
+          acc[typeCarteSim] = (acc[typeCarteSim] || 0) + quantite;
+        }
+        return acc;
+      }, {});
+
+      // Vérifier s'il y a des données à afficher
+      if (Object.keys(carteSimCounts).length === 0) {
+        // Mettre à jour le graphique pour indiquer l'absence de données
+        commandesParClientChart.data.labels = ['Aucune donnée'];
+        commandesParClientChart.data.datasets[0].data = [0];
+        commandesParClientChart.data.datasets[0].backgroundColor = ['#ccc'];
+        commandesParClientChart.update();
+        return;
+      }
+
+      // Préparer les données pour le graphique
+      const labels = Object.keys(carteSimCounts);
+      const data = Object.values(carteSimCounts);
+      const backgroundColors = labels.map(label => getColorForSimType(label));
+
+      // Mettre à jour le graphique avec les vraies données
+      commandesParClientChart.data.labels = labels;
+      commandesParClientChart.data.datasets[0].data = data;
+      commandesParClientChart.data.datasets[0].backgroundColor = backgroundColors;
+
+      // Mettre à jour le graphique
+      commandesParClientChart.update();
+    } catch (error) {
+      console.error("Erreur lors de la récupération des commandes :", error);
+      // Optionnel : Mettre à jour le graphique pour indiquer une erreur
+      commandesParClientChart.data.labels = ['Erreur de chargement'];
+      commandesParClientChart.data.datasets[0].data = [0];
+      commandesParClientChart.data.datasets[0].backgroundColor = ['#ff0000'];
+      commandesParClientChart.update();
+    }
+  }
+
+  // Initialiser le graphique avec des valeurs par défaut
+  initializeCommandesParClientChart();
+
+  // Appeler la fonction pour récupérer les données et mettre à jour le graphique
+  updateCommandesParClientChart();
 </script>

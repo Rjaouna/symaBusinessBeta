@@ -1,216 +1,144 @@
+
+
+
+<!-- Section Stat Quotas Attribués -->
 <div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
   <div class="d-flex align-items-center px-2">
-   <div class="title-icon bg-light rounded shadow-sm" 
-     style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; 
-            background-image: url('{{ asset('assets/img/boost@4x.webp') }}'); 
-            background-size: calc(100% - 4px); 
-            background-repeat: no-repeat; 
-            background-position: center; 
-            padding: 2px;">
-</div>
-
-
-
-    <h4 class="mb-0 text-secondary" style=" font-weight: 100;letter-spacing: -0.5px;">Ventes récentes par commerçant </h4>
-  </div>
-    <canvas id="topVendeursChart" width="400" height="200"></canvas>
-
-</div>
-
-<div class="mt-4 mb-2 px-4 py-3 rounded shadow-sm bg-white">
-  <div class="d-flex align-items-center px-2">
-   <div class="title-icon bg-light rounded shadow-sm" 
-     style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; 
-            background-image: url('{{ asset('assets/img/boost@4x.webp') }}'); 
-            background-size: calc(100% - 4px); 
-            background-repeat: no-repeat; 
-            background-position: center; 
-            padding: 2px;">
-</div>
-
-
-
-    <h4 class="mb-0 text-secondary" style=" font-weight: 100;letter-spacing: -0.5px;">Stat quotas attribués </h4>
+    <div class="title-icon bg-light rounded shadow-sm" 
+      style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; 
+             background-image: url('{{ asset('assets/img/boost@4x.webp') }}'); 
+             background-size: calc(100% - 4px); 
+             background-repeat: no-repeat; 
+             background-position: center; 
+             padding: 2px;">
+    </div>
+    <h4 class="mb-0 text-secondary" style="font-weight: 100; letter-spacing: -0.5px;">
+      Stat quotas attribués 
+    </h4>
   </div>
   <canvas id="quotaChart" width="400" height="200"></canvas>
 </div>
 
-
-
+<!-- Inclusion des Bibliothèques Nécessaires -->
+<!-- Assurez-vous que ces scripts sont inclus dans votre projet. Si ce n'est pas le cas, décommentez-les. -->
+<!-- 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+-->
 
 <script>
-    let quotaChart;
+  let quotaChart;
 
-    // Fonction pour initialiser un graphique avec des valeurs par défaut
-    function initializeChart() {
-        const ctx = document.getElementById('quotaChart').getContext('2d');
+  // Fonction pour initialiser un graphique avec des valeurs par défaut
+  function initializeQuotaChart() {
+    const ctx = document.getElementById('quotaChart').getContext('2d');
 
-        // Données par défaut (graphique vide avec 0)
-        const defaultData = {
-            labels: ['Chargement...'],
-            datasets: [{
-                label: 'Statistiques des quotas attribués',
-                data: [0],
-                backgroundColor: '#ccc',
-            }]
-        };
+    // Données par défaut (graphique vide avec 0)
+    const defaultData = {
+      labels: ['Chargement...'],
+      datasets: [{
+        label: 'Statistiques des quotas attribués',
+        data: [0],
+        backgroundColor: '#ccc',
+      }]
+    };
 
-        const defaultOptions = {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    enabled: true
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                    }
-                }
-            }
-        };
-
-        // Initialiser le graphique avec les données par défaut
-        quotaChart = new Chart(ctx, {
-            type: 'bar',
-            data: defaultData,
-            options: defaultOptions
-        });
-    }
-
-    async function fetchUserStats() {
-        try {
-            const response = await axios.get("/api/users"); // Remplace par l'URL correcte de ton API
-            const users = Array.isArray(response.data) ? response.data : [];
-
-            // Vérifie si les quotas sont définis et regroupe les utilisateurs
-            const quotaCounts = users.reduce((acc, user) => {
-                const quotaName = user?.quotas?.nom; // Vérifie que quotas et nom existent
-                if (quotaName) {
-                    acc[quotaName] = (acc[quotaName] || 0) + 1;
-                }
-                return acc;
-            }, {});
-
-            if (Object.keys(quotaCounts).length === 0) {
-                console.warn("Aucune donnée de quota disponible.");
-                return;
-            }
-
-            // Préparer les données pour le graphe
-            const labels = Object.keys(quotaCounts);
-            const data = Object.values(quotaCounts);
-
-            // Mettre à jour le graphique avec les vraies données
-            quotaChart.data.labels = labels;
-            quotaChart.data.datasets[0].data = data;
-
-            // Mettre à jour le graphique
-            quotaChart.update();
-        } catch (error) {
-            console.error("Erreur lors de la récupération des statistiques des quotas:", error);
-            alert("Une erreur s'est produite lors du chargement des statistiques. Veuillez réessayer plus tard.");
+    const defaultOptions = {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        },
+        tooltip: {
+          enabled: true
         }
-    }
-
-    // Initialiser le graphique avec des valeurs par défaut
-    initializeChart();
-
-    // Appeler la fonction pour récupérer les données
-    fetchUserStats();
-
-const updateTopVendeursChart = async () => {
-  try {
-    // Requête pour obtenir les commandes
-    const response = await axios.get("/api/commande");
-    const commandes = response.data;
-
-    // Créer un objet pour compter les commandes par vendeur
-    const vendeurCounts = {};
-
-    commandes.forEach(commande => {
-      // Assurez-vous que 'soldBy' est une chaîne de caractères
-      const vendeur = commande.soldBy; // ou commande.soldBy.nomResponsable si 'soldBy' est un objet
-      if (vendeur) {
-        if (vendeur in vendeurCounts) {
-          vendeurCounts[vendeur]++;
-        } else {
-          vendeurCounts[vendeur] = 1;
-        }
-      }
-    });
-
-    // Convertir l'objet en tableau et trier par nombre de commandes décroissant
-    const sortedVendeurs = Object.entries(vendeurCounts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5); // Sélectionner les 5 meilleurs vendeurs
-
-    // Préparer les labels et les données pour le graphique
-    const labels = sortedVendeurs.map(entry => entry[0]);
-    const data = sortedVendeurs.map(entry => entry[1]);
-
-    // Créer le graphique
-    const ctx = document.getElementById('topVendeursChart').getContext('2d');
-    const topVendeursChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Nombre de ventes',
-          data: data,
-          backgroundColor: [
-            'rgba(54, 162, 235, 0.2)', // Bleu
-            'rgba(255, 99, 132, 0.2)', // Rouge
-            'rgba(255, 206, 86, 0.2)', // Jaune
-            'rgba(75, 192, 192, 0.2)', // Vert
-            'rgba(153, 102, 255, 0.2)' // Violet
-          ],
-          borderColor: [
-            'rgba(54, 162, 235, 1)', // Bleu
-            'rgba(255, 99, 132, 1)', // Rouge
-            'rgba(255, 206, 86, 1)', // Jaune
-            'rgba(75, 192, 192, 1)', // Vert
-            'rgba(153, 102, 255, 1)'  // Violet
-          ],
-          borderWidth: 1
-        }]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
+      scales: {
+        y: {
+          beginAtZero: true,
           title: {
             display: true,
-            text: 'Top 5 Vendeurs par Nombre de ventes'
+            text: 'Nombre de Quotas'
           }
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            precision: 0
+        x: {
+          title: {
+            display: true,
+            text: 'Types de Quotas'
           }
         }
       }
+    };
+
+    // Initialiser le graphique avec les données par défaut
+    quotaChart = new Chart(ctx, {
+      type: 'bar',
+      data: defaultData,
+      options: defaultOptions
     });
-
-  } catch (error) {
-    console.error("Erreur lors de la récupération des commandes:", error);
   }
-};
 
-// Appeler la fonction pour mettre à jour le graphique
-updateTopVendeursChart();
+  // Fonction pour récupérer et afficher les statistiques des quotas attribués
+  async function fetchQuotaStats() {
+    try {
+      const response = await axios.get("/api/users"); // Remplacez par l'URL correcte de votre API
+      const users = Array.isArray(response.data) ? response.data : [];
+
+      // Vérifie si les quotas sont définis et regroupe les utilisateurs par quota
+      const quotaCounts = users.reduce((acc, user) => {
+        const quotaName = user?.quotas?.nom; // Vérifie que quotas et nom existent
+        if (quotaName) {
+          acc[quotaName] = (acc[quotaName] || 0) + 1;
+        }
+        return acc;
+      }, {});
+
+      if (Object.keys(quotaCounts).length === 0) {
+        console.warn("Aucune donnée de quota disponible.");
+        // Mettre à jour le graphique pour indiquer l'absence de données
+        quotaChart.data.labels = ['Aucune donnée'];
+        quotaChart.data.datasets[0].data = [0];
+        quotaChart.update();
+        return;
+      }
+
+      // Préparer les données pour le graphique
+      const labels = Object.keys(quotaCounts);
+      const data = Object.values(quotaCounts);
+
+      // Mettre à jour le graphique avec les données récupérées
+      quotaChart.data.labels = labels;
+      quotaChart.data.datasets[0].data = data;
+      quotaChart.data.datasets[0].backgroundColor = generateColors(labels.length);
+      quotaChart.update();
+    } catch (error) {
+      console.error("Erreur lors de la récupération des statistiques des quotas:", error);
+      alert("Une erreur s'est produite lors du chargement des statistiques des quotas. Veuillez réessayer plus tard.");
+      
+      // Optionnel : Mettre à jour le graphique pour indiquer une erreur
+      quotaChart.data.labels = ['Erreur de chargement'];
+      quotaChart.data.datasets[0].data = [0];
+      quotaChart.data.datasets[0].backgroundColor = ['#ff0000'];
+      quotaChart.update();
+    }
+  }
+
+  // Fonction pour générer des couleurs aléatoires pour les barres
+  function generateColors(count) {
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+      const r = Math.floor(Math.random() * 255);
+      const g = Math.floor(Math.random() * 255);
+      const b = Math.floor(Math.random() * 255);
+      colors.push(`rgba(${r}, ${g}, ${b}, 0.6)`);
+    }
+    return colors;
+  }
+
+  // Initialiser le graphique avec les valeurs par défaut
+  initializeQuotaChart();
+
+  // Appeler la fonction pour récupérer et afficher les statistiques des quotas
+  fetchQuotaStats();
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commercial;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\CommercialType;
@@ -20,7 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route('/user')]
+#[Route('/app/utilisateurs')]
 final class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -31,20 +32,44 @@ final class UserController extends AbstractController
     }
 
     #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer tous les utilisateurs
-        $users = $userRepository->findAll();
-
-        // Filtrer les utilisateurs pour exclure ceux ayant le rôle 'ROLE_ADMIN'
-        $filteredUsers = array_filter($users, function ($user) {
-            return in_array('ROLE_USER', $user->getRoles()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles());
-        });
+        // Récupérer les utilisateurs avec un type différent de Commercial et Revendeur
+        $users = $entityManager->createQuery(
+            'SELECT u
+        FROM App\Entity\User u
+        WHERE u.type NOT IN (:excludedTypes)'
+        )
+            ->setParameter('excludedTypes', ['Commercial', 'Revendeur'])
+            ->getResult();
 
         return $this->render('user/index.html.twig', [
-            'users' => $filteredUsers,
+            'users' => $users
         ]);
     }
+
+    #[Route('/revendeurs', name: 'app_user_revendeurs', methods: ['GET'])]
+    public function revendeurs(UserRepository $userRepository): Response
+    {
+        // Récupérer les utilisateurs avec un type différent de Commercial et Revendeur
+        $users = $userRepository->findBy(['type' => 'Revendeur']);
+
+        return $this->render('user/revendeurs.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    #[Route('/commeciaux', name: 'app_user_commerciaux', methods: ['GET'])]
+    public function commerciaux(UserRepository $userRepository): Response
+    {
+        // Récupérer les utilisateurs avec un type différent de Commercial et Revendeur
+        $users = $userRepository->findBy(['type' => 'Commercial']);
+
+        return $this->render('user/commerciaux.html.twig', [
+            'users' => $users
+        ]);
+    }
+
     #[Route('/switch-role', name: 'switch_role', methods: ['POST'])]
     public function switchRole(Request $request): JsonResponse
     {
@@ -113,6 +138,7 @@ final class UserController extends AbstractController
 
         // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
+            
             // Générer un mot de passe aléatoire
             $plainPassword = $this->generateRandomPassword();
 
@@ -124,22 +150,37 @@ final class UserController extends AbstractController
             $user->setPassword($hashedPassword);
 
             // Assigner le rôle "ROLE_COMMERCIAL" à l'utilisateur
-            $user->setRoles(['ROLE_COMMERCIAL']);
             $user->setTotalBonus(10); // Assigner le bonus
             $user->setSim5Usage(0); // Assigner le bonus
             $user->setSim10Usage(0); // Assigner le bonus
             $user->setSim15Usage(0); // Assigner le bonus
             $user->setSim20Usage(0); // Assigner le bonus
+            
             if ($quota) {
                 $user->setQuotas($quota); // Assigner le quota récupéré
             } else {
                 // Gérer le cas où le quota avec l'ID 1 n'existe pas (optionnel)
                 $this->addFlash('error', 'Le quota demandé n\'existe pas.');
             }
+            if ($form->getData()->isCommercial()) {
+                $user->setRoles(['ROLE_COMMERCIAL']);
+                $user->setType('Commercial');
+                $commercial = new Commercial();
+                $commercial->setNom($form->getData()->getNomResponsable());
+                $commercial->setEmail($form->getData()->getEmail());
+                $entityManager->persist($commercial);
+                $entityManager->flush();
+            } else {
+                $user->setRoles(['ROLE_USER']);
+                $user->setType('Revendeur');
+                // Enregistrer l'utilisateur en base de données
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_user_edit', ['id' => $user->getId()]);
+            }
 
-            // Enregistrer l'utilisateur en base de données
-            $entityManager->persist($user);
-            $entityManager->flush();
+
+            
 
             // Envoyer le mot de passe par e-mail
             $this->sendPasswordEmail($mailer, $user, $plainPassword);
@@ -148,7 +189,8 @@ final class UserController extends AbstractController
             $this->addFlash('success', 'Commercial créé avec succès. Le mot de passe a été envoyé par e-mail.');
 
             // Rediriger vers la liste des utilisateurs
-            return $this->redirectToRoute('app_user_index');
+            return $this->redirectToRoute('app_user_commerciaux', [], Response::HTTP_SEE_OTHER);
+
         }
 
         // Rendre le formulaire dans le template
@@ -201,7 +243,13 @@ final class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            if (in_array('ROLE_COMMERCIAL', $user->getRoles())) {
+                return $this->redirectToRoute('app_user_commerciaux', [], Response::HTTP_SEE_OTHER);
+            } else if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            }
+            return $this->redirectToRoute('app_user_revendeurs', [], Response::HTTP_SEE_OTHER);
+
         }
 
         return $this->render('user/edit.html.twig', [

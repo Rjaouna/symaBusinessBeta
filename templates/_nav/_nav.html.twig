@@ -1,109 +1,246 @@
-<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+{% if app.user %}
+        {% if is_granted('ROLE_ADMIN') %}
+
+<nav class="navbar navbar-expand-lg bg-light py-1" data-bs-theme="light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('app_syma_business') }}">
-      <img src="{{ asset('assets/img/logo-syma@4x.jpg') }}" alt="Logo Syma" style="width:120px">
-    </a>
+    <a href="{{path('app_syma_business')}}"><img src="{{asset('/assets/img/logo-syma@4x.jpg')}}" alt="Logo Syma" style="width:100px"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor03">
+      <!-- Push dropdown to the right -->
       <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Commandes</a>
+          <!-- Align dropdown menu to the right -->
+          <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" href="{{ path('app_commande_index') }}">Liste des commandes</a>
+            <a class="dropdown-item" href="{{ path('users_with_orders') }}">Livrer une commande</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ path('select_client') }}">Vente directe (comptoir)</a>
+          </div>
+        </li>
+      <li class="nav-item">
+          <a class="nav-link active" href="{{ path('select_client') }}">Vente directe (comptoir)
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ path('app_facture_list') }}">Gestion des factures 
+          </a>
+        </li>
 
-        {% if app.user %}
-          
-          {# Liens spécifiques aux administrateurs #}
-          {% if is_granted('ROLE_ADMIN') %}
-          <li class="nav-item d-none" id="newUserWithoutCode">
-              <a class="nav-link active" href="{{ path('app_logout') }}">
-                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i></span> 
-                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-exclamation-circle-fill fs-5"></i><span id="UserWithoutCode"></span></span>
-              </a>
-            </li>
 
-            <li class="nav-item">
-              <a class="nav-link active" href="{{ path('users_with_orders') }}">
-                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-upc-scan fs-5"></i></span> 
-                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-upc-scan fs-5"></i> Valider une cde !</span>
-              </a>
-            </li>
+        
 
-            <li class="nav-item">
-              <a class="nav-link active" href="{{ path('app_syma_business_config_index') }}">
-                <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-briefcase fs-5"></i></span> 
-                <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-briefcase fs-5"></i> Configurer l'agent</span>
-              </a>
-            </li>
-
-          
-
-            {# Formulaire de changement de rôle pour les administrateurs ayant également le rôle ROLE_USER #}
-            {% if 'ROLE_USER' in app.user.roles %}
-              <form id="switchRoleForm" class="d-flex align-items-center ms-3">
-                <button class="btn btn-secondary mx-2 py-1" type="submit">Switch</button>
-                <select name="role" id="roleSelect" class="form-select py-1">
-                  <option value="ROLE_ADMIN" {% if app.user.activeRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
-                  <option value="ROLE_USER" {% if app.user.activeRole == 'ROLE_USER' %}selected{% endif %}>User</option>
-                </select>
-              </form>
-            {% endif %}
-          {% endif %}
-
-          {# Liens communs pour tous les utilisateurs authentifiés #}
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ path('app_profile') }}">
-              <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-person fs-5"></i></span> 
-              <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-person fs-5"></i> Mon profil</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ path('app_logout') }}">
-              <span class="toggle-icon toggle-icon-closed mx-2"><i class="bi bi-door-closed fs-5"></i></span> 
-              <span class="toggle-icon toggle-icon-open d-none mx-2"><i class="bi bi-door-open fs-5"></i></span>
-            </a>
-          </li>
-
-        {% endif %}
-
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Gestion & Programmation</a>
+          <!-- Align dropdown menu to the right -->
+          <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" href="{{ path('app_bonus_index') }}">Gestion des Bonus</a>
+            <a class="dropdown-item" href="{{ path('app_quota_index') }}">Gestion des Quotas</a>
+            <a class="dropdown-item" href="{{ path('app_banner_index') }}">Gestion des Bannières</a>
+            <a class="dropdown-item" href="{{ path('scan_chapelet') }}">Alimenter le stock (Scan)</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ path('management_import_carte_sim') }}">Importation des cartes SIM (CSV)</a>
+            <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#confirmModal">Usage mensuel
+        </a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ path('geocoding_update_coordinates') }}">Géolocaliser <i class="bi bi-bullseye"></i>
+          </a>
+        </li>
+<li class="nav-item d-none" id="newUserWithoutCode">
+    <a class="nav-link active" href="{{ path('users_count_no_code_client') }}">
+        <span class="toggle-icon toggle-icon-closed mx-2">
+            <i class="bi bi-exclamation-circle-fill text-danger fs-5"></i>
+        </span> 
+        <span class="toggle-icon toggle-icon-open d-none mx-2">
+            <i class="bi bi-exclamation-circle-fill text-danger fs-5"></i> 
+            <span id="UserWithoutCode"></span>
+        </span>
+    </a>
+</li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-person-bounding-box"></i> {{app.user.nomResponsable}}</a>
+          <!-- Align dropdown menu to the right -->
+          <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="{{path('app_syma_business_config_index')}}">Configurer l'agent</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{path('app_logout')}}">Déconnexion</a>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const closedIcons = document.querySelectorAll('.toggle-icon-closed');
-        closedIcons.forEach(closedIcon => {
-            const openIcon = closedIcon.nextElementSibling;
-            if (openIcon && openIcon.classList.contains('toggle-icon-open')) {
-                closedIcon.addEventListener('mouseenter', () => {
-                    closedIcon.classList.add('d-none');
-                    openIcon.classList.remove('d-none');
-                });
-                openIcon.addEventListener('mouseleave', () => {
-                    openIcon.classList.add('d-none');
-                    closedIcon.classList.remove('d-none');
-                });
-            }
-        });
+
+
+
+
+<div class="container-fluid ">
+  <div class="row bg-light py-2">
+    
+    <!-- Commerciaux Button Group -->
+    <div class="col-12 col-sm-6 col-md-2">
+      <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary w-100"><i class="bi bi-people me-2"></i> Utilisateurs</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDropCommerciaux" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDropCommerciaux">
+            <a class="dropdown-item" href="{{path('app_user_index')}}">Liste des administrateur</a>
+            <a class="dropdown-item" href="{{path('app_user_revendeurs')}}">Liste des revendeurs</a>
+            <a class="dropdown-item" href="{{path('app_user_commerciaux')}}">Liste des commerciaux</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{path('app_user_new_commercial')}}">Ajouter un utilisateur</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    
+   
+    
+    <!-- Cartes Sim Button Group -->
+    <div class="col-12 col-sm-6 col-md-2">
+      <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary w-100"><i class="bi bi-sim me-2"></i> Cartes Sim</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDropCartesSim" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDropCartesSim">
+            <a class="dropdown-item" href="{{ path('app_carte_sim_types_block_index') }}">Base de données</a>
+            <a class="dropdown-item" href="{{ path('app_sim_type_index') }}">Types de cartes Sim</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ path('scan_chapelet') }}">Alimenter le stock (Scan)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Limitations Button Group -->
+    <div class="col-12 col-sm-6 col-md-2">
+      <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary w-100"><i class="bi bi-arrow-down-up me-2"></i> Limitations</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDropLimitations" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDropLimitations">
+            <a class="dropdown-item" href="{{ path('app_limitation_index') }}">Liste des limitations</a>
+            <a class="dropdown-item" href="{{ path('app_limitation_new') }}">Ajouter une limitation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commandes Button Group -->
+    <div class="col-12 col-sm-6 col-md-2">
+      <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary w-100"><i class="bi bi-truck me-2"></i> Livraison</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDropLimitations" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDropLimitations">
+            <a class="dropdown-item" href="{{ path('app_commande_index') }}">Liste des livraisons</a>
+            <a class="dropdown-item" href="{{ path('select_advinced_client') }}">Faire livraisons</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Afficheurs Button Group -->
+    <div class="col-12 col-sm-6 col-md-2">
+      <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary w-100"><i class="bi bi-megaphone me-2"></i> Tournées</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDropAfficheurs" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDropAfficheurs">
+            <a class="dropdown-item" href="{{path('zone_index')}}">Gestion des zones</a>
+            <a class="dropdown-item" href="{{path('tournee_index')}}">Gestion des tournées</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outils Button Group -->
+    <div class="col-12 col-sm-6 col-md-2">
+      <div class="btn-group w-100" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary w-100"><i class="bi bi-gear me-2"></i> Outils</button>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDropLimitations" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDropLimitations">
+            <a class="dropdown-item" href="{{ path('reset_consommation') }}">Réinitialiser l'usage (Beta)</a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+
+
+<!-- Modal pour la réinitialisation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <!-- Contenu du modal -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmer la réinitialisation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir réinitialiser les usages mensuels de tous les utilisateurs ? Cette action est irréversible.</p>
+                <form action="{{ path('reset_user_properties') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Entrez le mot de passe pour réinitialiser les usages :</label>
+                        <input type="password" class="form-control" id="passwordDom" name="password" placeholder="Mot de passe secret" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 my-1">Confirmer la réinitialisation pour tous les utilisateurs</button>
+                    <button type="button" class="btn btn-danger w-100 my-1" data-bs-dismiss="modal">Annuler</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Gestion des icônes toggle
+    const closedIcons = document.querySelectorAll('.toggle-icon-closed');
+    closedIcons.forEach(closedIcon => {
+        const openIcon = closedIcon.nextElementSibling;
+        if (openIcon && openIcon.classList.contains('toggle-icon-open')) {
+            closedIcon.addEventListener('mouseenter', () => {
+                closedIcon.classList.add('d-none');
+                openIcon.classList.remove('d-none');
+            });
+            openIcon.addEventListener('mouseleave', () => {
+                openIcon.classList.add('d-none');
+                closedIcon.classList.remove('d-none');
+            });
+        }
     });
 
+    // Fonction pour récupérer les utilisateurs sans code
     function fetchUsersWithoutCode() {
         axios.get('/api/users/count/no-code-client')
             .then(response => {
                 const count = response.data.count;
-                const users = response.data;
-                // console.log('Nombre d\'utilisateurs sans code_client :', users);
+                // console.log('Nombre d\'utilisateurs sans code_client :', count);
+                const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
+                const UserWithoutCodeElement = document.getElementById('UserWithoutCode');
                 if (count >= 1) {
-                    const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
-                    const UserWithoutCodeElement = document.getElementById('UserWithoutCode');
                     if (newUserWithoutCodeElement) {
                         newUserWithoutCodeElement.classList.remove('d-none');
-                        UserWithoutCodeElement.innerHTML = ` ${count} <a href="{{ path('users_count_no_code_client') }}">client(s) sans code !</a>`;
+                        if (UserWithoutCodeElement) {
+                            UserWithoutCodeElement.innerHTML = `${count} <a href="{{ path('users_count_no_code_client') }}">client(s) sans code !</a>`;
+                        }
                     }
                 } else {
-                    const newUserWithoutCodeElement = document.getElementById('newUserWithoutCode');
                     if (newUserWithoutCodeElement) {
                         newUserWithoutCodeElement.classList.add('d-none');
                     }
@@ -114,27 +251,36 @@
             });
     }
 
+    // Appel initial et intervalle pour rafraîchir les données toutes les 10 secondes
     fetchUsersWithoutCode();
     setInterval(fetchUsersWithoutCode, 10000);
 
-    document.getElementById('switchRoleForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const role = document.getElementById('roleSelect').value;
-        axios.post('/user/switch-role', new URLSearchParams({ 'role': role }), {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        })
-        .then(response => {
-            // console.log('Success:', response.data);
-            location.reload();
-        })
-        .catch(error => {
-            if (error.response) {
-                console.error('Erreur lors du changement de rôle:', error.response.data.error || error.response.statusText);
-            } else if (error.request) {
-                console.error('No response received:', error.request);
-            } else {
-                console.error('Error', error.message);
-            }
+    // Gestion du formulaire de changement de rôle
+    const switchRoleForm = document.getElementById('switchRoleForm');
+    if (switchRoleForm) {
+        switchRoleForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const roleSelect = document.getElementById('roleSelect');
+            const role = roleSelect.value;
+            axios.post('/user/switch-role', new URLSearchParams({ 'role': role }), {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(response => {
+                // Recharge la page pour appliquer le changement de rôle
+                location.reload();
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.error('Erreur lors du changement de rôle:', error.response.data.error || error.response.statusText);
+                } else if (error.request) {
+                    console.error('Aucune réponse reçue:', error.request);
+                } else {
+                    console.error('Erreur', error.message);
+                }
+            });
         });
-    });
+    }
+});
 </script>
+{% endif %}
+{% endif %}

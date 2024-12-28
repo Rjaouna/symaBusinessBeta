@@ -1,0 +1,169 @@
+{# templates/tournee/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la Tournée{% endblock %}
+
+{% block body %}
+    {% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-map',
+        section_icon_class: '',
+        section_title: 'Détails de la Tournée',
+        button_text: 'Retour à la liste des tournées',
+        button_link: path('tournee_index'),
+        button_style: 'success'
+    } %}
+ <!-- templates/tournee/new.html.twig -->
+<button id="get-location" class="btn btn-primary mt-3">Détecter ma Position</button>
+
+<div id="location-status" class="mt-2"></div>
+
+<script>
+    document.getElementById('get-location').addEventListener('click', function() {
+        const statusDiv = document.getElementById('location-status');
+
+        if (!navigator.geolocation) {
+            statusDiv.innerHTML = '<p>La géolocalisation n\'est pas supportée par votre navigateur.</p>';
+            return;
+        }
+
+        statusDiv.innerHTML = '<p>Obtention de votre position...</p>';
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                statusDiv.innerHTML = `<p>Position détectée : Latitude ${latitude}, Longitude ${longitude}</p>`;
+
+                // Envoyer les coordonnées au serveur via une requête AJAX
+                fetch('{{ path('geoloc_save') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token("geoloc") }}' // Pour la protection CSRF
+                    },
+                    body: JSON.stringify({ latitude, longitude })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+    statusDiv.innerHTML += '<p>Position enregistrée avec succès.</p>';
+    setTimeout(function() {
+        window.location.reload();
+    }, 1000); // Actualise la page après 2000 millisecondes (2 secondes)
+} else {
+    statusDiv.innerHTML += `<p>Erreur : ${data.message}</p>`;
+}
+
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    statusDiv.innerHTML += '<p>Une erreur est survenue lors de l\'enregistrement de la position.</p>';
+                });
+            },
+            function(error) {
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        statusDiv.innerHTML = '<p>L\'utilisateur a refusé la demande de géolocalisation.</p>';
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        statusDiv.innerHTML = '<p>Les informations de localisation ne sont pas disponibles.</p>';
+                        break;
+                    case error.TIMEOUT:
+                        statusDiv.innerHTML = '<p>La demande de localisation a expiré.</p>';
+                        break;
+                    default:
+                        statusDiv.innerHTML = '<p>Une erreur inconnue est survenue.</p>';
+                        break;
+                }
+            }
+        );
+    });
+</script>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Tournée #{{ tournee.id }}</h5>
+            <p class="card-text"><strong>Commercial:</strong> {{ tournee.commercial.nom }}</p>
+            <p class="card-text"><strong>Zone:</strong> {{ tournee.zone.nom }}</p>
+            <h6>Clients Assignés</h6>
+            <ul class="list-group mb-3">
+                {% for client in tournee.clients %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <div>
+							<strong>{{ client.nomSociete }}</strong>
+							</div>
+							<i class="bi bi-geo text-danger"></i> <a href="https://waze.com/ul?ll={{ client.latitude }},{{ client.longitude }}&navigate=yes" target="_blank" rel="noopener noreferrer">
+                                {{client.adresse}}</a>
+							{% if client.distanceFromUser %}
+                            <span class="badge rounded-pill bg-info">{{ client.distanceFromUser | number_format(2) }} Kms</span>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                        </div>
+                        <div>
+                            {# Ajoutez d'autres actions si nécessaire #}
+                            {# <a href="{{ path('client_show', {id: client.id}) }}" class="btn btn-sm btn-info">Voir</a> #}
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">Aucun client assigné à cette tournée.</li>
+                {% endfor %}
+            </ul>
+
+            <div class="d-flex justify-content-between">
+    {% if is_granted('ROLE_ADMIN') %}
+                
+                {# Formulaire de Suppression de la Tournée #}
+                <form action="{{ path('tournee_delete', {id: tournee.id}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette tournée ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tournee.id) }}">
+                    <button class="btn btn-danger" {% if not tournee.isCompleted() %}disabled{% endif %}>
+                        Cloturer la Tournée
+                    </button>
+                </form>
+				{% endif %}
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            {% if tournee.isCompleted() %}
+                <span class="badge bg-success">Complétée</span>
+            {% else %}
+                <span class="badge bg-warning text-dark">En cours</span>
+            {% endif %}
+        </div>
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+
+    {# Formulaire de livraison spécifique à cette tournée #}
+    <div class="card">
+        <div class="card-header">
+            Livrer à un Client
+        </div>
+        <div class="card-body">
+            <form action="{{ path('tournee_livrer', {id: tournee.id}) }}" method="POST">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('livrer_tournee') }}">
+                <div class="mb-3">
+                    <label for="client_id" class="form-label">Choisir un Client</label>
+                    <select class="form-select" id="client_id" name="client_id" required>
+                        <option value="" disabled selected>-- Sélectionnez un client --</option>
+                        {% for client in tournee.clients %}
+                            {% if not client.isDelivered() %}
+                                <option value="{{ client.id }}">{{ client.nomResponsable }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Livrer</button>
+            </form>
+        </div>
+      
+    </div>
+    
+	{% endif %}
+     {% if not is_granted('ROLE_ADMIN') %}
+<div class="d-grid gap-2 mt-2">
+  <a href="/" class="btn btn-lg btn-primary" type="button">Retour à la page d'accueil</a>
+</div>
+{% endif %}
+{% endblock %}

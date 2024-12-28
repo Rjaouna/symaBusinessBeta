@@ -1,0 +1,133 @@
+<!-- OpenLayers CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+<style>
+    #map {
+        height: 350px; /* Taille ajustée */
+        width: 100%;
+        margin-top: 20px;
+    }
+    .marker-icon {
+        font-size: 24px; /* Taille de l'icône */
+        color: red; /* Couleur de l'icône */
+        text-shadow: 1px 1px 2px #fff; /* Ombre pour meilleure visibilité */
+        transform: translate(-50%, -100%); /* Centrer l'icône au-dessus du point */
+        position: absolute;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <h4>Carte des Clients</h4>
+    <div id="map"></div>
+</div>
+
+<!-- Élément de Popup -->
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer">✖</a>
+    <div class="card rounded shadow-sm p-2 " id="popup-content"></div>
+</div>
+
+<!-- OpenLayers JS -->
+<script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([2.3522, 48.8566]), // Paris
+                zoom: 5
+            })
+        });
+
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+
+        // Désactiver le déplacement automatique
+        var overlay = new ol.Overlay({
+            element: container,
+            autoPan: false // Désactiver le déplacement automatique de la carte
+        });
+        map.addOverlay(overlay);
+
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            container.style.display = 'none';
+            return false;
+        };
+
+        // Ajouter des marqueurs dynamiques
+        var clients = [
+            {% for user in clients %}
+                {
+                    nom: "{{ user.nomResponsable|e('js') }}",
+                    adresse: "{{ user.adresse|e('js') }}",
+                    latitude: {{ user.latitude }},
+                    longitude: {{ user.longitude }}
+                }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        clients.forEach(function (user) {
+            if (user.latitude && user.longitude) {
+                var element = document.createElement('div');
+                element.className = 'marker-icon bi bi-geo-alt-fill'; // Icône Bootstrap
+
+                var marker = new ol.Overlay({
+                    position: ol.proj.fromLonLat([user.longitude, user.latitude]),
+                    positioning: 'center-center',
+                    element: element,
+                    stopEvent: false
+                });
+
+                marker.set('popupContent', `
+                    <strong>${user.nom}</strong><br>
+                    ${user.adresse}<br>
+                    <a href="https://waze.com/ul?ll=${user.latitude},${user.longitude}&navigate=yes" target="_blank">Naviguer avec Waze</a>
+                `);
+
+                map.addOverlay(marker);
+
+                element.addEventListener('click', function () {
+                    content.innerHTML = marker.get('popupContent');
+                    overlay.setPosition(marker.getPosition());
+                    container.style.display = 'block';
+                });
+
+                console.log("Marker ajouté pour :", user.nom, user.adresse);
+            }
+        });
+
+        {% if app.session.get('user_latitude') and app.session.get('user_longitude') %}
+        var userElement = document.createElement('div');
+        userElement.className = 'marker-icon bi bi-person-circle'; // Icône pour la position actuelle
+
+        var userMarker = new ol.Overlay({
+            position: ol.proj.fromLonLat([
+                {{ app.session.get('user_longitude') }},
+                {{ app.session.get('user_latitude') }}
+            ]),
+            positioning: 'center-center',
+            element: userElement,
+            stopEvent: false
+        });
+
+        userMarker.set('popupContent', "<strong>Ma Position</strong>");
+        map.addOverlay(userMarker);
+
+        userElement.addEventListener('click', function () {
+            content.innerHTML = userMarker.get('popupContent');
+            overlay.setPosition(userMarker.getPosition());
+            container.style.display = 'block';
+        });
+
+        console.log("Marker ajouté pour : Ma Position");
+        {% endif %}
+    });
+</script>

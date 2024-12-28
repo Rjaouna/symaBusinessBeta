@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Zone;
 use App\Entity\Bonus;
 use App\Entity\Quota;
 use App\Entity\Usage;
@@ -75,6 +76,15 @@ class UserType extends AbstractType
                 ],
             'required' => false,
             ])
+            ->add('codeZone', EntityType::class, [
+                'class' => Zone::class,
+                'choice_label' => 'nom',
+                'placeholder' => 'Sélectionnez une zone',
+                'label' => 'Zone Géographique',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
             ->add('pays', TextType::class, [
                 'attr' => [
                     'class' => 'form-control-lg',
@@ -83,13 +93,7 @@ class UserType extends AbstractType
                 ],
             ])
 
-            ->add('ville', TextType::class, [
-                'label' => 'Ville',
-                'attr' => [
-                    'class' => 'form-control-lg',
-                ],
-            'required' => false,
-            ])
+            
             ->add('quotas', EntityType::class, [
             'label' => 'Quota',
                 'class' => Quota::class,

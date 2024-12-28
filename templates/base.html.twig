@@ -21,6 +21,7 @@
             <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
             <!-- Table jQuery -->
             <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+            
         {% endblock %}
         
         {% block javascripts %}
@@ -59,43 +60,15 @@
 
         <div class="container-fluid">
             <div class="row">
-                {% if app.user %}
-                    
-                    <div class="col-md-2 left-align">
-                        {% block left_sidebar %}
-                            {{ include('_Sidebars/_left/userInformations.html.twig') }}
-                            {% if app.user.quotas %}
-                                {{ include('_Sidebars/_left/formCommandes.html.twig') }}
-                                {{ include('_Sidebars/_left/quotaInformations.html.twig') }}
-                            {% endif %}
-                            {# {{ include('_Sidebars/_left/_user_informations.html.twig') }} #}
-                        {% endblock %}
-                    </div>
-                {% endif %}
+                
 
                 <!-- Contenu principal -->
                 {% if app.user %}
-                    <div class="col-md-7 left-align mt-3">
+                    <div class="col-md-12 left-align mt-3">
                        {% for label, messages in app.flashes %}
     <div class="alert alert-{{ label }} alert-dismissible fade show px-4 py-4 rounded shadow-sm mx-3 my-2 text-center font-weight-bold" role="alert" id="flash-message-{{ loop.index }}" 
         style="background-color: white; border-left: 5px solid {% if label == 'success' %}green{% endif %}{% if label == 'danger' %}red{% endif %}{% if label == 'warning' %}orange{% endif %}{% if label != 'success' and label != 'danger' and label != 'warning' %}gray{% endif %};">
-        
-        <!-- Icône selon le type du message -->
-        {% if label == 'success' %}
-            <i class="bi bi-check-circle-fill me-3" style="font-size: 3rem; color: green;"></i>
-        {% endif %}
-        
-        {% if label == 'danger' %}
-            <i class="bi bi-x-circle-fill me-3" style="font-size: 3rem; color: red;"></i>
-        {% endif %}
-        
-        {% if label == 'warning' %}
-            <i class="bi bi-exclamation-triangle-fill me-3" style="font-size: 3rem; color: orange;"></i>
-        {% endif %}
-        
-        {% if label != 'success' and label != 'danger' and label != 'warning' %}
-            <i class="bi bi-info-circle-fill me-3" style="font-size: 3rem; color: #17a2b8;"></i> <!-- Icône par défaut -->
-        {% endif %}
+       
 
         <div class="message-text" style="font-size: 1.2rem; color: {% if label == 'success' %}green{% endif %}{% if label == 'danger' %}red{% endif %}{% if label == 'warning' %}orange{% endif %}{% if label != 'success' and label != 'danger' and label != 'warning' %}gray{% endif %};">
             {% for message in messages %}
@@ -127,11 +100,7 @@
                     {% endif %}
                 </div>
                 
-                    <div class="col-md-3 left-align">
-                        {% block right_sidebar %}
-                            {{ include('_Sidebars/right/statistics.html.twig') }}
-                        {% endblock %}
-                    </div>
+                   
             </div>
         </div>
         
@@ -210,7 +179,7 @@
             // Utiliser un délai de 3 secondes (3000 millisecondes)
             setTimeout(function() {
                 message.style.display = 'none';  // Masquer le message après 3 secondes
-            }, 4000);
+            }, 2000);
         });
     });
 </script>

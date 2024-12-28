@@ -55,7 +55,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50, nullable: true)]
     #[Groups('user_info')]
     private ?string $nomSociete = null;
+    // Nouveau champ booléen
+    #[ORM\Column(type: 'boolean')]
+    private bool $isCommercial = true; // Valeur par défaut à true
+    // Getter pour isCommercial
+    public function isCommercial(): bool
+    {
+        return $this->isCommercial;
+    }
 
+    // Setter pour isCommercial
+    public function setIsCommercial(bool $isCommercial): self
+    {
+        $this->isCommercial = $isCommercial;
+
+        return $this;
+    }
    
   
     #[ORM\Column(length: 50, nullable: true)]
@@ -81,7 +96,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[Groups('user_info')]
     private ?Quota $quotas = null;
+    #[ORM\Column(type: "float", nullable: true)]
+    private $latitude;
 
+    #[ORM\Column(type: "float", nullable: true)]
+    private $longitude;
+
+    // ... getters et setters
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): self
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): self
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
+    private $distanceFromUser;
+
+    // ... getters et setters
+
+    public function getDistanceFromUser(): ?float
+    {
+        return $this->distanceFromUser;
+    }
+
+    public function setDistanceFromUser(?float $distance): self
+    {
+        $this->distanceFromUser = $distance;
+        return $this;
+    }
     
     /**
      * @var Collection<int, Commande>
@@ -477,6 +534,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'client')]
     private Collection $factures;
 
+    #[ORM\Column(length: 20)]
+    private ?string $type = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Zone $codeZone = null;
+
     public function setActiveRole(string $role): self
     {
         $this->activeRole = $role;
@@ -547,6 +610,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    #[ORM\ManyToOne(targetEntity: Tournee::class, inversedBy: 'clients')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Tournee $tournee = null;
+
+    public function getTournee(): ?Tournee
+    {
+        return $this->tournee;
+    }
+
+    public function setTournee(?Tournee $tournee): self
+    {
+        $this->tournee = $tournee;
+
+        return $this;
+    }
 
     /**
      * @return Collection<int, Facture>
@@ -574,6 +652,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $facture->setClient(null);
             }
         }
+
+        return $this;
+    }
+    #[ORM\Column(type: 'boolean')]
+    private bool $delivered = false;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastVisite = null;
+
+    public function isDelivered(): bool
+    {
+        return $this->delivered;
+    }
+
+    public function setDelivered(bool $delivered): self
+    {
+        $this->delivered = $delivered;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCodeZone(): ?Zone
+    {
+        return $this->codeZone;
+    }
+
+    public function setCodeZone(?Zone $codeZone): static
+    {
+        $this->codeZone = $codeZone;
+
+        return $this;
+    }
+
+    public function getLastVisite(): ?\DateTimeImmutable
+    {
+        return $this->lastVisite;
+    }
+
+    public function setLastVisite(?\DateTimeImmutable $lastVisite): static
+    {
+        $this->lastVisite = $lastVisite;
 
         return $this;
     }

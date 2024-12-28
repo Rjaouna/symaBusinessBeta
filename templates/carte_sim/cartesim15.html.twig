@@ -4,31 +4,15 @@
 
 {% block body %}
 <div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
-        </h1>
-    </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Cartes Sim 15',
+        button_text: 'Revenir à la page des types de cartes',
+        button_link: path('app_carte_sim_types_block_index'),
+        button_style :'success'
 
-    <!-- Fil d'Ariane stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    Dashboard
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Stock cartes Sim 15
-            </li>
-        </ol>
-    </nav>
+    } %}
 
     {% if hasMissingSerialNumbers %}
         <div class="alert alert-warning">
@@ -59,7 +43,7 @@
                     <td class="{% if carte_sim.reserved %}text-primary{% endif %}">{{ carte_sim.serialNumber }}</td>
                     <td>{{ carte_sim.chapelet.codeChapelet }}</td>
                     <td>{{ carte_sim.type }}</td>
-                    <td>{{ carte_sim.type.prix }}</td>
+                    <td>{{ carte_sim.type.prix|number_format(2, ',', ' ') }} €</td>
                     <td>{{ carte_sim.reserved ? 'Oui' : 'Non' }}</td>
                     <td>{{ carte_sim.canalVente }}</td>
                     <td>{{ carte_sim.soldBy }}</td>

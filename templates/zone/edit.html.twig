@@ -1,0 +1,26 @@
+{# templates/zone/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la Zone{% endblock %}
+
+{% block body %}
+    {% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-geo-alt',
+        section_icon_class: '',
+        section_title: 'Modifier la Zone',
+        button_text: 'Retour à la liste des zones',
+        button_link: path('zone_index'),
+        button_style: 'secondary'
+    } %}
+
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.description) }}
+                {# Ajoutez d'autres champs de formulaire selon votre entité Zone #}
+                <button type="submit" class="btn btn-primary">Mettre à Jour</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -24,6 +24,6 @@ class InvoiceController extends AbstractController
 
 		$this->addFlash('success', 'Les factures et les avoirs ont été générés avec succès. Vous pouvez les consulter dans votre espace de gestion');
 
-		return $this->redirectToRoute('app_syma_business');
+		return $this->redirectToRoute('app_facture_list');
 	}
 }

@@ -48,11 +48,11 @@
 
     <!-- Boutons de Soumission -->
     <div class="d-flex justify-content-end mt-4">
-        <a href="{{ path('app_bonus_index') }}" class="btn btn-secondary me-2">
-            <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+        <a href="{{ path('app_bonus_index') }}" class="btn btn-danger me-2">
+            Annuler
         </a>
-        <button type="submit" class="btn btn-primary">
-            <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Attribuer le bonus') }}
+        <button type="submit" class="btn btn-success">
+            {{ button_label|default('Attribuer le bonus') }}
         </button>
     </div>
 {{ form_end(form) }}

@@ -4,35 +4,15 @@
 {% block title %}Créer un Nouvel Utilisateur{% endblock %}
 
 {% block body %}
-<div class="container-fluid my-5">
-    <!-- Titre Principal avec Icône et Bouton de Retour -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom rounded">
-        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-plus-circle me-2"></i> Créer un Nouveau commercial
-        </h1>
-        <a href="{{ path('app_user_index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left-circle me-1"></i> Retour à la Liste
-        </a>
-    </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Nouvel utilisateur',
+        button_text: 'Liste des utilisateur',
+        button_link: path('app_user_index'),
+        button_style :'success'
 
-    <!-- Fil d'Ariane Stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_user_index') }}" class="text-decoration-none text-primary">
-                    Utilisateurs
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Créer un Nouveau commercial
-            </li>
-        </ol>
-    </nav>
+    } %}
 
     <!-- Formulaire de Création d'Utilisateur -->
     {# templates/user/_form.html.twig #}
@@ -82,17 +62,28 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    
+                    <!-- Champ Is Commercial (Case à Cocher) -->
+                    <div class="form-check mb-3 mt-4">
+                        {{ form_widget(form.isCommercial, {
+                            'attr': {
+                                'class': 'form-check-input',
+                            }
+                        }) }}
+                        <label class="form-check-label" for="{{ form.isCommercial.vars.id }}">
+                          
+                        </label>
+                        {{ form_errors(form.isCommercial) }}
+                    </div>
                 </div>
             </div>
 
             <!-- Boutons de Soumission -->
             <div class="d-flex justify-content-end">
-                <a href="{{ path('app_user_index') }}" class="btn btn-secondary me-2">
-                    <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+                <a href="{{ path('app_user_index') }}" class="btn btn-danger me-2">
+                     Annuler
                 </a>
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Créer') }}
+                <button type="submit" class="btn btn-success">
+                     {{ button_label|default('Ajouter') }}
                 </button>
             </div>
         {{ form_end(form) }}

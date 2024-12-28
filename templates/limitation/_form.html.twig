@@ -6,14 +6,14 @@
 
     <div class="form-floating my-2">
         {{ form_widget(form.limite, { 'attr': { 'class': 'form-control', 'placeholder': 'Entrez la limite' } }) }}
-        <label for="{{ form.limite.vars.id }}">Limite</label>
+        <label for="{{ form.limite.vars.id }}">Limite (ex : 6, le prix en bas sera appliqué pour les 6 premières cartes vendues pour chaque client)</label>
     </div>
 
     <div class="form-floating my-2">
         {{ form_widget(form.prix, { 'attr': { 'class': 'form-control', 'placeholder': 'Entrez le prix' } }) }}
-        <label for="{{ form.prix.vars.id }}">Prix</label>
+        <label for="{{ form.prix.vars.id }}">Prix (le prix à appliquer pour cette limitation)</label>
     </div>
-    <a class="btn btn-secondary btn-sm" href="{{ path('app_limitation_index') }}">Annuler</a>
-    <button class="btn btn-primary btn-sm">{{ button_label|default('Enregistrer') }}</button>
+    <a class="btn btn-danger" href="{{ path('app_limitation_index') }}">Annuler</a>
+    <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
 
 {{ form_end(form) }}

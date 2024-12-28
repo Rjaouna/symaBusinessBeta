@@ -3,32 +3,15 @@
 {% block title %}Liste des Quotas{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark  fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
-        </h1>
-    </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: 'bi bi-list-check',
+        section_title: 'Gestion des quota',
+        button_text: 'Ajouter un quota',
+        button_link: path('app_quota_new'),
+        button_style :'success'
 
-    <!-- Fil d'Ariane stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb  mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    Dashboard
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Gestion des Quotas
-        </ol>
-    </nav>
-</div>
+    } %}
 <div class="d-flex justify-content-end">
     <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_new') }}">Ajouter un nouveau quota</a>
 </div>
@@ -50,14 +33,19 @@
         {% for quotum in quotas %}
             <tr>
                 <td><strong>{{ quotum.nom }}</strong></td>
-                <td>{{ quotum.sim5Quota }}</td>
-                <td>{{ quotum.sim10Quota }}</td>
-                <td>{{ quotum.sim15Quota }}</td>
-                <td>{{ quotum.sim20Quota }}</td>
+                <td>{{ quotum.sim5Quota }} chapelets</td>
+                <td>{{ quotum.sim10Quota }} chapelets</td>
+                <td>{{ quotum.sim15Quota }} chapelets</td>
+                <td>{{ quotum.sim20Quota }} chapelets</td>
                 <td>{{ quotum.createdAt ? quotum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ quotum.updatedAt ? quotum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a class="btn btn-secondary btn-sm" href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
+                    <a class="btn btn-primary" href="{{ path('app_quota_edit', {'id': quotum.id}) }}">Modifier</a>
+                </td>
+                <td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {{ include('quota/_delete_form.html.twig') }}
+                                        {% endif %}
                 </td>
             </tr>
         {% else %}

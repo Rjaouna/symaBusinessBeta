@@ -1,0 +1,83 @@
+{# templates/zone/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Zones{% endblock %}
+
+{% block body %}
+    {# Inclusion de l'en-tête de la section #}
+    {% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Gestion des Zones',
+        button_text: 'Ajouter une Nouvelle Zone',
+        button_link: path('zone_new'),
+        button_style: 'success'
+    } %}
+
+    <div class="container-fluid mt-4">
+        {% if zones is not empty %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for zone in zones %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0 position-relative">
+                            {# Icône d'Édition positionnée en haut à droite avec Tooltip #}
+                            <a href="{{ path('zone_edit', {'id': zone.id}) }}" class="position-absolute top-0 end-0 m-3 text-decoration-none text-primary" aria-label="Éditer la zone {{ zone.nom }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Éditer">
+                                <i class="bi bi-pencil-square fs-5"></i>
+                            </a>
+
+                            {# Corps de la carte #}
+                            <div class="card-body d-flex flex-column pb-0">
+                                <h5 class="card-title text-danger">{{ zone.nom }}</h5>
+                                <p class="card-text mb-2"><strong>Code de la zone :</strong> {{ zone.codeZone }}</p>
+                                <p class="card-text mb-2"><strong>Villes concernées :</strong> {{ zone.description }}</p>
+
+                                {# Suppression Optionnelle avec une Modale (commenté) #}
+                                {# 
+                                <div class="mt-auto">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ zone.id }}">
+                                        <i class="bi bi-trash-fill"></i> Supprimer
+                                    </button>
+                                </div>
+                                #}
+                            </div>
+                            {# Pied de la carte avec un séparateur subtil #}
+                            <div class="card-footer bg-transparent border-top-0">
+                                <small class="text-muted">{% if zone.statut %}Tournées en cours {% else %} 
+                                    <a href="{{path('tournee_new')}}">Lancer une tournée</a>
+                                {% endif %}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Modale de Suppression (Optionnel) #}
+                    {# 
+                    <div class="modal fade" id="deleteModal{{ zone.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ zone.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel{{ zone.id }}">Confirmer la Suppression</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Êtes-vous sûr de vouloir supprimer la zone <strong>{{ zone.nom }}</strong> ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <form action="{{ path('zone_delete', {'id': zone.id}) }}" method="POST" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+                                        <button class="btn btn-danger" type="submit">Supprimer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    #}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                Aucune zone trouvée. <a href="{{ path('zone_new') }}" class="alert-link">Ajouter une nouvelle zone</a>.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

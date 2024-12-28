@@ -23,7 +23,7 @@ class Factures extends AbstractController
 		$this->entityManager = $entityManager;
 	}
 
-	#[Route('/factures', name: 'app_facture_list')]
+	#[Route('/app/factures', name: 'app_facture_list')]
 	public function factureList(): Response
 	{
 		// Récupérer toutes les factures

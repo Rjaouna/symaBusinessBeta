@@ -111,6 +111,18 @@
                                 {{ form_errors(form.adresse) }}
                             </div>
 
+                            <!-- Champ Zone -->
+                            <div class="form-floating mb-4">
+                                {{ form_widget(form.codeZone, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Adresse'
+                                    }
+                                }) }}
+                                <label for="{{ form.codeZone.vars.id }}">Zone</label>
+                                {{ form_errors(form.codeZone) }}
+                            </div>
+
                             <!-- Champ Pays -->
                             <div class="form-floating mb-4">
                                 {{ form_widget(form.pays, {
@@ -123,17 +135,7 @@
                                 {{ form_errors(form.pays) }}
                             </div>
 
-                            <!-- Champ Ville -->
-                            <div class="form-floating mb-4">
-                                {{ form_widget(form.ville, {
-                                    'attr': {
-                                        'class': 'form-control',
-                                        'placeholder': 'Ville'
-                                    }
-                                }) }}
-                                <label for="{{ form.ville.vars.id }}">Ville</label>
-                                {{ form_errors(form.ville) }}
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -165,13 +167,13 @@
 
             <!-- Section pour les Boutons -->
             <div class="d-flex justify-content-between">
-                <a href="{{ path('app_user_index') }}" class="btn btn-secondary btn-sm">
+                <a href="{{ path('app_user_index') }}" class="btn btn-danger">
                     <i class="bi bi-arrow-left-circle me-1"></i> Annuler
                 </a>
 
                 <div>
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Créer') }}
+                    <button type="submit" class="btn btn-success">
+                        {{ button_label|default('Ajouter') }}
                     </button>
                 </div>
             </div>

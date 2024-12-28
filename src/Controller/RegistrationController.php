@@ -53,6 +53,7 @@ class RegistrationController extends AbstractController
             $user->setSim10Usage(0); // Assigner le bonus
             $user->setSim15Usage(0); // Assigner le bonus
             $user->setSim20Usage(0); // Assigner le bonus
+            $user->setType('Revendeur');
             if ($quota) {
                 $user->setQuotas($quota); // Assigner le quota récupéré
             } else {

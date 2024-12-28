@@ -158,6 +158,10 @@ class VentesComptoirAdvindedApiController extends AbstractController
 				return $this->json(['error' => 'Vous avez atteint le quota autorisé de ' . $chapelet->getTypeCartes()->getQuotaSimOffertes() . ' chapelets gratuits.'], 400);
 			}
 			if ($usage && $usage->getConsomation() == ((($chapelet->getTypeCartes()->getQuotaSimOffertes()) - 1)) * 5) {
+				$client->setLastVisite(new \DateTimeImmutable());
+				// Persister les modifications de l'entité User
+				$entityManager->persist($client);
+				$entityManager->flush();
 				// Récupérer les informations supplémentaires
 				$dateLivraison = (new \DateTimeImmutable())->format('d/m/Y'); // Date actuelle
 				$nomClient = $client->getNomResponsable(); // Assurez-vous que la méthode getNom() existe
@@ -166,7 +170,7 @@ class VentesComptoirAdvindedApiController extends AbstractController
 
 				// Composer l'email
 				$email = (new Email())
-				->from('contact@cartemenu.fr') // Remplacez par l'adresse de l'expéditeur
+					->from('contact@cartemenu.fr') // Remplacez par l'adresse de l'expéditeur
 					->to('promobile59810@gmail.com') // Remplacez par l'adresse du destinataire
 					->subject('Quota de Chapelets Atteint')
 					->text(sprintf(

@@ -31,7 +31,7 @@
     </nav>
 </div>
 
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
 {% if is_granted('ROLE_ADMIN') %}
 <a href="{{ path('generate_all_invoices_fac') }}" class="btn btn-primary my-3">Générer les factures</a>
 {% endif %}

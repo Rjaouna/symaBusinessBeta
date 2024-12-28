@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une Nouvelle Tournée{% endblock %}
+
+{% block body %}
+    {% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Créer une Nouvelle Tournée',
+        button_text: 'Retour à la liste des tournées',
+        button_link: path('tournee_index'),
+        button_style: 'success'
+    } %}
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Créer</button>
+{{ form_end(form) }}
+
+
+
+{% endblock %}

@@ -3,43 +3,23 @@
 {% block title %}Gestion des banners{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
-        </h1>
-    </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: 'bi bi-list-check',
+        section_title: 'Gestion des bannieres',
+        button_text: 'Ajouter une nouvelle pub !',
+        button_link: path('app_banner_new'),
+        button_style :'success'
 
-    <!-- Fil d'Ariane stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    Dashboard
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Gestion des bannières
-            </li>
-        </ol>
-    </nav>
-</div>
-     <div class="container-fluid d-flex justify-content-end">
-    <a class="btn btn-secondary btn-s mb-2" href="{{ path('app_banner_new') }}">Ajouter une nouvelle pub !</a>
-</div>
+    } %}
+    
 <div class="container-fluid">
-   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4">
         {% for banner in banners %}
             <div class="col">
                 <div class="card h-100 shadow-sm">
                     <!-- Image de la Bannière -->
-                    <img src="{{ asset('uploads/banners/' ~ banner.image) }}" class="card-img-top img-fluid" alt="{{ banner.nom }}" style="height: 150px; object-fit: cover;">
+                    <img src="{{ asset('uploads/banners/' ~ banner.image) }}" class="card-img-top img-fluid" alt="{{ banner.nom }}" style="height: 200px; object-fit: cover;">
                     
                     <div class="card-body d-flex flex-column">
                         <!-- Nom de la Bannière -->
@@ -47,8 +27,8 @@
                         
                         <!-- Boutons d'Action -->
                         <div class="d-flex mt-auto">
-                            <a href="{{ path('app_banner_edit', {'id': banner.id}) }}" class="btn btn-secondary btn-sm me-2">
-                                <i class="bi bi-pencil-square me-1"></i> Modifier
+                            <a href="{{ path('app_banner_edit', {'id': banner.id}) }}" class="btn btn-primary  me-2">
+                                Modifier
                             </a>
                             {{ include('banner/_delete_form.html.twig') }}
                         </div>

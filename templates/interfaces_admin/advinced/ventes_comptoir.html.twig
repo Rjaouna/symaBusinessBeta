@@ -9,7 +9,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     
     <!-- Bootstrap & Icons CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     
     <!-- DataTable CSS -->
@@ -41,7 +41,7 @@
                 <img src="{{ asset('assets/img/logo-syma@4x.jpg') }}" alt="Logo Syma" style="width:120px;" />
             </a>
             
-               <button id="facturerCommandesBtn" class="btn btn-secondary btn-sm">
+               <button id="facturerCommandesBtn" class="btn btn-success">
                             Valider la livraison
                         </button>
             
@@ -50,20 +50,23 @@
 
     <!-- Contenu principal -->
     <div class="container-fluid my-1 rounded bg-white">
-        
-        <!-- En-tête avec le nom du client -->
-        <div class="d-flex bg-light py-3 mb-4 border-bottom px-2">
-            <h2 class="text-dark fw-bold text-uppercase mb-0">
+
+    <div class="alert alert-dismissible alert-light">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <h4 class="text-dark fw-bold text-uppercase mb-0">
                 <i class="bi bi-upc-scan me-2"></i>
                 <span class="text-primary">{{ client.nomSociete }}</span>
-            </h2>
-        </div>
+            </h4>
+            Ventes en Tournée
+</div>
         
-        <h4 class="mt-4 mb-3 text-primary">
-    Livraison : 
-    <span class="fw-normal">
-        Nombre de chapelets à livrer : <strong>{{ qteALivrer }}</strong> chapelets
-    </span>
+       
+
+<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <h4 class="alert-heading">Livraison : </h4>
+  <p class="mb-0">Nombre de chapelets à livrer pour <strong>{{ client.nomSociete }}</strong> : <strong>{{ qteALivrer }}</strong> chapelets</p>
+</div>
 </h4>
 
                 
@@ -71,7 +74,7 @@
         <form id="biperForm">
             <div class="form-floating mb-3 position-relative">
                 <input 
-                    class="form-control form-control-lg"
+                    class="form-control form-control-lg mt-2"
                     type="text"
                     id="chapeletCode"
                     name="chapeletCode"

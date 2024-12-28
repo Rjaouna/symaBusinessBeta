@@ -1,29 +1,14 @@
 <div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
-        </h1>
-    </div>
 
-    <!-- Fil d'Ariane stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb ps-3 mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    Dashboard
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Espace Administrateur
-            </li>
-        </ol>
-    </nav>
+    {% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        page_title: 'Bien venue sur votre espace',
+        section_icon_class: '',
+        section_title: 'Bienvenue sur votre espace',
+        button_text: 'Déconnexion',
+        button_link: path('app_logout'),
+        button_style :'danger'
+    } %}
 </div>
 
 
@@ -33,7 +18,7 @@
             <!-- Colonne 1 -->
             <div class="col-md-2 my-2">
                 <a href="{{ path('app_commande_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-cart fs-4 text-secondary"></i>
+                    <i class="bi bi-cart fs-4 text-danger"></i>
                     <span class="mt-2">Commandes<br>clients</span>
                     <span id="totalEnAttente" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         00+
@@ -43,78 +28,21 @@
 
             <div class="col-md-2 my-2">
                 <a href="{{ path('users_with_orders') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-upc-scan fs-4 text-secondary"></i>
+                    <i class="bi bi-upc-scan fs-4 text-danger"></i>
                     <span class="mt-2">Valider une<br>commandes</span>
                 </a>
             </div>
 
-            <!-- Colonne 2 -->
-            <div class="col-md-2 my-2">
-                <a href="{{ path('app_quota_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-speedometer fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion<br>des quotas</span>
-                </a>
-            </div>
-
-            <!-- Colonne 3 -->
-            <div class="col-md-2 my-2">
-                <a href="{{ path('app_bonus_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-gift fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion<br>des bonus</span>
-                </a>
-            </div>
-
-            <!-- Colonne 4 -->
-            <div class="col-md-2 my-2">
-                <a href="{{ path('app_user_index') }}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-people fs-4 text-secondary"></i>
-                    <span class="mt-2">Liste<br>des revendeurs</span>
-                </a>
-            </div>
-
-            <!-- Colonne 5 -->
-            <div class="col-md-2 my-2">
-                <a href="{{ path('app_carte_sim_types_block_index') }}" type="button" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-sim fs-4 text-secondary"></i>
-                    <span class="mt-2">Base<br>de production</span>
-                </a>
-            </div>
+           
 
 
-            
-        </div>
-    </div>
+         
 
-<div class="d-flex justify-content-center">
-        <div class="row my-2 w-100">
-            
+           
 
-            <div class="col-md-2 my-2">
-                <a href="{{ path('app_banner_index') }}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-image fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion<br>des Bannières</span>
-                   
-                </a>
-            </div>
-
-            <div class="col-md-2 my-2">
-                <a href="{{path('select_client')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-bag-check fs-4 text-secondary"></i>
-                    <span class="mt-2">Vente<br>directe (comptoir)</span>
-                   
-                </a>
-            </div>
-
-            <div class="col-md-2 my-2">
-                <a href="{{path('app_limitation_index')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-exclamation-triangle fs-4 text-secondary"></i>
-                    <span class="mt-2">Gestion<br>des limitations</span>
-                   
-                </a>
-            </div>
-            <div class="col-md-2 my-2">
+             <div class="col-md-2 my-2">
                 <a href="{{path('select_advinced_client')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                    <i class="bi bi-bag-check fs-4 text-secondary"></i>
+                    <i class="bi bi-bag-check fs-4 text-danger"></i>
                     <span class="mt-2">Vente<br>directe (Terrain)</span>
                    
                 </a>
@@ -124,7 +52,7 @@
 
             <div class="col-md-2 my-2">
                 <a  href="{{path('management_import_carte_sim')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                                     <i class="bi bi-cloud-upload fs-4 text-primary"></i>
+                                     <i class="bi bi-cloud-upload fs-4 text-danger"></i>
 
                     <span class="mt-2">Importation<br>des stocks</span>
                    
@@ -132,34 +60,41 @@
             </div>
             <div class="col-md-2 my-2">
                 <a  href="{{path('app_pending_sim_cards_index')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                                     <i class="bi bi-sim fs-4 text-primary"></i>
+                                     <i class="bi bi-sim fs-4 text-danger"></i>
 
                     <span class="mt-2">Base<br>Préproduction</span>
                    
                 </a>
             </div>
-
+ <!-- Colonne 5 -->
             <div class="col-md-2 my-2">
-                <a  href="{{path('app_facture_list')}}" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100">
-                                     <i class="bi bi-receipt fs-4 text-primary"></i>
-
-                    <span class="mt-2">Gestion<br>des factures</span>
-                   
+                <a href="{{ path('app_carte_sim_types_block_index') }}" type="button" class="shadow-sm btn btn-success position-relative d-flex flex-column align-items-center w-100">
+                    <i class="bi bi-sim fs-4 text-white"></i>
+                    <span class="mt-2">Base<br>de production</span>
                 </a>
             </div>
 
-            <!-- Colonne 1 -->
-            <div class="col-md-2 my-2">
-    <a href="#" class="shadow-sm btn btn-secondary position-relative d-flex flex-column align-items-center w-100" data-bs-toggle="modal" data-bs-target="#confirmModal">
-        <i class="bi bi-arrow-clockwise fs-4 text-primary"></i>
-        <span class="mt-2">Réinitialiser<br>l'usage mensuel</span>
-    </a>
-</div>
-
-
-
+            
         </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <div class="row my-4 w-100">
+            <div class="col-md-4 my-2">
+{{ include('_sidebars/right/admin/stat_commande_by_status.html.twig') }}
 </div>
+            <div class="col-md-4 my-2">
+
+{{ include('_sidebars/right/admin/stat_quotas_by_client.html.twig') }}
+</div>
+            <div class="col-md-4 my-2">
+{{ include('_sidebars/right/admin/stat_ventes_cartes_sim_by_type.html.twig') }}
+</div>
+            <div class="col-md-4 my-2">
+</div>
+</div>
+</div>
+
 
 <script>
   const updateCommandesData = async () => {

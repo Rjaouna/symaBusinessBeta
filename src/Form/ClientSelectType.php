@@ -19,6 +19,7 @@ class ClientSelectType extends AbstractType
 				'choice_label' => 'nomResponsable', // Ce qui sera affiché dans la liste déroulante
 				'placeholder' => 'Sélectionnez un client',
 				'label' => false,
+			'required' => true,
 			'query_builder' => function (UserRepository $userRepository) {
 				return $userRepository->createQueryBuilder('u')
 					->where('u.sim5Usage >= 0 AND u.sim10Usage >= 0 AND u.sim15Usage >= 0 AND u.sim20Usage >= 0');

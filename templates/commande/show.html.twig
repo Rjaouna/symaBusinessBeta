@@ -70,6 +70,9 @@
     </table>
 
     <a class="btn btn-secondary" href="{{ path('app_commande_index') }}">Retour à la liste des commandes</a>
+{% if is_granted('ROLE_SUPER_ADMIN') and commande.status == 'en_attente' %}
 
+                                                {{ include('commande/_delete_form.html.twig') }}
+                                                 {% endif %}
 
 {% endblock %}

@@ -24,7 +24,7 @@
                         'placeholder': 'Entrez le code'
                     }
                 }) }}
-                <label for="{{ form.code.vars.id }}">Code</label>
+                <label for="{{ form.code.vars.id }}">Code (Laissez ce champs vide, il sera généré automatiquement) </label>
                 {{ form_errors(form.code) }}
             </div>
         </div>
@@ -40,7 +40,7 @@
                         'placeholder': 'Entrez le quota pour Sim 05'
                     }
                 }) }}
-                <label for="{{ form.sim5Quota.vars.id }}">Quota pour Sim 05</label>
+                <label for="{{ form.sim5Quota.vars.id }}">Quota pour Sim 05 par chapelet</label>
                 {{ form_errors(form.sim5Quota) }}
             </div>
         </div>
@@ -53,7 +53,7 @@
                         'placeholder': 'Entrez le quota pour Sim 10'
                     }
                 }) }}
-                <label for="{{ form.sim10Quota.vars.id }}">Quota pour Sim 10</label>
+                <label for="{{ form.sim10Quota.vars.id }}">Quota pour Sim 10 par chapelet</label>
                 {{ form_errors(form.sim10Quota) }}
             </div>
         </div>
@@ -69,7 +69,7 @@
                         'placeholder': 'Entrez le quota pour Sim 15'
                     }
                 }) }}
-                <label for="{{ form.sim15Quota.vars.id }}">Quota pour Sim 15</label>
+                <label for="{{ form.sim15Quota.vars.id }}">Quota pour Sim 15 par chapelet</label>
                 {{ form_errors(form.sim15Quota) }}
             </div>
         </div>
@@ -82,7 +82,7 @@
                         'placeholder': 'Entrez le quota pour Sim 20'
                     }
                 }) }}
-                <label for="{{ form.sim20Quota.vars.id }}">Quota pour Sim 20</label>
+                <label for="{{ form.sim20Quota.vars.id }}">Quota pour Sim 20 par chapelet</label>
                 {{ form_errors(form.sim20Quota) }}
             </div>
         </div>
@@ -90,11 +90,11 @@
 
     <!-- Boutons de Soumission -->
     <div class="d-flex justify-content-end">
-        <a href="{{ path('app_quota_index') }}" class="btn btn-secondary me-2">
-            <i class="bi bi-arrow-left-circle me-1"></i> Annuler
+        <a href="{{ path('app_quota_index') }}" class="btn btn-danger me-2">
+             Annuler
         </a>
-        <button type="submit" class="btn btn-primary">
-            <i class="bi bi-check-circle me-1"></i> {{ button_label|default('Enregistrer') }}
+        <button type="submit" class="btn btn-success">
+             {{ button_label|default('Enregistrer') }}
         </button>
     </div>
 {{ form_end(form) }}

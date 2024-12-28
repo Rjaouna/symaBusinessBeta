@@ -1,4 +1,13 @@
 <div class="container-fluid text-center">
+    {% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        page_title: 'Bien venue sur votre espace',
+        section_icon_class: '',
+        section_title: 'Bienvenue sur votre espace',
+        button_text: 'Déconnexion',
+        button_link: path('app_logout'),
+        button_style :'danger'
+    } %}
         <i class="bi bi-upc-scan me-2" style="font-size: 3rem;"></i>
         <h2 class="mt-3 text-dark" style="font-weight: 600; letter-spacing: -0.5px;">
             Veuillez scanner le <span class="text-primary">QR Code</span> du client
@@ -6,4 +15,7 @@
         <p class="text-muted" style="font-size: 1.1rem;">
             Une fois le code scanné, vous pourrez commencer la livraison.
         </p>
+        <div class="d-grid gap-2">
+  <a href="{{path('tournee_index')}}" class="btn btn-lg btn-primary" type="button">Mes tournées</a>
+</div>
 </div>

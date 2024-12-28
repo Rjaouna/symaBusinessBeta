@@ -3,36 +3,18 @@
 {% block title %}Liste des factures{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <!-- Titre principal avec icône -->
-    <div class="d-flex align-items-center justify-content-between bg-light py-3 mb-4 border-bottom">
-        <h1 class="text-dark fw-bold text-uppercase mb-0" style="font-size: 1.8rem;">
-            <i class="bi bi-shield-lock me-2"></i> Espace Administrateur
-        </h1>
-    </div>
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: 'bi bi-list-check',
+        section_title: 'Gestion des factures',
+        button_text: 'Générer les factures',
+        button_link: path('generate_all_invoices_fac'),
+        button_style :'success'
 
-    <!-- Fil d'Ariane stylisé -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-4 bg-white rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    <i class="bi bi-house-door-fill me-1"></i> Accueil
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_syma_business') }}" class="text-decoration-none text-primary">
-                    Dashboard
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-muted" aria-current="page">
-                Liste des factures
-            </li>
-        </ol>
-    </nav>
-</div>
+    } %}
 
 <!-- Bloc d'explications pour la génération des factures -->
-<div class="mx-3 alert alert-info">
+<div class=" alert alert-info">
     <ul class="mb-0">
         <li><i class="bi bi-calendar-day me-2"></i> La génération des factures doit être effectuée <strong>le dernier jour du mois</strong>, afin de couvrir toutes les commandes passées durant le mois en cours.</li>
         <li><i class="bi bi-clock me-2"></i> Les factures incluront toutes les <strong>commandes passées entre le premier et le dernier jour du mois</strong>, du début (00:00:00) à la fin (23:59:59) du mois.</li>
@@ -40,8 +22,7 @@
     </ul>
 </div>
 
-<div class="container mt-3">
-    <a href="{{ path('generate_all_invoices_fac') }}" class="btn btn-primary my-3">Générer les factures</a>
+<div class="container-fluid mt-3">
 
     <div class="card">
         <!-- Liste des factures -->

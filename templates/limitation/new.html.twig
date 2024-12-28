@@ -3,7 +3,17 @@
 {% block title %}New Limitation{% endblock %}
 
 {% block body %}
-    <h1>Create new Limitation</h1>
+<div class="container-fluid">
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: 'bi bi-list-check',
+        section_title: 'Ajouter une limitaions',
+        button_text: 'Retour à la liste des limitations',
+        button_link: path('app_limitation_index'),
+        button_style :'success'
+
+    } %}
+</div>
 
     {{ include('limitation/_form.html.twig') }}
 

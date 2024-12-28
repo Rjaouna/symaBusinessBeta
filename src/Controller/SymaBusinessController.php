@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\ProfileCompletionService;
 use App\Repository\BannerRepository;
 use App\Repository\FactureRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\Configuration\BusinessConfigChecker;
@@ -25,7 +26,7 @@ class SymaBusinessController extends AbstractController
     
     #[IsGranted('ROLE_USER')]
     #[Route('', name: 'app_syma_business')]
-    public function index(BannerRepository $bannerRepository, FactureRepository $factureRepository): Response
+    public function index(BannerRepository $bannerRepository, FactureRepository $factureRepository, UserRepository $clientRepository): Response
     {
         if (!$this->businessConfigChecker->isConfigComplete()) {
             return $this->redirectToRoute('app_syma_business_config_new'); // Redirige vers la configuration
@@ -38,7 +39,8 @@ class SymaBusinessController extends AbstractController
             // Rediriger vers une page de connexion si l'utilisateur n'est pas connecté
             return $this->redirectToRoute('app_login');
         }
-
+        // Récupérer tous les clients avec coordonnées
+        $clientsWithCoordinates = $clientRepository->findAllWithCoordinates();
         
 
         // Récupérer toutes les factures pour l'utilisateur connecté
@@ -55,6 +57,7 @@ class SymaBusinessController extends AbstractController
             'user' => $user,
             'missingProperties' => $missingProperties,
             'factures' => $factures,
+            'clients' => $clientsWithCoordinates,
 
 
         ]);

@@ -49,7 +49,7 @@ class Quota
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'quotas')]
     private Collection $users;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     private ?string $code = null;
 
     public function __construct()

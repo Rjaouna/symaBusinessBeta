@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Zone{% endblock %}
+
+{% block body %}
+{% include 'partials/header_card.html.twig' with {
+        icon_class: 'bi bi-shield-lock',
+        section_icon_class: '',
+        section_title: 'Ajouter une zone',
+        button_text: 'Retour à la liste des zones',
+        button_link: path('zone_index'),
+        button_style :'success'
+
+    } %}
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Champ Nom de la Zone avec Floating Label -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.nom, {
+                    'attr': {
+                        'placeholder': 'Nom de la Zone'
+                    }
+                }) }}
+                <label for="{{ form.nom.vars.id }}">Nom de la Zone</label>
+            </div>
+        </div>
+
+         <div class="col-md-6">
+            <!-- Champ Nom de la Zone avec Floating Label -->
+            <div class="form-floating mb-3">
+                {{ form_widget(form.description, {
+                    'attr': {
+                        'placeholder': 'Description de la Zone'
+                    }
+                }) }}
+                <label for="{{ form.description.vars.id }}">Description de la Zone</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-danger me-2" href="{{ path('zone_index') }}">Annuler</a>
+        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form) }}
+
+{% endblock %}
