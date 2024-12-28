@@ -66,7 +66,7 @@
                 {% if app.user %}
                     <div class="col-md-12 left-align mt-3">
                        {% for label, messages in app.flashes %}
-    <div class="alert alert-{{ label }} alert-dismissible fade show px-4 py-4 rounded shadow-sm mx-3 my-2 text-center font-weight-bold" role="alert" id="flash-message-{{ loop.index }}" 
+    <div class="alert alert-{{ label }} alert-dismissible fade show px-4 py-2 rounded shadow-sm mx-3 my-2 text-center" role="alert" id="flash-message-{{ loop.index }}" 
         style="background-color: white; border-left: 5px solid {% if label == 'success' %}green{% endif %}{% if label == 'danger' %}red{% endif %}{% if label == 'warning' %}orange{% endif %}{% if label != 'success' and label != 'danger' and label != 'warning' %}gray{% endif %};">
        
 

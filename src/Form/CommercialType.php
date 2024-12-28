@@ -39,7 +39,7 @@ class CommercialType extends AbstractType
 				],
 			])
 			->add('isCommercial', CheckboxType::class, [
-				'label'    => 'Est Commercial',
+			'label'    => 'Commercial',
 				'required' => false,
 				'mapped' => true,
 				'attr' => [

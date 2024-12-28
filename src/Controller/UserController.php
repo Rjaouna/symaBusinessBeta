@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\CodeClientGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -126,7 +127,8 @@ final class UserController extends AbstractController
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
         MailerInterface $mailer,
-        QuotaRepository $quota
+        QuotaRepository $quota,
+        CodeClientGenerator $codeClientGenerator
     ): Response {
         // Créer une nouvelle instance de User
         $user = new User();
@@ -135,6 +137,8 @@ final class UserController extends AbstractController
         // Créer le formulaire CommercialType
         $form = $this->createForm(CommercialType::class, $user);
         $form->handleRequest($request);
+        // Initialiser un indicateur pour vérifier si l'utilisateur est commercial
+        $isCommercial = false;
 
         // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
@@ -155,44 +159,60 @@ final class UserController extends AbstractController
             $user->setSim10Usage(0); // Assigner le bonus
             $user->setSim15Usage(0); // Assigner le bonus
             $user->setSim20Usage(0); // Assigner le bonus
-            
+            // Générer un code client unique
+            $codeClient = $codeClientGenerator->generateUniqueCodeClient();
+            $user->setCodeClient($codeClient);
+
+            // Assigner le quota récupéré si disponible
             if ($quota) {
-                $user->setQuotas($quota); // Assigner le quota récupéré
+                $user->setQuotas($quota);
             } else {
-                // Gérer le cas où le quota avec l'ID 1 n'existe pas (optionnel)
+                // Gérer le cas où le quota avec l'ID 1 n'existe pas
                 $this->addFlash('error', 'Le quota demandé n\'existe pas.');
+                // Vous pouvez choisir de rediriger ou de continuer selon votre logique
             }
-            if ($form->getData()->isCommercial()) {
+
+            // Vérifier si l'utilisateur est commercial
+            if ($user->isCommercial()) { // Utiliser la méthode de l'entité User
+                $isCommercial = true;
                 $user->setRoles(['ROLE_COMMERCIAL']);
                 $user->setType('Commercial');
+
+                // Créer une instance de Commercial associée
                 $commercial = new Commercial();
-                $commercial->setNom($form->getData()->getNomResponsable());
-                $commercial->setEmail($form->getData()->getEmail());
+                $commercial->setNom($user->getNomResponsable());
+                $commercial->setEmail($user->getEmail());
+
+                // Persister le Commercial
                 $entityManager->persist($commercial);
-                $entityManager->flush();
             } else {
                 $user->setRoles(['ROLE_USER']);
                 $user->setType('Revendeur');
-                // Enregistrer l'utilisateur en base de données
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return $this->redirectToRoute('app_user_edit', ['id' => $user->getId()]);
             }
 
+            // Persister le User
+            $entityManager->persist($user);
 
-            
+            // Enregistrer toutes les modifications en base de données
+            $entityManager->flush();
 
             // Envoyer le mot de passe par e-mail
             $this->sendPasswordEmail($mailer, $user, $plainPassword);
 
             // Ajouter un message flash de succès
-            $this->addFlash('success', 'Commercial créé avec succès. Le mot de passe a été envoyé par e-mail.');
-
-            // Rediriger vers la liste des utilisateurs
-            return $this->redirectToRoute('app_user_commerciaux', [], Response::HTTP_SEE_OTHER);
-
+            if ($isCommercial) {
+                $this->addFlash('success', 'Commercial créé avec succès. Le mot de passe a été envoyé par e-mail.');
+                // Rediriger vers une route appropriée pour les commerciaux
+                return $this->redirectToRoute('app_user_commerciaux', [], Response::HTTP_SEE_OTHER);
+            } else {
+                $this->addFlash(
+                    'success',
+                    'Utilisateur créé avec succès. Le mot de passe a été envoyé par e-mail.'
+                );
+                // Rediriger vers l'édition de l'utilisateur nouvellement créé en incluant l'ID
+                return $this->redirectToRoute('app_user_edit', ['id' => $user->getId()]);
+            }
         }
-
         // Rendre le formulaire dans le template
         return $this->render('commercial/new.html.twig', [
             'form' => $form->createView(),

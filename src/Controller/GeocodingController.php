@@ -29,12 +29,13 @@ class GeocodingController extends AbstractController
 			$this->addFlash('info', 'Aucun utilisateur sans coordonnées trouvé.');
 			return $this->redirectToRoute('app_syma_business'); // Assurez-vous que cette route existe
 		}
+		$missingAddress = false;
 
 		foreach ($users as $user) {
 			$address = $user->getAdresse(); // Assurez-vous que cette méthode existe et retourne une chaîne d'adresse complète
 
 			if (empty($address)) {
-				$this->addFlash('warning', "L'utilisateur {$user->getId()} n'a pas d'adresse.");
+				$missingAddress = true;
 				continue;
 			}
 
@@ -51,6 +52,9 @@ class GeocodingController extends AbstractController
 
 			// Pause pour respecter les politiques de Nominatim (1 requête par seconde)
 			sleep(1);
+		}
+		if ($missingAddress) {
+			$this->addFlash('warning', "Un ou plusieurs utilisateurs n'ont pas d'adresse postale.");
 		}
 
 		$entityManager->flush();

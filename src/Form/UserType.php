@@ -25,6 +25,8 @@ class UserType extends AbstractType
             'attr' => [
                 'class' => 'form-control-lg',
                 'placeholder' => 'Ex : C41027544',
+                'readonly' => true,
+
             ],
             'required' => false,
             'constraints' => [
@@ -103,19 +105,19 @@ class UserType extends AbstractType
             ],
             'required' => false,
             ])
-            ->add('roles', ChoiceType::class, [
-                'label' => 'Rôle',
-                'choices'  => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Utilisateur' => 'ROLE_USER',
-                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
-                    'Commercial' => 'ROLE_COMMERCIAL',
-                ],
-                'expanded' => true, // Affiche des cases à cocher
-                'multiple' => true, // Permet de sélectionner plusieurs rôles
-                'required' => true,
+            // ->add('roles', ChoiceType::class, [
+            //     'label' => 'Rôle',
+            //     'choices'  => [
+            //         'Administrateur' => 'ROLE_ADMIN',
+            //         'Utilisateur' => 'ROLE_USER',
+            //         'Super Administrateur' => 'ROLE_SUPER_ADMIN',
+            //         'Commercial' => 'ROLE_COMMERCIAL',
+            //     ],
+            //     'expanded' => true, // Affiche des cases à cocher
+            //     'multiple' => true, // Permet de sélectionner plusieurs rôles
+            //     'required' => true,
 
-            ])
+            // ])
 
         ;
     }
